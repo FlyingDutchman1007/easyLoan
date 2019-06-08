@@ -1,14 +1,17 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
-public class BorrowMoneyFlow {
+public class RepayMoneyFlow {
 
   private long serialNumber;
   private long billId;
   private String inBoundAccount;
   private String outBoundAccount;
-  private double money;
   private java.sql.Timestamp exactDate;
+  private double money;
+  private double interestMoney;
+  private double liquidatedMoney;
+  private double principalMoney;
 
 
   public long getSerialNumber() {
@@ -47,6 +50,15 @@ public class BorrowMoneyFlow {
   }
 
 
+  public java.sql.Timestamp getExactDate() {
+    return exactDate;
+  }
+
+  public void setExactDate(java.sql.Timestamp exactDate) {
+    this.exactDate = exactDate;
+  }
+
+
   public double getMoney() {
     return money;
   }
@@ -56,12 +68,30 @@ public class BorrowMoneyFlow {
   }
 
 
-  public java.sql.Timestamp getExactDate() {
-    return exactDate;
+  public double getInterestMoney() {
+    return interestMoney;
   }
 
-  public void setExactDate(java.sql.Timestamp exactDate) {
-    this.exactDate = exactDate;
+  public void setInterestMoney(double interestMoney) {
+    this.interestMoney = interestMoney;
+  }
+
+
+  public double getLiquidatedMoney() {
+    return liquidatedMoney;
+  }
+
+  public void setLiquidatedMoney(double liquidatedMoney) {
+    this.liquidatedMoney = liquidatedMoney;
+  }
+
+
+  public double getPrincipalMoney() {
+    return principalMoney;
+  }
+
+  public void setPrincipalMoney(double principalMoney) {
+    this.principalMoney = principalMoney;
   }
 
 }

@@ -1,4 +1,4 @@
-package loan.easyloan.service;
+package loan.easyLoan.service;
 
 /**
  * @author Ywr

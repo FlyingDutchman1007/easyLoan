@@ -1,6 +1,6 @@
-package loan.easyloan.service.impl;
+package loan.easyLoan.service.impl;
 
-import loan.easyloan.service.UserRequiredInfoService;
+import loan.easyLoan.service.UserRequiredInfoService;
 
 /**
  * @author Ywr
