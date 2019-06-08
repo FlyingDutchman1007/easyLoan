@@ -5,7 +5,12 @@ spring:
   datasource:
     username: loan
     password: 123456
-    url: jdbc:mysql://192.168.0.189:3306/tourist_attractions?useUnicode=true&autoReconnect=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
-  messages:
-    basename: i18n.tar
+    url: jdbc:mysql://192.168.0.189:3306/qingsongdai
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+
+mybatis:
+  typeAliasesPackage: p2ploan.loan.entity
+  mapperLocations: classpath:mapper/*.xml
 
