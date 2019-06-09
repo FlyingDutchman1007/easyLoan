@@ -438,7 +438,7 @@
       <workItem from="1559958696279" duration="2695000" />
       <workItem from="1559961594069" duration="33000" />
       <workItem from="1559978864691" duration="8075000" />
-      <workItem from="1560046935376" duration="2492000" />
+      <workItem from="1560046935376" duration="3077000" />
     </task>
     <servers />
   </component>
@@ -449,9 +449,12 @@
     <history-entry file="LoanApplicationTests - 2019.06.08 at 17h 58m 01s.xml">
       <configuration name="LoanApplicationTests" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="LoanApplicationTests_contextLoads - 2019.06.09 at 11h 14m 51s.xml">
+      <configuration name="LoanApplicationTests.contextLoads" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24025000" />
+    <option name="totallyTimeSpent" value="24610000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
