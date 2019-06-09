@@ -1013,6 +1013,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LoanApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="loan" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="loan.easyLoan.LoanApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LoanApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="loan" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="p2ploan.loan.LoanApplication" />
