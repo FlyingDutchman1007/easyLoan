@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class RechargeRecord {
@@ -44,4 +44,13 @@ public class RechargeRecord {
     this.bankAccount = bankAccount;
   }
 
+  @Override
+  public String toString() {
+    return "RechargeRecord{" +
+            "serialNumber=" + serialNumber +
+            ", rechargeDate=" + rechargeDate +
+            ", rechargeMoney=" + rechargeMoney +
+            ", bankAccount='" + bankAccount + '\'' +
+            '}';
+  }
 }

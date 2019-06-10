@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class Depository {
@@ -24,4 +24,11 @@ public class Depository {
     this.depositoryAccount = depositoryAccount;
   }
 
+  @Override
+  public String toString() {
+    return "Depository{" +
+            "fundsAccount='" + fundsAccount + '\'' +
+            ", depositoryAccount='" + depositoryAccount + '\'' +
+            '}';
+  }
 }

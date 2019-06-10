@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class BorrowerAccount {
@@ -74,4 +74,16 @@ public class BorrowerAccount {
     this.availableLimit = availableLimit;
   }
 
+  @Override
+  public String toString() {
+    return "BorrowerAccount{" +
+            "fundsAccount='" + fundsAccount + '\'' +
+            ", idCard='" + idCard + '\'' +
+            ", accountBalance=" + accountBalance +
+            ", borrowedMoney=" + borrowedMoney +
+            ", creditScore=" + creditScore +
+            ", totalLimit=" + totalLimit +
+            ", availableLimit=" + availableLimit +
+            '}';
+  }
 }

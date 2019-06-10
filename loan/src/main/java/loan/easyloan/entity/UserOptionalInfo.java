@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class UserOptionalInfo {
@@ -84,4 +84,17 @@ public class UserOptionalInfo {
     this.specialIdentity = specialIdentity;
   }
 
+  @Override
+  public String toString() {
+    return "UserOptionalInfo{" +
+            "idCard='" + idCard + '\'' +
+            ", sex='" + sex + '\'' +
+            ", educationalLevel='" + educationalLevel + '\'' +
+            ", marriage='" + marriage + '\'' +
+            ", profession='" + profession + '\'' +
+            ", address='" + address + '\'' +
+            ", avatar='" + avatar + '\'' +
+            ", specialIdentity='" + specialIdentity + '\'' +
+            '}';
+  }
 }

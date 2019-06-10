@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class Trade {
@@ -174,4 +174,26 @@ public class Trade {
     this.finishedDate = finishedDate;
   }
 
+  @Override
+  public String toString() {
+    return "Trade{" +
+            "serialNumber=" + serialNumber +
+            ", billId=" + billId +
+            ", inBoundAccount='" + inBoundAccount + '\'' +
+            ", outBoundAccount='" + outBoundAccount + '\'' +
+            ", money=" + money +
+            ", limitMonths=" + limitMonths +
+            ", payType=" + payType +
+            ", payRate=" + payRate +
+            ", exactDate=" + exactDate +
+            ", nextTimePay=" + nextTimePay +
+            ", repaidPrincipal=" + repaidPrincipal +
+            ", repaidInterest=" + repaidInterest +
+            ", liquidatedMoney=" + liquidatedMoney +
+            ", shouldRepayPrincipal=" + shouldRepayPrincipal +
+            ", shouldRepayInterest=" + shouldRepayInterest +
+            ", shouldRepayLiquidatedMoney=" + shouldRepayLiquidatedMoney +
+            ", finishedDate=" + finishedDate +
+            '}';
+  }
 }

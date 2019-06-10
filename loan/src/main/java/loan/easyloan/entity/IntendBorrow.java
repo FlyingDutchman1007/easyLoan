@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class IntendBorrow {
@@ -94,4 +94,18 @@ public class IntendBorrow {
     this.raisedMoney = raisedMoney;
   }
 
+  @Override
+  public String toString() {
+    return "IntendBorrow{" +
+            "billId=" + billId +
+            ", idCard='" + idCard + '\'' +
+            ", intendMoney=" + intendMoney +
+            ", startDate=" + startDate +
+            ", payRate=" + payRate +
+            ", payType=" + payType +
+            ", limitMonths=" + limitMonths +
+            ", state=" + state +
+            ", raisedMoney=" + raisedMoney +
+            '}';
+  }
 }

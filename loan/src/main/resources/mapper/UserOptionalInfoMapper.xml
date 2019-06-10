@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.UserOptionalInfoMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.UserOptionalInfo">
+    <id column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="educational_level" jdbcType="VARCHAR" property="educationalLevel" />
+    <result column="marriage" jdbcType="CHAR" property="marriage" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="loan.easyLoan.entity.UserOptionalInfo">
+    <result column="avatar" jdbcType="LONGVARBINARY" property="avatar" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id_card, sex, educational_level, marriage, profession, address, special_identity
+  </sql>
+  <sql id="Blob_Column_List">
+    avatar
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_optional_info
+    where id_card = #{idCard,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_optional_info
+    where id_card = #{idCard,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    insert into user_optional_info (id_card, sex, educational_level, 
+      marriage, profession, address, 
+      special_identity, avatar)
+    values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR}, 
+      #{marriage,jdbcType=CHAR}, #{profession,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    insert into user_optional_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="educationalLevel != null">
+        educational_level,
+      </if>
+      <if test="marriage != null">
+        marriage,
+      </if>
+      <if test="profession != null">
+        profession,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="specialIdentity != null">
+        special_identity,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="educationalLevel != null">
+        #{educationalLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="profession != null">
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialIdentity != null">
+        #{specialIdentity,jdbcType=CHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    update user_optional_info
+    <set>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="educationalLevel != null">
+        educational_level = #{educationalLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        marriage = #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="profession != null">
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialIdentity != null">
+        special_identity = #{specialIdentity,jdbcType=CHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    update user_optional_info
+    set sex = #{sex,jdbcType=CHAR},
+      educational_level = #{educationalLevel,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=CHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      special_identity = #{specialIdentity,jdbcType=CHAR},
+      avatar = #{avatar,jdbcType=LONGVARBINARY}
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    update user_optional_info
+    set sex = #{sex,jdbcType=CHAR},
+      educational_level = #{educationalLevel,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=CHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      special_identity = #{specialIdentity,jdbcType=CHAR}
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+</mapper>

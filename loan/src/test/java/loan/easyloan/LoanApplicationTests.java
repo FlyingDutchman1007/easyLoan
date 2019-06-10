@@ -1,4 +1,4 @@
-package loan.easyloan;
+package loan.easyLoan;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,5 +12,7 @@ public class LoanApplicationTests {
     @Test
     public void contextLoads() {
     }
+
+
 
 }

@@ -5,12 +5,12 @@ spring:
   datasource:
     username: loan
     password: 123456
-    url: jdbc:mysql://192.168.0.189:3306/qingsongdai
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.189:3306/qingsongdai?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
 
 mybatis:
-  typeAliasesPackage: p2ploan.loan.entity
+  typeAliasesPackage: loan.easyLoan.entity
   mapperLocations: classpath:mapper/*.xml
 

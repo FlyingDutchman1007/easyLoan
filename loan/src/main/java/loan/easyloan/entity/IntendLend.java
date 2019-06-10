@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class IntendLend {
@@ -54,4 +54,14 @@ public class IntendLend {
     this.state = state;
   }
 
+  @Override
+  public String toString() {
+    return "IntendLend{" +
+            "billId=" + billId +
+            ", idCard='" + idCard + '\'' +
+            ", lendMoney=" + lendMoney +
+            ", startDate=" + startDate +
+            ", state=" + state +
+            '}';
+  }
 }

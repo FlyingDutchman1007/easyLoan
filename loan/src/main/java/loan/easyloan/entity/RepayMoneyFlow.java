@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class RepayMoneyFlow {
@@ -94,4 +94,18 @@ public class RepayMoneyFlow {
     this.principalMoney = principalMoney;
   }
 
+  @Override
+  public String toString() {
+    return "RepayMoneyFlow{" +
+            "serialNumber=" + serialNumber +
+            ", billId=" + billId +
+            ", inBoundAccount='" + inBoundAccount + '\'' +
+            ", outBoundAccount='" + outBoundAccount + '\'' +
+            ", exactDate=" + exactDate +
+            ", money=" + money +
+            ", interestMoney=" + interestMoney +
+            ", liquidatedMoney=" + liquidatedMoney +
+            ", principalMoney=" + principalMoney +
+            '}';
+  }
 }

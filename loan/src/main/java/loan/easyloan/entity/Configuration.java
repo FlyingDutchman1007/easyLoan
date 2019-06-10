@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class Configuration {
@@ -24,4 +24,11 @@ public class Configuration {
     this.parameterValue = parameterValue;
   }
 
+  @Override
+  public String toString() {
+    return "Configuration{" +
+            "parameterName='" + parameterName + '\'' +
+            ", parameterValue='" + parameterValue + '\'' +
+            '}';
+  }
 }

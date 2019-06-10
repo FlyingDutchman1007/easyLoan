@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class BorrowMoneyFlow {
@@ -64,4 +64,15 @@ public class BorrowMoneyFlow {
     this.exactDate = exactDate;
   }
 
+  @Override
+  public String toString() {
+    return "BorrowMoneyFlow{" +
+            "serialNumber=" + serialNumber +
+            ", billId=" + billId +
+            ", inBoundAccount='" + inBoundAccount + '\'' +
+            ", outBoundAccount='" + outBoundAccount + '\'' +
+            ", money=" + money +
+            ", exactDate=" + exactDate +
+            '}';
+  }
 }

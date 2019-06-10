@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.WithdrawRecordMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.WithdrawRecord">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="withdraw_date" jdbcType="TIMESTAMP" property="withdrawDate" />
+    <result column="withdraw_money" jdbcType="DOUBLE" property="withdrawMoney" />
+    <result column="bank_account" jdbcType="CHAR" property="bankAccount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    serial_number, withdraw_date, withdraw_money, bank_account
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from withdraw_record
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from withdraw_record
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.WithdrawRecord">
+    insert into withdraw_record (serial_number, withdraw_date, withdraw_money, 
+      bank_account)
+    values (#{serialNumber,jdbcType=INTEGER}, #{withdrawDate,jdbcType=TIMESTAMP}, #{withdrawMoney,jdbcType=DOUBLE}, 
+      #{bankAccount,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.WithdrawRecord">
+    insert into withdraw_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="withdrawDate != null">
+        withdraw_date,
+      </if>
+      <if test="withdrawMoney != null">
+        withdraw_money,
+      </if>
+      <if test="bankAccount != null">
+        bank_account,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawDate != null">
+        #{withdrawDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="withdrawMoney != null">
+        #{withdrawMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bankAccount != null">
+        #{bankAccount,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.WithdrawRecord">
+    update withdraw_record
+    <set>
+      <if test="withdrawDate != null">
+        withdraw_date = #{withdrawDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="withdrawMoney != null">
+        withdraw_money = #{withdrawMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bankAccount != null">
+        bank_account = #{bankAccount,jdbcType=CHAR},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.WithdrawRecord">
+    update withdraw_record
+    set withdraw_date = #{withdrawDate,jdbcType=TIMESTAMP},
+      withdraw_money = #{withdrawMoney,jdbcType=DOUBLE},
+      bank_account = #{bankAccount,jdbcType=CHAR}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>

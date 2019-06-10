@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class WithdrawRecord {
@@ -44,4 +44,13 @@ public class WithdrawRecord {
     this.bankAccount = bankAccount;
   }
 
+  @Override
+  public String toString() {
+    return "WithdrawRecord{" +
+            "serialNumber=" + serialNumber +
+            ", withdrawDate=" + withdrawDate +
+            ", withdrawMoney=" + withdrawMoney +
+            ", bankAccount='" + bankAccount + '\'' +
+            '}';
+  }
 }

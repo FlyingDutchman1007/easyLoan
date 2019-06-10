@@ -1,4 +1,4 @@
-package loan.easyloan.entity;
+package loan.easyLoan.entity;
 
 
 public class UserRequiredInfo {
@@ -64,4 +64,15 @@ public class UserRequiredInfo {
     this.password = password;
   }
 
+  @Override
+  public String toString() {
+    return "UserRequiredInfo{" +
+            "phoneNumber='" + phoneNumber + '\'' +
+            ", idCard='" + idCard + '\'' +
+            ", userName='" + userName + '\'' +
+            ", bankAccount='" + bankAccount + '\'' +
+            ", userType=" + userType +
+            ", password='" + password + '\'' +
+            '}';
+  }
 }
