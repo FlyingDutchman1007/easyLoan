@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.TradeMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.Trade">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="in_bound_account" jdbcType="VARCHAR" property="inBoundAccount" />
+    <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="limit_months" jdbcType="INTEGER" property="limitMonths" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="pay_rate" jdbcType="REAL" property="payRate" />
+    <result column="exact_date" jdbcType="TIMESTAMP" property="exactDate" />
+    <result column="next_time_pay" jdbcType="DOUBLE" property="nextTimePay" />
+    <result column="repaid_principal" jdbcType="DOUBLE" property="repaidPrincipal" />
+    <result column="repaid_interest" jdbcType="DOUBLE" property="repaidInterest" />
+    <result column="liquidated_money" jdbcType="DOUBLE" property="liquidatedMoney" />
+    <result column="should_repay_principal" jdbcType="DOUBLE" property="shouldRepayPrincipal" />
+    <result column="should_repay_interest" jdbcType="DOUBLE" property="shouldRepayInterest" />
+    <result column="should_repay_liquidated_money" jdbcType="DOUBLE" property="shouldRepayLiquidatedMoney" />
+    <result column="finished_date" jdbcType="TIMESTAMP" property="finishedDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    serial_number, bill_id, in_bound_account, out_bound_account, money, limit_months, 
+    pay_type, pay_rate, exact_date, next_time_pay, repaid_principal, repaid_interest, 
+    liquidated_money, should_repay_principal, should_repay_interest, should_repay_liquidated_money, 
+    finished_date
+  </sql>
+  <select id="selectByExample" parameterType="loan.easyLoan.entity.TradeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trade
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trade
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="loan.easyLoan.entity.TradeExample">
+    delete from trade
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.Trade">
+    insert into trade (serial_number, bill_id, in_bound_account, 
+      out_bound_account, money, limit_months, 
+      pay_type, pay_rate, exact_date, 
+      next_time_pay, repaid_principal, repaid_interest, 
+      liquidated_money, should_repay_principal, should_repay_interest, 
+      should_repay_liquidated_money, finished_date
+      )
+    values (#{serialNumber,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{inBoundAccount,jdbcType=VARCHAR}, 
+      #{outBoundAccount,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{limitMonths,jdbcType=INTEGER}, 
+      #{payType,jdbcType=INTEGER}, #{payRate,jdbcType=REAL}, #{exactDate,jdbcType=TIMESTAMP}, 
+      #{nextTimePay,jdbcType=DOUBLE}, #{repaidPrincipal,jdbcType=DOUBLE}, #{repaidInterest,jdbcType=DOUBLE}, 
+      #{liquidatedMoney,jdbcType=DOUBLE}, #{shouldRepayPrincipal,jdbcType=DOUBLE}, #{shouldRepayInterest,jdbcType=DOUBLE}, 
+      #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE}, #{finishedDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.Trade">
+    insert into trade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account,
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="limitMonths != null">
+        limit_months,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="payRate != null">
+        pay_rate,
+      </if>
+      <if test="exactDate != null">
+        exact_date,
+      </if>
+      <if test="nextTimePay != null">
+        next_time_pay,
+      </if>
+      <if test="repaidPrincipal != null">
+        repaid_principal,
+      </if>
+      <if test="repaidInterest != null">
+        repaid_interest,
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money,
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        should_repay_principal,
+      </if>
+      <if test="shouldRepayInterest != null">
+        should_repay_interest,
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        should_repay_liquidated_money,
+      </if>
+      <if test="finishedDate != null">
+        finished_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMonths != null">
+        #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payRate != null">
+        #{payRate,jdbcType=REAL},
+      </if>
+      <if test="exactDate != null">
+        #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTimePay != null">
+        #{nextTimePay,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidPrincipal != null">
+        #{repaidPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidInterest != null">
+        #{repaidInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayInterest != null">
+        #{shouldRepayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="finishedDate != null">
+        #{finishedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="loan.easyLoan.entity.TradeExample" resultType="java.lang.Long">
+    select count(*) from trade
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update trade
+    <set>
+      <if test="record.serialNumber != null">
+        serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.billId != null">
+        bill_id = #{record.billId,jdbcType=INTEGER},
+      </if>
+      <if test="record.inBoundAccount != null">
+        in_bound_account = #{record.inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outBoundAccount != null">
+        out_bound_account = #{record.outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
+      <if test="record.limitMonths != null">
+        limit_months = #{record.limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="record.payType != null">
+        pay_type = #{record.payType,jdbcType=INTEGER},
+      </if>
+      <if test="record.payRate != null">
+        pay_rate = #{record.payRate,jdbcType=REAL},
+      </if>
+      <if test="record.exactDate != null">
+        exact_date = #{record.exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nextTimePay != null">
+        next_time_pay = #{record.nextTimePay,jdbcType=DOUBLE},
+      </if>
+      <if test="record.repaidPrincipal != null">
+        repaid_principal = #{record.repaidPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.repaidInterest != null">
+        repaid_interest = #{record.repaidInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.liquidatedMoney != null">
+        liquidated_money = #{record.liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shouldRepayPrincipal != null">
+        should_repay_principal = #{record.shouldRepayPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shouldRepayInterest != null">
+        should_repay_interest = #{record.shouldRepayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shouldRepayLiquidatedMoney != null">
+        should_repay_liquidated_money = #{record.shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.finishedDate != null">
+        finished_date = #{record.finishedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update trade
+    set serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      bill_id = #{record.billId,jdbcType=INTEGER},
+      in_bound_account = #{record.inBoundAccount,jdbcType=VARCHAR},
+      out_bound_account = #{record.outBoundAccount,jdbcType=VARCHAR},
+      money = #{record.money,jdbcType=DOUBLE},
+      limit_months = #{record.limitMonths,jdbcType=INTEGER},
+      pay_type = #{record.payType,jdbcType=INTEGER},
+      pay_rate = #{record.payRate,jdbcType=REAL},
+      exact_date = #{record.exactDate,jdbcType=TIMESTAMP},
+      next_time_pay = #{record.nextTimePay,jdbcType=DOUBLE},
+      repaid_principal = #{record.repaidPrincipal,jdbcType=DOUBLE},
+      repaid_interest = #{record.repaidInterest,jdbcType=DOUBLE},
+      liquidated_money = #{record.liquidatedMoney,jdbcType=DOUBLE},
+      should_repay_principal = #{record.shouldRepayPrincipal,jdbcType=DOUBLE},
+      should_repay_interest = #{record.shouldRepayInterest,jdbcType=DOUBLE},
+      should_repay_liquidated_money = #{record.shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      finished_date = #{record.finishedDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.Trade">
+    update trade
+    <set>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMonths != null">
+        limit_months = #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payRate != null">
+        pay_rate = #{payRate,jdbcType=REAL},
+      </if>
+      <if test="exactDate != null">
+        exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTimePay != null">
+        next_time_pay = #{nextTimePay,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidPrincipal != null">
+        repaid_principal = #{repaidPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidInterest != null">
+        repaid_interest = #{repaidInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        should_repay_principal = #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayInterest != null">
+        should_repay_interest = #{shouldRepayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        should_repay_liquidated_money = #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="finishedDate != null">
+        finished_date = #{finishedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.Trade">
+    update trade
+    set bill_id = #{billId,jdbcType=INTEGER},
+      in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      limit_months = #{limitMonths,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=INTEGER},
+      pay_rate = #{payRate,jdbcType=REAL},
+      exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      next_time_pay = #{nextTimePay,jdbcType=DOUBLE},
+      repaid_principal = #{repaidPrincipal,jdbcType=DOUBLE},
+      repaid_interest = #{repaidInterest,jdbcType=DOUBLE},
+      liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      should_repay_principal = #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      should_repay_interest = #{shouldRepayInterest,jdbcType=DOUBLE},
+      should_repay_liquidated_money = #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      finished_date = #{finishedDate,jdbcType=TIMESTAMP}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>

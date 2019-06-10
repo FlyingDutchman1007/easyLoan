@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.RechargeRecordMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.RechargeRecord">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="recharge_date" jdbcType="TIMESTAMP" property="rechargeDate" />
+    <result column="recharge_money" jdbcType="DOUBLE" property="rechargeMoney" />
+    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    serial_number, recharge_date, recharge_money, bank_account
+  </sql>
+  <select id="selectByExample" parameterType="loan.easyLoan.entity.RechargeRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from recharge_record
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from recharge_record
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="loan.easyLoan.entity.RechargeRecordExample">
+    delete from recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.RechargeRecord">
+    insert into recharge_record (serial_number, recharge_date, recharge_money, 
+      bank_account)
+    values (#{serialNumber,jdbcType=INTEGER}, #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeMoney,jdbcType=DOUBLE}, 
+      #{bankAccount,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.RechargeRecord">
+    insert into recharge_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="rechargeDate != null">
+        recharge_date,
+      </if>
+      <if test="rechargeMoney != null">
+        recharge_money,
+      </if>
+      <if test="bankAccount != null">
+        bank_account,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rechargeDate != null">
+        #{rechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargeMoney != null">
+        #{rechargeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bankAccount != null">
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="loan.easyLoan.entity.RechargeRecordExample" resultType="java.lang.Long">
+    select count(*) from recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update recharge_record
+    <set>
+      <if test="record.serialNumber != null">
+        serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.rechargeDate != null">
+        recharge_date = #{record.rechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rechargeMoney != null">
+        recharge_money = #{record.rechargeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bankAccount != null">
+        bank_account = #{record.bankAccount,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update recharge_record
+    set serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      recharge_date = #{record.rechargeDate,jdbcType=TIMESTAMP},
+      recharge_money = #{record.rechargeMoney,jdbcType=DOUBLE},
+      bank_account = #{record.bankAccount,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.RechargeRecord">
+    update recharge_record
+    <set>
+      <if test="rechargeDate != null">
+        recharge_date = #{rechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargeMoney != null">
+        recharge_money = #{rechargeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bankAccount != null">
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.RechargeRecord">
+    update recharge_record
+    set recharge_date = #{rechargeDate,jdbcType=TIMESTAMP},
+      recharge_money = #{rechargeMoney,jdbcType=DOUBLE},
+      bank_account = #{bankAccount,jdbcType=VARCHAR}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>
