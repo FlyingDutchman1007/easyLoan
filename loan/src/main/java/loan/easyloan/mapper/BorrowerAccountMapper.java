@@ -2,6 +2,8 @@ package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.BorrowerAccount;
 
+
+
 public interface BorrowerAccountMapper {
     int deleteByPrimaryKey(String fundsAccount);
 

@@ -19,7 +19,7 @@ public class MybatisTest {
 
     @Test
     public static void main(String[] arg) throws Exception{
-        //1.读取配置文件
+        /*//1.读取配置文件
         InputStream inputStream = Resources.getResourceAsStream("SqlMapConfig.xml");
         //2.创建SqlSessionFactory工厂
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
@@ -35,7 +35,7 @@ public class MybatisTest {
         }
         //6.释放资源
         session.close();
-        inputStream.close();
+        inputStream.close();*/
 
     }
 }

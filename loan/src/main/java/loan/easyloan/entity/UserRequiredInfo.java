@@ -7,7 +7,7 @@ public class UserRequiredInfo {
   private String idCard;
   private String userName;
   private String bankAccount;
-  private long userType;
+  private int userType;
   private String password;
 
 
@@ -51,7 +51,7 @@ public class UserRequiredInfo {
     return userType;
   }
 
-  public void setUserType(long userType) {
+  public void setUserType(int userType) {
     this.userType = userType;
   }
 
