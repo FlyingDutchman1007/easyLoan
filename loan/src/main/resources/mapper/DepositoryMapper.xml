@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.DepositoryMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.Depository">
+    <id column="funds_account" jdbcType="VARCHAR" property="fundsAccount" />
+    <result column="depository_account" jdbcType="VARCHAR" property="depositoryAccount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    funds_account, depository_account
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from depository
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from depository
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.Depository">
+    insert into depository (funds_account, depository_account)
+    values (#{fundsAccount,jdbcType=VARCHAR}, #{depositoryAccount,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.Depository">
+    insert into depository
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        funds_account,
+      </if>
+      <if test="depositoryAccount != null">
+        depository_account,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        #{fundsAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="depositoryAccount != null">
+        #{depositoryAccount,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.Depository">
+    update depository
+    <set>
+      <if test="depositoryAccount != null">
+        depository_account = #{depositoryAccount,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.Depository">
+    update depository
+    set depository_account = #{depositoryAccount,jdbcType=VARCHAR}
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+</mapper>

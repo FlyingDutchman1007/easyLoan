@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.BorrowerAccountMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.BorrowerAccount">
+    <id column="funds_account" jdbcType="VARCHAR" property="fundsAccount" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="account_balance" jdbcType="DOUBLE" property="accountBalance" />
+    <result column="borrowed_money" jdbcType="DOUBLE" property="borrowedMoney" />
+    <result column="credit_score" jdbcType="INTEGER" property="creditScore" />
+    <result column="total_limit" jdbcType="DOUBLE" property="totalLimit" />
+    <result column="available_limit" jdbcType="DOUBLE" property="availableLimit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    funds_account, id_card, account_balance, borrowed_money, credit_score, total_limit, 
+    available_limit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from borrower_account
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from borrower_account
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.BorrowerAccount">
+    insert into borrower_account (funds_account, id_card, account_balance, 
+      borrowed_money, credit_score, total_limit, 
+      available_limit)
+    values (#{fundsAccount,jdbcType=VARCHAR}, #{idCard,jdbcType=CHAR}, #{accountBalance,jdbcType=DOUBLE}, 
+      #{borrowedMoney,jdbcType=DOUBLE}, #{creditScore,jdbcType=INTEGER}, #{totalLimit,jdbcType=DOUBLE}, 
+      #{availableLimit,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.BorrowerAccount">
+    insert into borrower_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        funds_account,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="accountBalance != null">
+        account_balance,
+      </if>
+      <if test="borrowedMoney != null">
+        borrowed_money,
+      </if>
+      <if test="creditScore != null">
+        credit_score,
+      </if>
+      <if test="totalLimit != null">
+        total_limit,
+      </if>
+      <if test="availableLimit != null">
+        available_limit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        #{fundsAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="accountBalance != null">
+        #{accountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowedMoney != null">
+        #{borrowedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="creditScore != null">
+        #{creditScore,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimit != null">
+        #{totalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="availableLimit != null">
+        #{availableLimit,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.BorrowerAccount">
+    update borrower_account
+    <set>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="accountBalance != null">
+        account_balance = #{accountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowedMoney != null">
+        borrowed_money = #{borrowedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="creditScore != null">
+        credit_score = #{creditScore,jdbcType=INTEGER},
+      </if>
+      <if test="totalLimit != null">
+        total_limit = #{totalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="availableLimit != null">
+        available_limit = #{availableLimit,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.BorrowerAccount">
+    update borrower_account
+    set id_card = #{idCard,jdbcType=CHAR},
+      account_balance = #{accountBalance,jdbcType=DOUBLE},
+      borrowed_money = #{borrowedMoney,jdbcType=DOUBLE},
+      credit_score = #{creditScore,jdbcType=INTEGER},
+      total_limit = #{totalLimit,jdbcType=DOUBLE},
+      available_limit = #{availableLimit,jdbcType=DOUBLE}
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+</mapper>

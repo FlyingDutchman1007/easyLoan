@@ -14,4 +14,16 @@ import java.util.List;
 public interface UserRequiredInfoMapper {
 
     List<UserRequiredInfo> findAll();
+
+    int deleteByPrimaryKey(String idCard);
+
+    int insert(UserRequiredInfo record);
+
+    int insertSelective(UserRequiredInfo record);
+
+    UserRequiredInfo selectByPrimaryKey(String idCard);
+
+    int updateByPrimaryKeySelective(UserRequiredInfo record);
+
+    int updateByPrimaryKey(UserRequiredInfo record);
 }

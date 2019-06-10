@@ -12,7 +12,7 @@ import java.util.List;
  * @author Ywr
  * @date 2019/6/9 10:49
  */
-
+@Service
 public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Autowired

@@ -1,12 +1,17 @@
 package loan.easyLoan.mapper;
 
-import org.springframework.stereotype.Component;
+import loan.easyLoan.entity.BorrowerAccount;
 
-/**
- * @author Ywr
- * @date 2019/6/8 17:00
- */
-
-@Component
 public interface BorrowerAccountMapper {
+    int deleteByPrimaryKey(String fundsAccount);
+
+    int insert(BorrowerAccount record);
+
+    int insertSelective(BorrowerAccount record);
+
+    BorrowerAccount selectByPrimaryKey(String fundsAccount);
+
+    int updateByPrimaryKeySelective(BorrowerAccount record);
+
+    int updateByPrimaryKey(BorrowerAccount record);
 }

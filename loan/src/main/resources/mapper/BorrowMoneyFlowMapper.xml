@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.BorrowMoneyFlowMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.BorrowMoneyFlow">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="in_bound_account" jdbcType="VARCHAR" property="inBoundAccount" />
+    <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="exact_date" jdbcType="TIMESTAMP" property="exactDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    serial_number, bill_id, in_bound_account, out_bound_account, money, exact_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from borrow_money_flow
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from borrow_money_flow
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.BorrowMoneyFlow">
+    insert into borrow_money_flow (serial_number, bill_id, in_bound_account, 
+      out_bound_account, money, exact_date
+      )
+    values (#{serialNumber,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{inBoundAccount,jdbcType=VARCHAR}, 
+      #{outBoundAccount,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{exactDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.BorrowMoneyFlow">
+    insert into borrow_money_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account,
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="exactDate != null">
+        exact_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="exactDate != null">
+        #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.BorrowMoneyFlow">
+    update borrow_money_flow
+    <set>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="exactDate != null">
+        exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.BorrowMoneyFlow">
+    update borrow_money_flow
+    set bill_id = #{billId,jdbcType=INTEGER},
+      in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      exact_date = #{exactDate,jdbcType=TIMESTAMP}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>
