@@ -59,14 +59,6 @@
             <version>1.2.47</version>
         </dependency>
 
-<<<<<<< HEAD
-        <!--junit单元测试依赖-->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-=======
 
         <!--配置Swagger2-->
         <dependency>
@@ -86,7 +78,6 @@
             <scope>compile</scope>
         </dependency>
 
->>>>>>> master
     </dependencies>
 
 
