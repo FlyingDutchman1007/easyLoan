@@ -28,6 +28,31 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
     }
 
     @Override
+    public boolean sendPhoneMsg(String phoneNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean verifyPhoneMsg(String phoneNumber, int verifyCode) {
+        return false;
+    }
+
+    @Override
+    public boolean verifyIdCard(String userName, String idCard) {
+        return false;
+    }
+
+    @Override
+    public boolean boundBankAccount(String bankAccount) {
+        return false;
+    }
+
+    @Override
+    public boolean verifyBankAccount(String bankAccount, String phoneNumber, int verifyCode) {
+        return false;
+    }
+
+    @Override
     public boolean addNewUser(UserRequiredInfo userRequiredInfo) {
         int result = userRequiredInfoMapper.addNewUser(userRequiredInfo);
         if(result==1){
