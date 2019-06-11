@@ -14,4 +14,3 @@ mybatis:
   typeAliasesPackage: loan.easyLoan.entity
   mapperLocations: classpath:mapper/*.xml
 
-

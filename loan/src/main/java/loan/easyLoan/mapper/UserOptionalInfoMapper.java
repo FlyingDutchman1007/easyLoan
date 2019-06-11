@@ -1,7 +1,9 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.UserOptionalInfo;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UserOptionalInfoMapper {
     int deleteByPrimaryKey(String idCard);
 

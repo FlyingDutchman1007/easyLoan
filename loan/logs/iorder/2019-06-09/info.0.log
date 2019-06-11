@@ -1,6 +1,0 @@
-[INFO ] 2019-06-09 11:14:46 [main] loan.easyLoan.LoanApplicationTests - Starting LoanApplicationTests on DESKTOP-EN1OLRT with PID 9380 (started by admin in E:\2019金证实习\easyLoan\loan)
-[INFO ] 2019-06-09 11:14:46 [main] loan.easyLoan.LoanApplicationTests - No active profile set, falling back to default profiles: default
-[INFO ] 2019-06-09 11:14:46 [main] o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-[INFO ] 2019-06-09 11:14:46 [main] loan.easyLoan.LoanApplicationTests - Started LoanApplicationTests in 5.065 seconds (JVM running for 6.787)
-[INFO ] 2019-06-09 11:14:46 [main] loan.easyLoan.LoanApplicationTests - info logger...
-[INFO ] 2019-06-09 11:14:46 [Thread-2] o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'

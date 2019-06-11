@@ -20,7 +20,7 @@ public class UserRequiredInfoController {
     private UserRequiredInfoService userRequiredInfoService;
 
 
-    @RequestMapping("/user")
+    @RequestMapping("/")
     @ResponseBody
     public String mainPage(){
         List<UserRequiredInfo> fullUser =  userRequiredInfoService.findAll();
