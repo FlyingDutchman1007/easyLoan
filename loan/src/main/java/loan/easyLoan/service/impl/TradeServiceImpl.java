@@ -73,8 +73,8 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public void selectPendingRepayment(int billId) {
-        tradeMapper.selectPendingRepayment(billId);
+    public void createPendingRepayment(int billId) {
+        tradeMapper.createPendingRepayment(billId);
     }
 
     @Override

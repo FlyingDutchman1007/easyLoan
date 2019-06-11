@@ -32,7 +32,7 @@ public interface TradeMapper {
     /**
      * 临时表部分，不属于接口，对接口的实现也没有影响，暂时先不用管
      */
-    void selectPendingRepayment(int billId);//借入方还款,先把该账目id的交易记录取出来
+    void createPendingRepayment(int billId);//借入方还款,先把该账目id的交易记录取出来
     List<Trade> viewMoneyOfLender();  //借入方还款,查看该笔交易中各个借出方的出资比例
     Date selectExactDate(int billId); //借入方还款,查看该笔交易的确立日期，以判断当前属于还款的第几周期
     /**

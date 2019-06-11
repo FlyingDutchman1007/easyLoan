@@ -15,11 +15,11 @@ import java.util.Map;
  * @date 2019/6/9 15:39
  */
 @RestController
-public class UserRequiredInfoController {
+@RequestMapping("/register")
+public class RegisterController {
 
     @Autowired
     private UserRequiredInfoService userRequiredInfoService;
-
 
     @ApiImplicitParams({
             @ApiImplicitParam(name="phone_number",value="手机号",required=true,paramType="json"),
@@ -30,7 +30,7 @@ public class UserRequiredInfoController {
             @ApiImplicitParam(name="bank_account",value="银行卡号",required=true,paramType="json")
     })
     @ApiOperation(value="用户注册",notes="手机号、密码都是必输项，年龄随边填，但必须是数字")
-    @PostMapping(value = "/register", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/finalRegister", produces = "application/json;charset=UTF-8")
     public String addNewUser(@RequestBody Map obj){
         String phoneNum = (String) obj.get("phone_number");
         String password = (String) obj.get("password");
@@ -53,12 +53,10 @@ public class UserRequiredInfoController {
 
 
         if (isIAddNewUserSuccessful) {
-            System.out.println("用户注册成功");
+            return "successful";
         } else {
-            System.out.println("用户注册失败");
+            return "fail";
         }
-
-        return null;
     }
 
 
