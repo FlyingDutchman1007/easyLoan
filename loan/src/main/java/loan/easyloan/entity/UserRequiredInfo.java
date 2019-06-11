@@ -47,7 +47,7 @@ public class UserRequiredInfo {
   }
 
 
-  public long getUserType() {
+  public int getUserType() {
     return userType;
   }
 

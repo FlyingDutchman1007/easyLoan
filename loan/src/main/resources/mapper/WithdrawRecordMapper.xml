@@ -7,6 +7,15 @@
     <result column="withdraw_money" jdbcType="DOUBLE" property="withdrawMoney" />
     <result column="bank_account" jdbcType="CHAR" property="bankAccount" />
   </resultMap>
+
+  <!-- 生成交易记录 -->
+  <insert id="withdrawRecord" parameterType="loan.easyLoan.entity.WithdrawRecord">
+    insert into withdraw_record (serial_number, withdraw_date, withdraw_money,
+      bank_account)
+    values (#{serialNumber,jdbcType=INTEGER}, #{withdrawDate,jdbcType=TIMESTAMP}, #{withdrawMoney,jdbcType=DOUBLE},
+      #{bankAccount,jdbcType=CHAR})
+  </insert>
+
   <sql id="Base_Column_List">
     serial_number, withdraw_date, withdraw_money, bank_account
   </sql>
@@ -20,12 +29,6 @@
     delete from withdraw_record
     where serial_number = #{serialNumber,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="loan.easyLoan.entity.WithdrawRecord">
-    insert into withdraw_record (serial_number, withdraw_date, withdraw_money, 
-      bank_account)
-    values (#{serialNumber,jdbcType=INTEGER}, #{withdrawDate,jdbcType=TIMESTAMP}, #{withdrawMoney,jdbcType=DOUBLE}, 
-      #{bankAccount,jdbcType=CHAR})
-  </insert>
   <insert id="insertSelective" parameterType="loan.easyLoan.entity.WithdrawRecord">
     insert into withdraw_record
     <trim prefix="(" suffix=")" suffixOverrides=",">

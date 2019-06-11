@@ -5,6 +5,13 @@
     <id column="funds_account" jdbcType="VARCHAR" property="fundsAccount" />
     <result column="depository_account" jdbcType="VARCHAR" property="depositoryAccount" />
   </resultMap>
+
+  <!-- 新用户注册之后三方存管账户分配 -->
+  <insert id="addNewDepository" parameterType="loan.easyLoan.entity.Depository">
+    insert into depository (funds_account, depository_account)
+    values (#{fundsAccount,jdbcType=VARCHAR}, #{depositoryAccount,jdbcType=VARCHAR})
+  </insert>
+
   <sql id="Base_Column_List">
     funds_account, depository_account
   </sql>
@@ -18,10 +25,6 @@
     delete from depository
     where funds_account = #{fundsAccount,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="loan.easyLoan.entity.Depository">
-    insert into depository (funds_account, depository_account)
-    values (#{fundsAccount,jdbcType=VARCHAR}, #{depositoryAccount,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="loan.easyLoan.entity.Depository">
     insert into depository
     <trim prefix="(" suffix=")" suffixOverrides=",">

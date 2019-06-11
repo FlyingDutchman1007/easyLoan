@@ -3,18 +3,18 @@ package loan.easyLoan.entity;
 
 public class IntendLend {
 
-  private long billId;
+  private int billId;
   private String idCard;
   private double lendMoney;
   private java.sql.Timestamp startDate;
-  private long state;
+  private int state;
 
 
-  public long getBillId() {
+  public int getBillId() {
     return billId;
   }
 
-  public void setBillId(long billId) {
+  public void setBillId(int billId) {
     this.billId = billId;
   }
 
@@ -46,11 +46,11 @@ public class IntendLend {
   }
 
 
-  public long getState() {
+  public int getState() {
     return state;
   }
 
-  public void setState(long state) {
+  public void setState(int state) {
     this.state = state;
   }
 

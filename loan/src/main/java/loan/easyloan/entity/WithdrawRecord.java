@@ -3,17 +3,17 @@ package loan.easyLoan.entity;
 
 public class WithdrawRecord {
 
-  private long serialNumber;
+  private int serialNumber;
   private java.sql.Timestamp withdrawDate;
   private double withdrawMoney;
   private String bankAccount;
 
 
-  public long getSerialNumber() {
+  public int getSerialNumber() {
     return serialNumber;
   }
 
-  public void setSerialNumber(long serialNumber) {
+  public void setSerialNumber(int serialNumber) {
     this.serialNumber = serialNumber;
   }
 

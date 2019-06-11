@@ -3,28 +3,28 @@ package loan.easyLoan.entity;
 
 public class BorrowMoneyFlow {
 
-  private long serialNumber;
-  private long billId;
+  private int serialNumber;
+  private int billId;
   private String inBoundAccount;
   private String outBoundAccount;
   private double money;
   private java.sql.Timestamp exactDate;
 
 
-  public long getSerialNumber() {
+  public int getSerialNumber() {
     return serialNumber;
   }
 
-  public void setSerialNumber(long serialNumber) {
+  public void setSerialNumber(int serialNumber) {
     this.serialNumber = serialNumber;
   }
 
 
-  public long getBillId() {
+  public int getBillId() {
     return billId;
   }
 
-  public void setBillId(long billId) {
+  public void setBillId(int billId) {
     this.billId = billId;
   }
 

@@ -18,14 +18,19 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
     private UserRequiredInfoMapper userRequiredInfoMapper;
 
     @Override
-    public int ifRegistered(String phoneNumber) {
-        return userRequiredInfoMapper.ifRegistered(phoneNumber);
+    public boolean ifRegistered(String phoneNumber) {
+        int result = userRequiredInfoMapper.ifRegistered(phoneNumber);
+        if(result==1){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public boolean addNewUser(UserRequiredInfo userRequiredInfo) {
-        int a = userRequiredInfoMapper.addNewUser(userRequiredInfo);
-        if(a==1){
+        int result = userRequiredInfoMapper.addNewUser(userRequiredInfo);
+        if(result==1){
             return true;
         }else {
             return false;
@@ -48,7 +53,13 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
     }
 
     @Override
-    public int updateUserRequiredInfo(UserRequiredInfo userRequiredInfo) {
-        return userRequiredInfoMapper.updateUserRequiredInfo(userRequiredInfo);
+    public boolean updateUserRequiredInfo(UserRequiredInfo userRequiredInfo) {
+        int result =  userRequiredInfoMapper.updateUserRequiredInfo(userRequiredInfo);
+        if(result==1){
+            return true;
+        }else {
+            return false;
+        }
+
     }
 }

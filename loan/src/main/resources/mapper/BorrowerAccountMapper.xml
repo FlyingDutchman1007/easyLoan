@@ -10,6 +10,9 @@
     <result column="total_limit" jdbcType="DOUBLE" property="totalLimit" />
     <result column="available_limit" jdbcType="DOUBLE" property="availableLimit" />
   </resultMap>
+
+  
+
   <sql id="Base_Column_List">
     funds_account, id_card, account_balance, borrowed_money, credit_score, total_limit, 
     available_limit

@@ -1,7 +1,13 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.Trade;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Ywr
+ * @date 2019/6/8 16:38
+ */
+@Component
 public interface TradeMapper {
     int deleteByPrimaryKey(Integer serialNumber);
 

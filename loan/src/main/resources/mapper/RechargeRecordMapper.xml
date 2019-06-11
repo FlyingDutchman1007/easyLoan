@@ -7,11 +7,20 @@
     <result column="recharge_money" jdbcType="DOUBLE" property="rechargeMoney" />
     <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
   </resultMap>
+
+  <!-- 生成交易记录 -->
+  <insert id="rechargeRecord" parameterType="loan.easyLoan.entity.RechargeRecord">
+    insert into recharge_record (serial_number, recharge_date, recharge_money,
+      bank_account)
+    values (#{serialNumber,jdbcType=INTEGER}, #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeMoney,jdbcType=DOUBLE},
+      #{bankAccount,jdbcType=VARCHAR})
+  </insert>
+
   <sql id="Base_Column_List">
     serial_number, recharge_date, recharge_money, bank_account
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from recharge_record
     where serial_number = #{serialNumber,jdbcType=INTEGER}
@@ -20,12 +29,6 @@
     delete from recharge_record
     where serial_number = #{serialNumber,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="loan.easyLoan.entity.RechargeRecord">
-    insert into recharge_record (serial_number, recharge_date, recharge_money, 
-      bank_account)
-    values (#{serialNumber,jdbcType=INTEGER}, #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeMoney,jdbcType=DOUBLE}, 
-      #{bankAccount,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="loan.easyLoan.entity.RechargeRecord">
     insert into recharge_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
