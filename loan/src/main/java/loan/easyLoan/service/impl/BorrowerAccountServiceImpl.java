@@ -65,4 +65,14 @@ public class BorrowerAccountServiceImpl implements BorrowerAccountService {
     public BorrowerAccount viewBorrowerAccount(String idCard) {
         return borrowerAccountMapper.viewBorrowerAccount(idCard);
     }
+
+    @Override
+    public boolean updateBorrowerAccount(double intendMoney,String fundsAccount) {
+        int result = borrowerAccountMapper.updateBorrowerAccount(intendMoney,fundsAccount);
+        if (result == 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

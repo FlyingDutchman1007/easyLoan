@@ -12,6 +12,28 @@
     <result column="liquidated_money" jdbcType="DOUBLE" property="liquidatedMoney" />
     <result column="principal_money" jdbcType="DOUBLE" property="principalMoney" />
   </resultMap>
+
+  <!-- 借入方还款 -->
+  <insert id="insertRepayRecord" parameterType="java.util.ArrayList">
+    insert into repay_money_flow values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.serial_number},#{item.bill_id},#{item.in_bound_account},#{item.out_bound_account},#{item.exact_date},#{item.money},#{item.interest_money},#{item.liquidated_money},#{item.principal_money})
+    </foreach>
+  </insert>
+
+  <!-- 查看指定账目本期各款项的总的已还款信息，判断本期是否还清，进而判断是否逾期,传入的参数表示当前是还款的第几期、还款类型 -->
+  <select id="checkIfFinishedThisRepay" resultType="Map">
+  select sum(interest_money),sum(liquidated_money),sum(principal_money)
+  from repay_money_flow
+  where bill_id=#{bill_id} and
+  <if test="#{pay_type}==1">
+    DATE_ADD(exact_date,INTERVAL 1*#{repayPeriod} MONTH )>= now()
+  </if>
+  <if test="#{pay_type}==3">
+    DATE_ADD(exact_date,INTERVAL 3*#{repayPeriod} MONTH )>= now()
+  </if>
+  </select>
+
   <sql id="Base_Column_List">
     serial_number, bill_id, in_bound_account, out_bound_account, exact_date, money, interest_money, 
     liquidated_money, principal_money

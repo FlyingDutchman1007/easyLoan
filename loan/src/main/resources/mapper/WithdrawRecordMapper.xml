@@ -9,7 +9,7 @@
   </resultMap>
 
   <!-- 生成交易记录 -->
-  <insert id="withdrawRecord" parameterType="loan.easyLoan.entity.WithdrawRecord">
+  <insert id="insertWithdrawRecord" parameterType="loan.easyLoan.entity.WithdrawRecord">
     insert into withdraw_record (serial_number, withdraw_date, withdraw_money,
       bank_account)
     values (#{serialNumber,jdbcType=INTEGER}, #{withdrawDate,jdbcType=TIMESTAMP}, #{withdrawMoney,jdbcType=DOUBLE},

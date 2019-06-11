@@ -9,6 +9,15 @@
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="exact_date" jdbcType="TIMESTAMP" property="exactDate" />
   </resultMap>
+
+  <!-- 债权关系确立，借入方借款成功，添加借入流水记录;list中存的是该笔借入涉及到的所有借出 -->
+  <insert id="addBorrowFlow" parameterType="java.util.ArrayList">
+    insert into borrow_money_flow values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.serial_number},#{item.bill_id},#{item.in_bound_account},#{item.out_bound_account},#{item.money},#{item.exact_date})
+    </foreach>
+  </insert>
+
   <sql id="Base_Column_List">
     serial_number, bill_id, in_bound_account, out_bound_account, money, exact_date
   </sql>

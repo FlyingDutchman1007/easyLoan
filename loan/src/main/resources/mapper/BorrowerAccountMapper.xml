@@ -11,7 +11,62 @@
     <result column="available_limit" jdbcType="DOUBLE" property="availableLimit" />
   </resultMap>
 
-  
+  <!-- 新用户注册后分配资金账号 -->
+  <insert id="addNewBorrower">
+        insert into borrower_account
+        values (#{funds_account},#{id_card},0.00,0.00,#{credit_score},#{total_limit},#{available_limit})
+  </insert>
+
+  <!-- 由身份证号找到该用户的资金账号 -->
+  <select id="findFundsAccount"  resultType="String">
+  select funds_account
+  from borrower_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 提现后修改用户资金账户余额 -->
+  <update  id="updateWithdrawAccount">
+        update borrower_account
+        set  account_balance=account_balance-#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 充值后修改用户资金账户余额 -->
+  <update  id="updateRechargeAccount">
+        update borrower_account
+        set  account_balance=account_balance+#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 借入方查看个人账户 -->
+  <select id="findBorrowerFundsAccount" parameterType="String">
+  select account_balance,credit_score,total_limit,available_limit
+  from borrower_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 查看借入方的额度 -->
+  <select id="selectAvailableLimit" parameterType="String" resultType="double">
+  select available_limit
+  from borrower_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 债权关系确立 -->
+  <select id="viewBorrowerAccount" resultType="String">
+  select funds_account
+  from ${finish_raising_temp} inner join borrower_account
+  on ${finish_raising_temp}.borrower_id=borrower_account.id_card
+  </select>
+
+  <!--更新借入方资金账户-->
+  <update id="updateBorrowerAccount">
+        update borrower_account
+        set account_balance=account_balance+#{intend_money},borrowed_money=borrowed_money+#{intend_money}
+        where funds_account=#{funds_account}
+    </update>
+
+
 
   <sql id="Base_Column_List">
     funds_account, id_card, account_balance, borrowed_money, credit_score, total_limit, 

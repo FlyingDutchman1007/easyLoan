@@ -65,4 +65,14 @@ public class LenderAccountServiceImpl implements LenderAccountService {
     public LenderAccount viewLenderAccount(String idCard) {
         return lenderAccountMapper.viewLenderAccount(idCard);
     }
+
+    @Override
+    public boolean updateLenderAccount(double lendMoney, String fundsAccount) {
+        int result = lenderAccountMapper.updateLenderAccount(lendMoney,fundsAccount);
+        if (result == 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

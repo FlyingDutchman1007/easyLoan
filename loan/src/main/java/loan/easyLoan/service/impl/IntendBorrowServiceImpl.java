@@ -42,12 +42,12 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
 
     @Override
     public void prepareForTradeCreateTempTable() {
-
+        intendBorrowMapper.prepareForTradeCreateTempTable();
     }
 
     @Override
     public void addColumn() {
-
+        intendBorrowMapper.addColumn();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
 
     @Override
     public void dropTempTable() {
-
+        intendBorrowMapper.dropTempTable();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
 
     @Override
     public void insertApplicateForBorrow(int billId, String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths) {
-
+        intendBorrowMapper.insertApplicateForBorrow(billId,idCard,intendMoney,startDate,payRate,payType,limitMonths);
     }
 
     @Override

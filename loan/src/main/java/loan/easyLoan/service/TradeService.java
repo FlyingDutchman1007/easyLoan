@@ -1,9 +1,8 @@
-package loan.easyLoan.mapper;
+package loan.easyLoan.service;
 
 import loan.easyLoan.entity.Item;
 import loan.easyLoan.entity.RepayMoneyFlow;
 import loan.easyLoan.entity.Trade;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,10 +10,9 @@ import java.util.List;
 
 /**
  * @author Ywr
- * @date 2019/6/8 16:38
+ * @date 2019/6/11 9:01
  */
-@Component
-public interface TradeMapper {
+public interface TradeService {
     List<Trade> selectPendingRepayment(String inBoundAccount);   //借入方查看待还款记录
     List<Trade> selectPendingReceivable(String outBoundAccount);   //借出方查看待收款记录
 
@@ -24,7 +22,7 @@ public interface TradeMapper {
     void establish1(int billId, Date exactDate);
     void establish2(int billId);
 
-    int selectIfFinishedRepayment(int billId);//用户一次贷款未还清不能进行第二次借贷，判断用户是否完成所有还款，决定该用户是否可以申请借入
+    boolean selectIfFinishedRepayment(int billId);//用户一次贷款未还清不能进行第二次借贷，判断用户是否完成所有还款，决定该用户是否可以申请借入
 
     List<Trade> borrowViewFinishedRecord(String inBoundAccount);  //借入方查看已完成记录
     List<Trade> lendViewFinishedRecord(String outBoundAccount);    //借出方查看已完成记录
@@ -38,10 +36,10 @@ public interface TradeMapper {
     /**
      * 借入方还款,按照各个借出方的出资比例进行还款,先还违约金，再还利息，再还本金
      */
-    int repayUpdate(ArrayList<RepayMoneyFlow> list);  //还款日期等于或小于截止日期，即无逾期的情况
+    boolean repayUpdate(ArrayList<RepayMoneyFlow> list);  //还款日期等于或小于截止日期，即无逾期的情况
     List selectNextTimePay(int billId);  //查看指定账目本期各款项的总的应还款信息，判断本期是否还清，进而判断是否逾期
-    int overdueUpdate(ArrayList<Item> list1); //逾期的情况,在每期的第一天更新上一期的逾期情况
+    boolean overdueUpdate(ArrayList<Item> list1); //逾期的情况,在每期的第一天更新上一期的逾期情况
 
     List<Trade> selectBadDebt();    //查询坏账的交易,后期平台对这些借出方进行赔付
-    int updateBadDebt(List<Trade> list2);   //更新坏账的交易记录
+    boolean updateBadDebt(List<Trade> list2);   //更新坏账的交易记录
 }

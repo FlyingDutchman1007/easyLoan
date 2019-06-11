@@ -3,7 +3,6 @@ package loan.easyLoan.mapper;
 import loan.easyLoan.entity.RechargeRecord;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 
 /**
  * @author Ywr

@@ -23,4 +23,6 @@ public interface LenderAccountMapper {
     double selectAccountBalance(String idCard);   //查询借出方的帐户余额
 
     LenderAccount viewLenderAccount(String idCard);   //借出方查看个人账户
+
+    int updateLenderAccount(double lendMoney,String fundsAccount);//更新借出者账户
 }

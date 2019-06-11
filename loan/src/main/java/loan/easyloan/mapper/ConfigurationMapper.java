@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface ConfigurationMapper {
-    int insert(Configuration record);
+    int insertParameter(Configuration configuration);//插入参数
 
-    int insertSelective(Configuration record);
+    int updateParameter(Configuration configuration);//修改参数
+
+    String selectParameter(String parameterName);//查找参数
 }

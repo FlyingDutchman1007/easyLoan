@@ -24,5 +24,5 @@ public interface BorrowerAccountMapper {
 
     BorrowerAccount viewBorrowerAccount(String idCard); //借入方查看个人账户
 
-
+    int updateBorrowerAccount(double intendMoney,String fundsAccount);//更新借入方资金账户
 }

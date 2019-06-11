@@ -1,7 +1,6 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.IntendLend;
-import loan.easyLoan.entity.IntendLendKey;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

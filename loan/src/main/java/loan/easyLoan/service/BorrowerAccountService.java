@@ -21,4 +21,6 @@ public interface BorrowerAccountService {
     double selectAvailableLimit(String idCard);  //查看借入方的额度
 
     BorrowerAccount viewBorrowerAccount(String idCard); //借入方查看个人账户
+
+    boolean updateBorrowerAccount(double intendMoney,String fundsAccount);//更新借入方资金账户
 }

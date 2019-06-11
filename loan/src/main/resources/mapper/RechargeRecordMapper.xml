@@ -9,7 +9,7 @@
   </resultMap>
 
   <!-- 生成交易记录 -->
-  <insert id="rechargeRecord" parameterType="loan.easyLoan.entity.RechargeRecord">
+  <insert id="insertRechargeRecord" parameterType="loan.easyLoan.entity.RechargeRecord">
     insert into recharge_record (serial_number, recharge_date, recharge_money,
       bank_account)
     values (#{serialNumber,jdbcType=INTEGER}, #{rechargeDate,jdbcType=TIMESTAMP}, #{rechargeMoney,jdbcType=DOUBLE},
