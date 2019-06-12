@@ -3,22 +3,22 @@ package loan.easyLoan.entity;
 
 public class IntendBorrow {
 
-  private long billId;
+  private int billId;
   private String idCard;
   private double intendMoney;
   private java.sql.Timestamp startDate;
   private double payRate;
-  private long payType;
-  private long limitMonths;
-  private long state;
+  private int payType;
+  private int limitMonths;
+  private int state;
   private double raisedMoney;
 
 
-  public long getBillId() {
+  public int getBillId() {
     return billId;
   }
 
-  public void setBillId(long billId) {
+  public void setBillId(int billId) {
     this.billId = billId;
   }
 
@@ -59,29 +59,29 @@ public class IntendBorrow {
   }
 
 
-  public long getPayType() {
+  public int getPayType() {
     return payType;
   }
 
-  public void setPayType(long payType) {
+  public void setPayType(int payType) {
     this.payType = payType;
   }
 
 
-  public long getLimitMonths() {
+  public int getLimitMonths() {
     return limitMonths;
   }
 
-  public void setLimitMonths(long limitMonths) {
+  public void setLimitMonths(int limitMonths) {
     this.limitMonths = limitMonths;
   }
 
 
-  public long getState() {
+  public int getState() {
     return state;
   }
 
-  public void setState(long state) {
+  public void setState(int state) {
     this.state = state;
   }
 

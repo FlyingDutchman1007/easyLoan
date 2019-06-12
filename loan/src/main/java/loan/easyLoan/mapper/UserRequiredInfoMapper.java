@@ -3,7 +3,6 @@ package loan.easyLoan.mapper;
 import loan.easyLoan.entity.UserRequiredInfo;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 /**
  * @author Ywr
@@ -13,17 +12,18 @@ import java.util.List;
 @Component
 public interface UserRequiredInfoMapper {
 
-    List<UserRequiredInfo> findAll();
+    int ifRegistered(String phoneNumber);//是否注册,找用户
 
-    int deleteByPrimaryKey(String idCard);
+    int addNewUser(UserRequiredInfo userRequiredInfo);//添加新用户
 
-    int insert(UserRequiredInfo record);
+    UserRequiredInfo findUserByIdCard(String idCard);//根据身份证号查找用户
 
-    int insertSelective(UserRequiredInfo record);
+    UserRequiredInfo findUserByPhoneNumber(String phoneNumber);//根据手机号查找用户
 
-    UserRequiredInfo selectByPrimaryKey(String idCard);
+    String loginCheck(String phoneNumber);//根据手机号查找密码
 
-    int updateByPrimaryKeySelective(UserRequiredInfo record);
+    int checkUserType(String phoneNumber);//判断用户类型
 
-    int updateByPrimaryKey(UserRequiredInfo record);
+    int updateUserRequiredInfo(UserRequiredInfo userRequiredInfo);//修改姓名和手机号
+
 }

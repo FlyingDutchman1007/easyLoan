@@ -1,17 +1,15 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.Depository;
+import org.springframework.stereotype.Component;
 
+/**
+ * @author Ywr
+ * @date 2019/6/8 16:38
+ */
+@Component
 public interface DepositoryMapper {
-    int deleteByPrimaryKey(String fundsAccount);
 
-    int insert(Depository record);
+    int addNewDepository(Depository depository);    //新用户注册之后三方存管账户分配
 
-    int insertSelective(Depository record);
-
-    Depository selectByPrimaryKey(String fundsAccount);
-
-    int updateByPrimaryKeySelective(Depository record);
-
-    int updateByPrimaryKey(Depository record);
 }
