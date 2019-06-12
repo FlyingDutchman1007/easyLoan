@@ -7,7 +7,7 @@ public class BorrowerAccount {
   private String idCard;
   private double accountBalance;
   private double borrowedMoney;
-  private long creditScore;
+  private int creditScore;
   private double totalLimit;
   private double availableLimit;
 
@@ -48,11 +48,11 @@ public class BorrowerAccount {
   }
 
 
-  public long getCreditScore() {
+  public int getCreditScore() {
     return creditScore;
   }
 
-  public void setCreditScore(long creditScore) {
+  public void setCreditScore(int creditScore) {
     this.creditScore = creditScore;
   }
 
