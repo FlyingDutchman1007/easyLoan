@@ -15,8 +15,8 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class UserInfoController {
+
     @Autowired
-    private UserRequiredInfoService userRequiredInfoService;
     private UserOptionalInfoService userOptionalInfoService;
 
     //

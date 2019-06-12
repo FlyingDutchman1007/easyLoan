@@ -1,43 +1,22 @@
-"2019-06-12 10:39:15 [main] INFO  loan.easyLoan.LoanApplication - Starting LoanApplication on DESKTOP-EN1OLRT with PID 11584 (started by admin in E:\2019金证实习\easyLoan)
-""2019-06-12 10:39:15 [main] INFO  loan.easyLoan.LoanApplication - No active profile set, falling back to default profiles: default
-""2019-06-12 10:39:17 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2f7b86ba] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-""2019-06-12 10:39:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-""2019-06-12 10:39:18 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-""2019-06-12 10:39:18 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.19]
-""2019-06-12 10:39:18 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-""2019-06-12 10:39:18 [main] DEBUG o.s.web.context.ContextLoader - Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
-""2019-06-12 10:39:18 [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2408 ms
-""2019-06-12 10:39:19 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 18 mappings in 'requestMappingHandlerMapping'
-""2019-06-12 10:39:19 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
-""2019-06-12 10:39:19 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/**/favicon.ico] in 'faviconHandlerMapping'
-""2019-06-12 10:39:19 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-""2019-06-12 10:39:19 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-""2019-06-12 10:39:19 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
-""2019-06-12 10:39:19 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
-""2019-06-12 10:39:19 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
-""2019-06-12 10:39:19 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
-""2019-06-12 10:39:19 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
-""2019-06-12 10:39:20 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-""2019-06-12 10:39:20 [main] INFO  loan.easyLoan.LoanApplication - Started LoanApplication in 5.47 seconds (JVM running for 7.817)
-""2019-06-12 10:39:58 [main] INFO  loan.easyLoan.LoanApplication - Starting LoanApplication on DESKTOP-EN1OLRT with PID 17728 (started by admin in E:\2019金证实习\easyLoan)
-""2019-06-12 10:39:58 [main] INFO  loan.easyLoan.LoanApplication - No active profile set, falling back to default profiles: default
-""2019-06-12 10:39:59 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$ac49b766] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-""2019-06-12 10:40:00 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-""2019-06-12 10:40:00 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-""2019-06-12 10:40:00 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.19]
-""2019-06-12 10:40:00 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-""2019-06-12 10:40:00 [main] DEBUG o.s.web.context.ContextLoader - Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
-""2019-06-12 10:40:00 [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1903 ms
-""2019-06-12 10:40:01 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 18 mappings in 'requestMappingHandlerMapping'
-""2019-06-12 10:40:01 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
-""2019-06-12 10:40:01 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/**/favicon.ico] in 'faviconHandlerMapping'
-""2019-06-12 10:40:01 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-""2019-06-12 10:40:01 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-""2019-06-12 10:40:01 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
-""2019-06-12 10:40:01 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
-""2019-06-12 10:40:01 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
-""2019-06-12 10:40:01 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
-""2019-06-12 10:40:01 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
-""2019-06-12 10:40:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-""2019-06-12 10:40:01 [main] INFO  loan.easyLoan.LoanApplication - Started LoanApplication in 3.85 seconds (JVM running for 5.205)
+"2019-06-12 10:49:04 [main] INFO  loan.easyLoan.LoanApplication - Starting LoanApplication on DESKTOP-EN1OLRT with PID 12700 (started by admin in E:\2019金证实习\easyLoan)
+""2019-06-12 10:49:04 [main] INFO  loan.easyLoan.LoanApplication - No active profile set, falling back to default profiles: default
+""2019-06-12 10:49:06 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e33ebcd2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2019-06-12 10:49:06 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+""2019-06-12 10:49:06 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+""2019-06-12 10:49:06 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.19]
+""2019-06-12 10:49:07 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+""2019-06-12 10:49:07 [main] DEBUG o.s.web.context.ContextLoader - Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+""2019-06-12 10:49:07 [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2091 ms
+""2019-06-12 10:49:07 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 16 mappings in 'requestMappingHandlerMapping'
+""2019-06-12 10:49:07 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+""2019-06-12 10:49:07 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/**/favicon.ico] in 'faviconHandlerMapping'
+""2019-06-12 10:49:08 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+""2019-06-12 10:49:08 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+""2019-06-12 10:49:08 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+""2019-06-12 10:49:08 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+""2019-06-12 10:49:08 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+""2019-06-12 10:49:08 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+""2019-06-12 10:49:08 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+""2019-06-12 10:49:08 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+""2019-06-12 10:49:08 [main] INFO  loan.easyLoan.LoanApplication - Started LoanApplication in 4.069 seconds (JVM running for 5.405)
 "
