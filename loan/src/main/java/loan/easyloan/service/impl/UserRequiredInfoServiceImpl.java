@@ -68,7 +68,7 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
         }while (!depositoryService.selectIfExistFundsAccount(Integer.toString(num1)));
         do {
             Random rm = new Random();
-            num2 = rm.nextInt(1000000);
+            num2 = rm.nextInt(10000000);
         }while (!depositoryService.selectIfExistDepositoryAccount(Integer.toString(num2)));
         Depository depository = new Depository();
         depository.setFundsAccount(Integer.toString(num1));

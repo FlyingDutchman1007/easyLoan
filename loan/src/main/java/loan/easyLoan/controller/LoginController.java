@@ -34,6 +34,8 @@ public class LoginController {
     public String login(@RequestBody Map obj, HttpServletRequest httpServletRequest){
         String phoneNumber = (String) obj.get("phone_number");
         String password = (String) obj.get("password");
+        System.out.println(phoneNumber);
+        System.out.println(password);
 
         if(password.equals(userRequiredInfoService.loginCheck(phoneNumber))){
             HttpSession session=httpServletRequest.getSession();

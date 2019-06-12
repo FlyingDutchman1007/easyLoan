@@ -16,14 +16,14 @@
   <select id="selectIfExistFundsAccount" parameterType="String" resultType="int">
   select count(*)
   from depository
-  where funds_account=#{funds_account}
+  where funds_account=#{fundsAccount,jdbcType=VARCHAR}
   </select>
 
   <!--判断随机生成的三方存管账号是否发生了重复-->
   <select id="selectIfExistDepositoryAccount" parameterType="String" resultType="int">
   select count(*)
   from depository
-  where depository_account=#{depository_account}
+  where depository_account=#{depositoryAccount,jdbcType=VARCHAR}
   </select>
 
   <sql id="Base_Column_List">
