@@ -106,13 +106,6 @@
     </foreach>
   </update>
 
-  <!-- 申请借入新方法，让billId递增 -->
-  <insert id="insertApplicationForBorrower">
-        insert into intend_borrow
-        values (#{id_card},#{intend_money},#{start_date},#{pay_rate},#{pay_type},#{limit_months},1,0.00)
-    </insert>
-
-
   <sql id="Base_Column_List">
     bill_id, id_card, intend_money, start_date, pay_rate, pay_type, limit_months, state, 
     raised_money
