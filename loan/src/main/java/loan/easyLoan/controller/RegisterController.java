@@ -206,5 +206,4 @@ public class RegisterController {
             return "{\" state\": \"-1\" }";
         }
     }
-
 }

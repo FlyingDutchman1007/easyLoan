@@ -9,7 +9,7 @@ public class UserOptionalInfo {
   private String marriage;
   private String profession;
   private String address;
-  private String avatar;
+  private byte[] avatar;
   private String specialIdentity;
 
 
@@ -67,11 +67,11 @@ public class UserOptionalInfo {
   }
 
 
-  public String getAvatar() {
+  public byte[] getAvatar() {
     return avatar;
   }
 
-  public void setAvatar(String avatar) {
+  public void setAvatar(byte[] avatar) {
     this.avatar = avatar;
   }
 
