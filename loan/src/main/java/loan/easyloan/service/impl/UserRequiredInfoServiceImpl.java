@@ -1,5 +1,7 @@
 package loan.easyLoan.service.impl;
 
+import loan.easyLoan.entity.CreditParameter;
+import loan.easyLoan.entity.Depository;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.mapper.UserRequiredInfoMapper;
 import loan.easyLoan.service.UserRequiredInfoService;
@@ -29,27 +31,26 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Override
     public boolean sendPhoneMsg(String phoneNumber) {
-        return false;
     }
 
     @Override
     public boolean verifyPhoneMsg(String phoneNumber, int verifyCode) {
-        return false;
+
     }
 
     @Override
     public boolean verifyIdCard(String userName, String idCard) {
-        return false;
+
     }
 
     @Override
     public boolean boundBankAccount(String bankAccount) {
-        return false;
+
     }
 
     @Override
-    public boolean verifyBankAccount(String bankAccount, String phoneNumber, int verifyCode) {
-        return false;
+    public Depository verifyBankAccount(String bankAccount, String phoneNumber, int verifyCode) {
+
     }
 
     @Override
@@ -63,13 +64,23 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
     }
 
     @Override
-    public UserRequiredInfo findUser(String idCard) {
-        return userRequiredInfoMapper.findUser(idCard);
+    public UserRequiredInfo findUserByIdCard(String idCard) {
+        return userRequiredInfoMapper.findUserByIdCard(idCard);
+    }
+
+    @Override
+    public UserRequiredInfo findUserByPhoneNumber(String phoneNumber) {
+        return userRequiredInfoMapper.findUserByPhoneNumber(phoneNumber);
     }
 
     @Override
     public String loginCheck(String phoneNumber) {
         return userRequiredInfoMapper.loginCheck(phoneNumber);
+    }
+
+    @Override
+    public CreditParameter getCreditParameter(String idCard, String bankAccount) {
+
     }
 
     @Override

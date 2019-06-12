@@ -3,6 +3,8 @@ package loan.easyLoan.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import loan.easyLoan.entity.CreditParameter;
+import loan.easyLoan.entity.Depository;
 import loan.easyLoan.entity.UserOptionalInfo;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.*;
@@ -18,7 +20,7 @@ import java.util.Map;
  * @date 2019/6/9 15:39
  */
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/user/register")
 public class RegisterController {
 
     @Autowired
@@ -183,13 +185,20 @@ public class RegisterController {
         userOptionalInfo.setIdCard(idCard);
 
 
-        boolean verifyBankAccount = userRequiredInfoService.verifyBankAccount(bankAccount,phoneNumber,verifyCode);
+        Depository depository = userRequiredInfoService.verifyBankAccount(bankAccount,phoneNumber,verifyCode);
 
-        if(verifyBankAccount){
+        if(depository != null){
             if(userRequiredInfoService.addNewUser(userRequiredInfo)) {
                 userOptionalInfoService.addOptionalInfo(userOptionalInfo);
                 HttpSession session=httpServletRequest.getSession();
                 session.setAttribute(session.getId(),userRequiredInfo);
+                CreditParameter creditParameter = userRequiredInfoService.getCreditParameter(idCard,bankAccount);
+                if(userRequiredInfo.getUserType() == 0){
+                    borrowerAccountService.addNewBorrower(bankAccount,idCard,creditParameter.getCreditScore(),creditParameter.getTotalLimit(),creditParameter.getAvailableLimit());
+                }else {
+                    lenderAccountService.addNewLender(bankAccount,idCard);
+                }
+                depositoryService.addNewDepository(depository);
                 return userType;
             }else {
                 return "-1";

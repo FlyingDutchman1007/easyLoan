@@ -16,11 +16,19 @@
   </select>
 
   <!-- 用户查找 -->
-  <select id="findUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findUserByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_required_info
     where id_card = #{idCard,jdbcType=CHAR}
+  </select>
+
+  <!-- 用户查找 -->
+  <select id="findUserByPhoneNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_required_info
+    where phone_number = #{phoneNumber,jdbcType=CHAR}
   </select>
 
   <!-- 新用户添加 -->

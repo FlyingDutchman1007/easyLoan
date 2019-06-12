@@ -8,6 +8,7 @@ import loan.easyLoan.service.UserRequiredInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Map;
  * @date 2019/6/11 18:43
  */
 @RestController
+@RequestMapping("/user")
 public class LoginController {
     @Autowired
     private UserRequiredInfoService userRequiredInfoService;
@@ -35,12 +37,11 @@ public class LoginController {
 
         if(password.equals(userRequiredInfoService.loginCheck(phoneNumber))){
             HttpSession session=httpServletRequest.getSession();
-            UserRequiredInfo userRequiredInfo = new UserRequiredInfo();
-            userRequiredInfo.setPhoneNumber(phoneNumber);
+            UserRequiredInfo userRequiredInfo = userRequiredInfoService.findUserByPhoneNumber(phoneNumber);
             session.setAttribute(session.getId(),userRequiredInfo);
-            return "successful";
+            return Integer.toString(userRequiredInfo.getUserType());
         }else {
-            return "fail";
+            return "-1";
         }
     }
 }

@@ -16,7 +16,9 @@ public interface UserRequiredInfoMapper {
 
     int addNewUser(UserRequiredInfo userRequiredInfo);//添加新用户
 
-    UserRequiredInfo findUser(String idCard);//根据查找用户
+    UserRequiredInfo findUserByIdCard(String idCard);//根据身份证号查找用户
+
+    UserRequiredInfo findUserByPhoneNumber(String phoneNumber);//根据手机号查找用户
 
     String loginCheck(String phoneNumber);//根据手机号查找密码
 
