@@ -1,17 +1,16 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.WithdrawRecord;
+import org.springframework.stereotype.Component;
 
+
+/**
+ * @author Ywr
+ * @date 2019/6/8 16:38
+ */
+@Component
 public interface WithdrawRecordMapper {
-    int deleteByPrimaryKey(Integer serialNumber);
 
-    int insert(WithdrawRecord record);
+    int insertWithdrawRecord(WithdrawRecord withdrawRecord);  //生成提现记录
 
-    int insertSelective(WithdrawRecord record);
-
-    WithdrawRecord selectByPrimaryKey(Integer serialNumber);
-
-    int updateByPrimaryKeySelective(WithdrawRecord record);
-
-    int updateByPrimaryKey(WithdrawRecord record);
 }

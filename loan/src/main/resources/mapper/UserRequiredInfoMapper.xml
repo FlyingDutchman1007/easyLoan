@@ -9,20 +9,22 @@
     <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="password" jdbcType="VARCHAR" property="password" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id_card, phone_number, user_name, bank_account, user_type, password
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+  <!-- 判断用户是否已注册 -->
+  <select  id="ifRegistered"  parameterType="String"  resultType="int">
+        select count(*) from  user_required_info  where  phone_number=#{phone_number}
+  </select>
+
+  <!-- 用户查找 -->
+  <select id="findUser" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_required_info
     where id_card = #{idCard,jdbcType=CHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user_required_info
-    where id_card = #{idCard,jdbcType=CHAR}
-  </delete>
-  <insert id="insert" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+
+  <!-- 新用户添加 -->
+  <insert id="addNewUser" parameterType="loan.easyLoan.entity.UserRequiredInfo">
     insert into user_required_info (id_card, phone_number, user_name, 
       bank_account, user_type, password
       )
@@ -30,6 +32,46 @@
       #{bankAccount,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}
       )
   </insert>
+
+  <!-- 根据手机号判断登录用户类型，以显示相应界面 -->
+  <select id="checkUserType" parameterType="String" resultType="int">
+        select user_type
+        from user_required_info
+        where phone_number=#{phone_number}
+  </select>
+
+  <!--根据手机号查找密码-->
+  <select  id="loginCheck" parameterType="String" resultType="String">
+          select  *  from  user_required_info  where  phone_number=#{phone_number};
+  </select>
+
+  <!--修改姓名和手机号-->
+  <update id="updateUserRequiredInfo" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+    update user_required_info
+    <set>
+      <if test="phoneNumber != null">
+        phone_number = #{phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null">
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+
+  <sql id="Base_Column_List">
+    id_card, phone_number, user_name, bank_account, user_type, password
+  </sql>
+
   <insert id="insertSelective" parameterType="loan.easyLoan.entity.UserRequiredInfo">
     insert into user_required_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,27 +115,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.UserRequiredInfo">
-    update user_required_info
-    <set>
-      <if test="phoneNumber != null">
-        phone_number = #{phoneNumber,jdbcType=CHAR},
-      </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="bankAccount != null">
-        bank_account = #{bankAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="userType != null">
-        user_type = #{userType,jdbcType=INTEGER},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id_card = #{idCard,jdbcType=CHAR}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.UserRequiredInfo">
     update user_required_info
     set phone_number = #{phoneNumber,jdbcType=CHAR},
@@ -104,7 +126,4 @@
     where id_card = #{idCard,jdbcType=CHAR}
   </update>
 
-  <select id="findAll" resultMap="BaseResultMap">
-    select * from user_required_info
-  </select>
 </mapper>

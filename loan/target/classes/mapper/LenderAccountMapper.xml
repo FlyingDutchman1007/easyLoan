@@ -9,6 +9,62 @@
     <result column="current_income" jdbcType="DOUBLE" property="currentIncome" />
     <result column="expected_income" jdbcType="DOUBLE" property="expectedIncome" />
   </resultMap>
+
+  <!-- 新用户注册后分配资金账号 -->
+  <insert id="addNewLender">
+        insert into lender_account
+        values (#{funds_account},#{id_card},0.00,0.00,0.00,0.00)
+    </insert>
+
+  <!-- 由身份证号找到该用户的资金账号 -->
+  <select id="findFundsAccount"  resultType="String">
+  select funds_account
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 提现后修改用户资金账户余额 -->
+  <update  id="updateWithdrawAccount">
+        update lender_account
+        set  account_balance=account_balance-#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 充值后修改用户资金账户余额 -->
+  <update  id="updateRechargeAccount">
+        update lender_account
+        set  account_balance=account_balance+#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 查询借出方的帐户余额 -->
+  <select id="selectAccountBalance" parameterType="String" resultType="double">
+  select account_balance
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 借出方查看个人账户 -->
+  <select id="viewLenderAccount" parameterType="String">
+  select account_balance,lent_money,current_income,expected_income
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 债权关系确立 -->
+  <select id="findLenderFundsAccount" resultType="String">
+  select funds_account
+  from ${finish_raising_temp} inner join lender_account
+  on ${finish_raising_temp}.lender_id=lender_account.id_card
+  </select>
+
+  <!--更新借出者账户-->
+  <update id="updateLenderAccount">
+        update lender_account
+        set account_balance=account_balance-#{lend_money},lent_money=lent_money+#{lend_money}
+        where funds_account=#{funds_account}
+    </update>
+
   <sql id="Base_Column_List">
     funds_account, id_card, account_balance, lent_money, current_income, expected_income
   </sql>

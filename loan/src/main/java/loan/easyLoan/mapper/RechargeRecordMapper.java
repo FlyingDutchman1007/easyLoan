@@ -1,17 +1,16 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.RechargeRecord;
+import org.springframework.stereotype.Component;
 
+
+/**
+ * @author Ywr
+ * @date 2019/6/8 16:38
+ */
+@Component
 public interface RechargeRecordMapper {
-    int deleteByPrimaryKey(Integer serialNumber);
 
-    int insert(RechargeRecord record);
+    int insertRechargeRecord(RechargeRecord rechargeRecord);  //生成充值记录
 
-    int insertSelective(RechargeRecord record);
-
-    RechargeRecord selectByPrimaryKey(Integer serialNumber);
-
-    int updateByPrimaryKeySelective(RechargeRecord record);
-
-    int updateByPrimaryKey(RechargeRecord record);
 }

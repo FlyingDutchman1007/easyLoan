@@ -5,27 +5,26 @@
     <result column="parameter_name" jdbcType="VARCHAR" property="parameterName" />
     <result column="parameter_value" jdbcType="VARCHAR" property="parameterValue" />
   </resultMap>
-  <insert id="insert" parameterType="loan.easyLoan.entity.Configuration">
+
+  <!--插入参数-->
+  <insert id="insertParameter" parameterType="loan.easyLoan.entity.Configuration">
     insert into configuration (parameter_name, parameter_value)
     values (#{parameterName,jdbcType=VARCHAR}, #{parameterValue,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="loan.easyLoan.entity.Configuration">
-    insert into configuration
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="parameterName != null">
-        parameter_name,
-      </if>
-      <if test="parameterValue != null">
-        parameter_value,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="parameterName != null">
-        #{parameterName,jdbcType=VARCHAR},
-      </if>
-      <if test="parameterValue != null">
-        #{parameterValue,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+
+  <!--修改参数-->
+  <update id="updateParameter" parameterType="loan.easyLoan.entity.Configuration">
+    update configuration
+    set parameter_name = #{parameterName,jdbcType=VARCHAR},
+    parameter_value = #{parameterValue,jdbcType=VARCHAR}
+    where parameter_name = #{parameterName,jdbcType=VARCHAR}
+  </update>
+
+  <!--查找参数-->
+  <select id="selectParameter" parameterType="String" resultType="String">
+    select parameter_value
+    from configuration
+    where parameter_name = #{parameterName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

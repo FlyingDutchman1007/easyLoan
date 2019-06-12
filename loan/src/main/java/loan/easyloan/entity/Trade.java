@@ -3,13 +3,13 @@ package loan.easyLoan.entity;
 
 public class Trade {
 
-  private long serialNumber;
-  private long billId;
+  private int serialNumber;
+  private int billId;
   private String inBoundAccount;
   private String outBoundAccount;
   private double money;
-  private long limitMonths;
-  private long payType;
+  private int limitMonths;
+  private int payType;
   private double payRate;
   private java.sql.Timestamp exactDate;
   private double nextTimePay;
@@ -22,20 +22,20 @@ public class Trade {
   private java.sql.Timestamp finishedDate;
 
 
-  public long getSerialNumber() {
+  public int getSerialNumber() {
     return serialNumber;
   }
 
-  public void setSerialNumber(long serialNumber) {
+  public void setSerialNumber(int serialNumber) {
     this.serialNumber = serialNumber;
   }
 
 
-  public long getBillId() {
+  public int getBillId() {
     return billId;
   }
 
-  public void setBillId(long billId) {
+  public void setBillId(int billId) {
     this.billId = billId;
   }
 
@@ -67,20 +67,20 @@ public class Trade {
   }
 
 
-  public long getLimitMonths() {
+  public int getLimitMonths() {
     return limitMonths;
   }
 
-  public void setLimitMonths(long limitMonths) {
+  public void setLimitMonths(int limitMonths) {
     this.limitMonths = limitMonths;
   }
 
 
-  public long getPayType() {
+  public int getPayType() {
     return payType;
   }
 
-  public void setPayType(long payType) {
+  public void setPayType(int payType) {
     this.payType = payType;
   }
 

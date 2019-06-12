@@ -8,21 +8,40 @@
     <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
+
+  <!--  借出方选择好对手方并确定借出之后 -->
+  <insert  id="insertIntendLend">
+        insert into intend_lend
+        values(#{bill_id},#{id_card},#{lend_money},#{start_date},1)
+    </insert>
+
+  <!-- 筹集齐资金后，债权关系确立，该笔交易才生效 -->
+  <update id="updateState" parameterType="int">
+        update intend_lend
+        set state=2
+        where bill_id=#{bill_id}
+    </update>
+
+  <!-- 借出方查看待交易记录 -->
+  <select id="viewPendingTransaction" parameterType="String">
+  select bill_id,intend_money,intend_borrow.start_date,pay_rate,pay_type,limit_months,state,raised_money,lend_money,intend_lend.start_date
+  from intend_lend left join intend_borrow
+  on bill_id
+  where intend_lend.state=1 or intend_lend.state=4 and id_card=#{id_card}
+  </select>
+
+  <!-- 失效数据更新状态 -->
+  <update id="updateInvalidState" parameterType="List">
+    update intend_lend
+    <foreach collection="list" item="billID" index="index" separator=",">
+      set state=0
+      where bill_id=#{billID}
+    </foreach>
+  </update>
+
   <sql id="Base_Column_List">
     bill_id, id_card, lend_money, start_date, state
   </sql>
-  <select id="selectByPrimaryKey" parameterType="loan.easyLoan.entity.IntendLendKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from intend_lend
-    where bill_id = #{billId,jdbcType=INTEGER}
-      and id_card = #{idCard,jdbcType=CHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="loan.easyLoan.entity.IntendLendKey">
-    delete from intend_lend
-    where bill_id = #{billId,jdbcType=INTEGER}
-      and id_card = #{idCard,jdbcType=CHAR}
-  </delete>
   <insert id="insert" parameterType="loan.easyLoan.entity.IntendLend">
     insert into intend_lend (bill_id, id_card, lend_money, 
       start_date, state)
