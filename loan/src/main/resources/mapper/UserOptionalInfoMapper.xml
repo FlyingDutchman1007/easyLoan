@@ -39,26 +39,78 @@
   select rt.id_card,rt.phone_number,rt.bank_account,rt.user_name,rt.user_type,ot.address,ot.avatar,ot.educational_level,ot.marriage,ot.profession,ot.sex,ot.special_identity
   from  user_required_info rt  inner join  user_optional_info ot
   on rt.id_card=ot.id_card
-  where  rt.id_card=#{id_card};
+  where  rt.id_card=#{idCard,jdbcType=CHAR},
   </select>
 
   <!-- 特殊认证 -->
   <update id="updateSpecialIdentity">
     update  user_optional_info
     set  special_identity=#{specialIdentity}
-    where  id_card=#{id_card}
+    where  id_card=#{idCard,jdbcType=CHAR},
   </update>
 
   <!-- 判断是否为特殊用户 -->
   <select  id="specialUserCheck" parameterType="String" resultType="String">
   select special_identity
   from  user_optional_info
-  where  id_card=#{id_card}
+  where  id_card=#{idCard,jdbcType=CHAR},
   </select>
 
   <!-- 新用户添加 -->
-  <insert  id="addOptionalInfo">
-    insert  into  user_optional_info(id_card)  values(#{id_card})
+  <insert id="addOptionalInfo" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    insert into user_optional_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="educationalLevel != null">
+        educational_level,
+      </if>
+      <if test="marriage != null">
+        marriage,
+      </if>
+      <if test="profession != null">
+        profession,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="specialIdentity != null">
+        special_identity,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="educationalLevel != null">
+        #{educationalLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="profession != null">
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialIdentity != null">
+        #{specialIdentity,jdbcType=CHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
   </insert>
 
   <!--编辑个人信息-->
@@ -122,62 +174,6 @@
     values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR}, 
       #{marriage,jdbcType=CHAR}, #{profession,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=LONGVARBINARY})
-  </insert>
-
-  <insert id="insertSelective" parameterType="loan.easyLoan.entity.UserOptionalInfo">
-    insert into user_optional_info
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="idCard != null">
-        id_card,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="educationalLevel != null">
-        educational_level,
-      </if>
-      <if test="marriage != null">
-        marriage,
-      </if>
-      <if test="profession != null">
-        profession,
-      </if>
-      <if test="address != null">
-        address,
-      </if>
-      <if test="specialIdentity != null">
-        special_identity,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="idCard != null">
-        #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=CHAR},
-      </if>
-      <if test="educationalLevel != null">
-        #{educationalLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="marriage != null">
-        #{marriage,jdbcType=CHAR},
-      </if>
-      <if test="profession != null">
-        #{profession,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="specialIdentity != null">
-        #{specialIdentity,jdbcType=CHAR},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=LONGVARBINARY},
-      </if>
-    </trim>
   </insert>
 
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="loan.easyLoan.entity.UserOptionalInfo">

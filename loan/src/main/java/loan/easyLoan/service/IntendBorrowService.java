@@ -37,4 +37,9 @@ public interface IntendBorrowService {
     List<Integer> selectLoseEfficacy();  //选择已失效的意向借入
 
     boolean updateInvalidState(List<Integer> list); //失效数据更新状态
+
+
+    //新加入的方法，申请借入（不适用bill id）
+    void insertApplicateForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);
+
 }

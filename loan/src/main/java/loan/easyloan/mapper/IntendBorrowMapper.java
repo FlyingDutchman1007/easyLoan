@@ -39,4 +39,7 @@ public interface IntendBorrowMapper {
     List<Integer> selectLoseEfficacy();  //选择已失效的意向借入
     
     int updateInvalidState(List<Integer> list); //失效数据更新状态
+
+    // 新加入的方法，
+    void insertApplicationForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);
 }
