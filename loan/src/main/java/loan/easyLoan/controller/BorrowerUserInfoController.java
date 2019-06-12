@@ -16,8 +16,9 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping
 public class BorrowerUserInfoController {
+
+
     @Autowired
-    private UserRequiredInfoService userRequiredInfoService;
     private UserOptionalInfoService userOptionalInfoService;
 
     @GetMapping(value = "/borrowerInfo", produces = "application/json;charset=UTF-8")
