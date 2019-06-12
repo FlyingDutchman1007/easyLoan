@@ -3,17 +3,14 @@ package loan.easyLoan.controller;
 import loan.easyLoan.VO.BorrowerInfoVO;
 import loan.easyLoan.entity.UserOptionalInfo;
 import loan.easyLoan.entity.UserRequiredInfo;
-import loan.easyLoan.service.BorrowerAccountService;
 import loan.easyLoan.service.UserOptionalInfoService;
 import loan.easyLoan.service.UserRequiredInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
+
 
 @CrossOrigin
 @RestController
