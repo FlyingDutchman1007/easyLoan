@@ -100,10 +100,10 @@ public class RegisterController {
 
         if(verifyPhoneMsg){
             //验证码输入正确
-            return "successful";
+            return "{\" state\": \"successful\" }";
         }else {
             //验证码错误
-            return "fail";
+            return "{\" state\": \"fail\" }";
         }
     }
 
@@ -125,10 +125,10 @@ public class RegisterController {
         boolean verifyIdCard = userRequiredInfoService.verifyIdCard(userName,idCard);
         if (verifyIdCard) {
             //身份认证成功
-            return "successful";
+            return "{\" state\": \"successful\" }";
         } else {
             //身份认证失败
-            return "fail";
+            return "{\" state\": \"fail\" }";
         }
     }
 
@@ -145,10 +145,10 @@ public class RegisterController {
 
         if(boundBankAccount){
             //银行卡验证码获取成功
-            return "successful";
+            return "{\" state\": \"successful\" }";
         } else {
             //银行卡验证码获取失败
-            return "fail";
+            return "{\" state\": \"fail\" }";
         }
     }
 
@@ -194,17 +194,17 @@ public class RegisterController {
                 session.setAttribute(session.getId(),userRequiredInfo);
                 CreditParameter creditParameter = userRequiredInfoService.getCreditParameter(idCard,bankAccount);
                 if(userRequiredInfo.getUserType() == 0){
-                    borrowerAccountService.addNewBorrower(bankAccount,idCard,creditParameter.getCreditScore(),creditParameter.getTotalLimit(),creditParameter.getAvailableLimit());
+                    borrowerAccountService.addNewBorrower(depository.getFundsAccount(),idCard,creditParameter.getCreditScore(),creditParameter.getTotalLimit(),creditParameter.getAvailableLimit());
                 }else {
-                    lenderAccountService.addNewLender(bankAccount,idCard);
+                    lenderAccountService.addNewLender(depository.getFundsAccount(),idCard);
                 }
                 depositoryService.addNewDepository(depository);
-                return userType;
+                return "{\" state\":\"" + userType + "\"}";
             }else {
-                return "-1";
+                return "{\" state\": \"-1\" }";
             }
         }else {
-            return "-1";
+            return "{\" state\": \"-1\" }";
         }
     }
 

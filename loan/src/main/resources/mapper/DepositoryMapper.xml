@@ -12,6 +12,20 @@
     values (#{fundsAccount,jdbcType=VARCHAR}, #{depositoryAccount,jdbcType=VARCHAR})
   </insert>
 
+  <!--判断随机生成的资金账号是否发生了重复-->
+  <select id="selectIfExistFundsAccount" parameterType="String" resultType="int">
+  select count(*)
+  from depository
+  where funds_account=#{funds_account}
+  </select>
+
+  <!--判断随机生成的三方存管账号是否发生了重复-->
+  <select id="selectIfExistDepositoryAccount" parameterType="String" resultType="int">
+  select count(*)
+  from depository
+  where depository_account=#{depository_account}
+  </select>
+
   <sql id="Base_Column_List">
     funds_account, depository_account
   </sql>
