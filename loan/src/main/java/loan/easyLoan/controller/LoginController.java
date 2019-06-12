@@ -39,9 +39,9 @@ public class LoginController {
             HttpSession session=httpServletRequest.getSession();
             UserRequiredInfo userRequiredInfo = userRequiredInfoService.findUserByPhoneNumber(phoneNumber);
             session.setAttribute(session.getId(),userRequiredInfo);
-            return Integer.toString(userRequiredInfo.getUserType());
+            return "{\" state\":\"" + userRequiredInfo.getUserType() + "\"}";
         }else {
-            return "-1";
+            return "{\" state\": \"-1\" }";
         }
     }
 }
