@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.RepayMoneyFlowMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.RepayMoneyFlow">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="in_bound_account" jdbcType="VARCHAR" property="inBoundAccount" />
+    <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
+    <result column="exact_date" jdbcType="TIMESTAMP" property="exactDate" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="interest_money" jdbcType="DOUBLE" property="interestMoney" />
+    <result column="liquidated_money" jdbcType="DOUBLE" property="liquidatedMoney" />
+    <result column="principal_money" jdbcType="DOUBLE" property="principalMoney" />
+  </resultMap>
+
+  <!-- 借入方还款 -->
+  <insert id="insertRepayRecord" parameterType="java.util.ArrayList">
+    insert into repay_money_flow values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.serial_number},#{item.bill_id},#{item.in_bound_account},#{item.out_bound_account},#{item.exact_date},#{item.money},#{item.interest_money},#{item.liquidated_money},#{item.principal_money})
+    </foreach>
+  </insert>
+
+  <!-- 查看指定账目本期各款项的总的已还款信息，判断本期是否还清，进而判断是否逾期,传入的参数表示当前是还款的第几期、还款类型 -->
+  <select id="checkIfFinishedThisRepay" resultType="Map">
+  select sum(interest_money),sum(liquidated_money),sum(principal_money)
+  from repay_money_flow
+  where bill_id=#{bill_id} and
+  <if test="#{pay_type}==1">
+    DATE_ADD(exact_date,INTERVAL 1*#{repayPeriod} MONTH )>= now()
+  </if>
+  <if test="#{pay_type}==3">
+    DATE_ADD(exact_date,INTERVAL 3*#{repayPeriod} MONTH )>= now()
+  </if>
+  </select>
+
+  <sql id="Base_Column_List">
+    serial_number, bill_id, in_bound_account, out_bound_account, exact_date, money, interest_money, 
+    liquidated_money, principal_money
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from repay_money_flow
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from repay_money_flow
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.RepayMoneyFlow">
+    insert into repay_money_flow (serial_number, bill_id, in_bound_account, 
+      out_bound_account, exact_date, money, 
+      interest_money, liquidated_money, principal_money
+      )
+    values (#{serialNumber,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{inBoundAccount,jdbcType=VARCHAR}, 
+      #{outBoundAccount,jdbcType=VARCHAR}, #{exactDate,jdbcType=TIMESTAMP}, #{money,jdbcType=DOUBLE}, 
+      #{interestMoney,jdbcType=DOUBLE}, #{liquidatedMoney,jdbcType=DOUBLE}, #{principalMoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.RepayMoneyFlow">
+    insert into repay_money_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account,
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account,
+      </if>
+      <if test="exactDate != null">
+        exact_date,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="interestMoney != null">
+        interest_money,
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money,
+      </if>
+      <if test="principalMoney != null">
+        principal_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="exactDate != null">
+        #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="interestMoney != null">
+        #{interestMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="principalMoney != null">
+        #{principalMoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.RepayMoneyFlow">
+    update repay_money_flow
+    <set>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="exactDate != null">
+        exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="interestMoney != null">
+        interest_money = #{interestMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="principalMoney != null">
+        principal_money = #{principalMoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.RepayMoneyFlow">
+    update repay_money_flow
+    set bill_id = #{billId,jdbcType=INTEGER},
+      in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      money = #{money,jdbcType=DOUBLE},
+      interest_money = #{interestMoney,jdbcType=DOUBLE},
+      liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      principal_money = #{principalMoney,jdbcType=DOUBLE}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>

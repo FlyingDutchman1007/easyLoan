@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.TradeMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.Trade">
+    <id column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="in_bound_account" jdbcType="VARCHAR" property="inBoundAccount" />
+    <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="limit_months" jdbcType="INTEGER" property="limitMonths" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="pay_rate" jdbcType="REAL" property="payRate" />
+    <result column="exact_date" jdbcType="TIMESTAMP" property="exactDate" />
+    <result column="next_time_pay" jdbcType="DOUBLE" property="nextTimePay" />
+    <result column="repaid_principal" jdbcType="DOUBLE" property="repaidPrincipal" />
+    <result column="repaid_interest" jdbcType="DOUBLE" property="repaidInterest" />
+    <result column="liquidated_money" jdbcType="DOUBLE" property="liquidatedMoney" />
+    <result column="should_repay_principal" jdbcType="DOUBLE" property="shouldRepayPrincipal" />
+    <result column="should_repay_interest" jdbcType="DOUBLE" property="shouldRepayInterest" />
+    <result column="should_repay_liquidated_money" jdbcType="DOUBLE" property="shouldRepayLiquidatedMoney" />
+    <result column="finished_date" jdbcType="TIMESTAMP" property="finishedDate" />
+  </resultMap>
+
+  <resultMap type="loan.easyLoan.entity.Trade" id="pendingRepaymentRecord_map">
+    <!-- id是主键的映射，其中property是pojo中主键的属性，column是返回结果中主键的列 -->
+    <id property="bill_id" column="bill_id" />
+    <!-- 普通列使用result映射 -->
+    <result property="exact_date" column="role_name" />
+    <result property="money" column="money" />
+    <result property="pay_rate" column="pay_rate" />
+    <result property="pay_type" column="pay_type" />
+    <result property="should_repay_principal" column="should_repay_principal" />
+    <result property="should_repay_interest" column="should_repay_interest" />
+    <result property="should_repay_liquidated_money" column="should_repay_liquidated_money" />
+  </resultMap>
+
+  <!-- 借入方查看待还款记录 -->
+  <select  id="selectPendingRepayment" parameterType="String" resultMap="pendingRepaymentRecord_map">
+  select bill_id,exact_date,money,pay_rate,pay_type,should_repay_principal,should_repay_interest,should_repay_liquidated_money
+  from trade
+  where should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0 and in_bound_account=#{funds_account}
+  </select>
+
+  <!-- 借出方查看待收款记录 -->
+  <select id="selectPendingReceivable" parameterType="String" resultMap="pendingRepaymentRecord_map">
+  select bill_id,exact_date,money,pay_rate,pay_type,should_repay_principal,should_repay_interest,should_repay_liquidated_money
+  from trade
+  where should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0 and out_bound_account=#{funds_account}
+  </select>
+
+  <!-- 债权关系确立 -->
+  <insert id="prepareForTrade">
+        insert into trade (bill_id,in_bound_account,out_bound_account,money,limit_months,pay_type,pay_rate)
+        select(${finish_raising_temp}.bill_id,${finish_raising_temp}.in_bound_account,${finish_raising_temp}.out_bound_account,${finish_raising_temp}.intend_money,${finish_raising_temp}.limit_months,${finish_raising_temp}.pay_type,${finish_raising_temp}.pay_rate)
+        from ${finish_raising_temp}
+    </insert>
+  <select id="selectBillId" resultType="int">
+  select ${finish_raising_temp}.bill_id
+  from  ${finish_raising_temp}
+  </select>
+  <update id="establish1">
+        update trade
+        set exact_date=#{exact_date},repaid_principal=0.00,repaid_interest=0.00,liquidated_money=0.00,should_repay_liquidated_money=0.00,finished_date=null
+        where bill_id =#{bill_id}
+    </update>
+  <update id="establish2">
+    update trade
+    set
+    <if  test="pay_type=1">
+      next_time_pay=money*(1+pay_rate)/limit_months,should_repay_principal=money/limit_months,should_repay_interest=money*pay_rate/limit_months
+    </if>
+    <if  test="pay_type=3">
+      next_time_pay=money*(1+pay_rate)/((limit_months div 3)+1),should_repay_principal=money/((limit_months div 3)+1),should_repay_interest=money*pay_rate/((limit_months div 3)+1)
+    </if>
+    where bill_id=#{bill_id}
+  </update>
+
+  <!--用户是普通用户，一次贷款未还清不能进行第二次借贷的情况-->
+  <!-- 判断用户是否完成所有还款，决定该用户是否可以申请借入 -->
+  <select  id="selectIfFinishedRepayment" parameterType="int" resultType="int">
+  select count(*)
+  from trade
+  where should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0 and bill_id=#{bill_id};
+  </select>
+
+
+  <!-- 借入方查看已完成记录 -->
+  <select id="borrowViewFinishedRecord" parameterType="String">
+  select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
+  from trade
+  where in_bound_account=#{funds_account} and finished_date!=null
+  </select>
+
+  <!-- 借出方查看已完成记录 -->
+  <select id="lendViewFinishedRecord" parameterType="String">
+  select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
+  from trade
+  where out_bound_account=#{funds_account} and finished_date!=null
+  </select>
+
+  <!-- 借入方还款,先把该账目id的交易记录取出来 -->
+  <select id="createPendingRepayment" parameterType="int">
+  create temporary table ${pendingRepayment} as
+  select *
+  from trade
+  where bill_id=#{bill_id}
+  </select>
+  <!-- 删除临时表 -->
+  <update id="dropTempTable">
+        drop table if exists ${pendingRepayment}
+    </update>
+  <!-- 借入方还款,查看该笔交易中各个借出方的出资比例 -->
+  <select id="viewMoneyOfLender">
+  select ${pendingRepayment}.bill_id,${pendingRepayment}.out_bound_account,${pendingRepayment}.money
+  from ${pendingRepayment}
+  </select>
+  <!-- 借入方还款,查看该笔交易的确立日期，以判断当前属于还款的第几周期 -->
+  <select id="selectExactDate" parameterType="int" resultType="Date">
+  select exact_date
+  from trade
+  where bill_id=#{bill_id}
+  </select>
+  <!-- 借入方还款,按照各个借出方的出资比例进行还款,先还违约金，再还利息，再还本金 -->
+  <!-- 提前还清借款,暂无 -->
+  <!-- 还款日期等于或小于截止日期，即无逾期的情况 -->
+  <update id="repayUpdate" parameterType="java.util.ArrayList"><!-- 传入的参数ArrayList中的对象是Repay_money_flow -->
+    update trade
+    <foreach collection="list" item="item" index="index" separator=",">
+      set
+      <!--<if test="next_time_pay==#{item.money}">
+          liquidated_money=liquidated_money+should_repay_liquidated_money,repaid_interest=repaid_interest+should_repay_interest,repaid_principal=repaid_principal+should_repay_principal
+      </if>
+      <if test="next_time_pay>#{item.money}">-->
+      <if test="should_repay_liquidated_money>=#{item.money}">
+        liquidated_money=#{item.money}
+        <if test="money==repaid_principal">should_repay_principal=0</if>
+        <if test="money*pay_rate*limit_months==repaid_interest">should_repay_interest=0</if>
+      </if>
+      <if test="should_repay_liquidated_money+should_repay_interest>=#{item.money} and #{item.money}>should_repay_liquidated_money">
+        liquidated_money=liquidated_money+should_repay_liquidated_money,repaid_interest=repaid_interest+#{item.money}-should_repay_liquidated_money
+        <if test="money==repaid_principal">should_repay_principal=0</if>
+        <if test="money*pay_rate*limit_months==repaid_interest">should_repay_interest=0</if>
+      </if>
+      <if test="should_repay_liquidated_money+should_repay_interest+should_repay_principal>=#{item.money} and #{item.money}>should_repay_liquidated_money+should_repay_interest">
+        liquidated_money=liquidated_money+should_repay_liquidated_money,repaid_interest=repaid_interest+should_repay_interest,repaid_principal=repaid_principal+#{item.money}-should_repay_liquidated_money-should_repay_interest
+        <if test="money==repaid_principal">should_repay_principal=0</if>
+        <if test="money*pay_rate*limit_months==repaid_interest">should_repay_interest=0</if>
+      </if>
+      liquidated_money=liquidated_money+should_repay_liquidated_money,repaid_interest=,repaid_principal=repaid_principal+#{item.principal_money}
+      <!--</if>-->
+      <if test="should_repay_principal==0 and should_repay_interest==0 and should_repay_liquidated_money==0">
+        finished_date=date_format(now(),"%y%m%d%h%s")
+      </if>
+      where bill_id=#{item.bill_id} and out_bound_account=#{item.out_bound_account}
+    </foreach>
+  </update>
+
+  <!-- 查看指定账目本期各款项的总的应还款信息，判断本期是否还清，进而判断是否逾期 --><!-- 第二种方法，查看下期总的应还款信息，这样需要在SQL中用if语句分情况 -->
+  <select id="selectNextTimePay" parameterType="int" resultType="double">
+  select next_time_pay
+  from trade
+  where bill_id=#{bill_id}
+  </select>
+
+  <!-- 对应方法二。逾期的情况,在每期的第一天更新上一期的逾期情况 -->
+  <update id="overdueUpdate" parameterType="java.util.ArrayList">
+    update trade
+    <foreach collection="list" item="item" index="index" separator=",">
+      set
+      <if test="should_repay_liquidated_money>=#{item.thisPeriodSumRepaidMoney}">
+        should_repay_liquidated_money = should_repay_liquidated_money-#{item.repayMoney}+(should_repay_principal+should_repay_interest)*pay_rate*1.5
+      </if>
+      <if test="should_repay_liquidated_money+should_repay_interest>=#{item.thisPeriodSumRepaidMoney} and #{item.thisPeriodSumRepaidMoney}>should_repay_liquidated_money">
+        should_repay_liquidated_money = (should_repay_interest-#{item.repayMoney}+should_repay_liquidated_money+should_repay_principal)*pay_rate*1.5
+      </if>
+      <if test="should_repay_liquidated_money+should_repay_interest+should_repay_principal>=#{item.thisPeriodSumRepaidMoney} and #{item.thisPeriodSumRepaidMoney}>should_repay_liquidated_money+should_repay_interest">
+        should_repay_liquidated_money=(should_repay_principal-#{item.repayMoney}+should_repay_liquidated_money+should_repay_interest)*pay_rate*1.5
+      </if>
+      where bill_id=#{item.bill_id} and out_bound_account=#{item.out_bound_account}
+    </foreach>
+  </update>
+
+  <!-- 查询坏账的交易,后期平台对这些借出方进行赔付 -->
+  <select id="selectBadDebt" resultType="Trade">
+  select *
+  from trade
+  where finished_date=null and date_sub(now(),INTERVAL (6+limit_months) MONTH)>exact_date
+  </select>
+  <!-- 更新坏账的交易记录 -->
+  <update id="updateBadDebt" parameterType="List">
+    update trade
+    set
+    <foreach collection="list" item="item" index="index" separator=",">
+      out_bound_account=#{"000000",jdbcType=VARCHAR},finished_date=now()
+      where bill_id=#{item.bill_id}
+    </foreach>
+  </update>
+
+  <sql id="Base_Column_List">
+    serial_number, bill_id, in_bound_account, out_bound_account, money, limit_months, 
+    pay_type, pay_rate, exact_date, next_time_pay, repaid_principal, repaid_interest, 
+    liquidated_money, should_repay_principal, should_repay_interest, should_repay_liquidated_money, 
+    finished_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trade
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.Trade">
+    insert into trade (serial_number, bill_id, in_bound_account, 
+      out_bound_account, money, limit_months, 
+      pay_type, pay_rate, exact_date, 
+      next_time_pay, repaid_principal, repaid_interest, 
+      liquidated_money, should_repay_principal, should_repay_interest, 
+      should_repay_liquidated_money, finished_date
+      )
+    values (#{serialNumber,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{inBoundAccount,jdbcType=VARCHAR}, 
+      #{outBoundAccount,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{limitMonths,jdbcType=INTEGER}, 
+      #{payType,jdbcType=INTEGER}, #{payRate,jdbcType=REAL}, #{exactDate,jdbcType=TIMESTAMP}, 
+      #{nextTimePay,jdbcType=DOUBLE}, #{repaidPrincipal,jdbcType=DOUBLE}, #{repaidInterest,jdbcType=DOUBLE}, 
+      #{liquidatedMoney,jdbcType=DOUBLE}, #{shouldRepayPrincipal,jdbcType=DOUBLE}, #{shouldRepayInterest,jdbcType=DOUBLE}, 
+      #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE}, #{finishedDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.Trade">
+    insert into trade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account,
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="limitMonths != null">
+        limit_months,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="payRate != null">
+        pay_rate,
+      </if>
+      <if test="exactDate != null">
+        exact_date,
+      </if>
+      <if test="nextTimePay != null">
+        next_time_pay,
+      </if>
+      <if test="repaidPrincipal != null">
+        repaid_principal,
+      </if>
+      <if test="repaidInterest != null">
+        repaid_interest,
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money,
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        should_repay_principal,
+      </if>
+      <if test="shouldRepayInterest != null">
+        should_repay_interest,
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        should_repay_liquidated_money,
+      </if>
+      <if test="finishedDate != null">
+        finished_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMonths != null">
+        #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payRate != null">
+        #{payRate,jdbcType=REAL},
+      </if>
+      <if test="exactDate != null">
+        #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTimePay != null">
+        #{nextTimePay,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidPrincipal != null">
+        #{repaidPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidInterest != null">
+        #{repaidInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayInterest != null">
+        #{shouldRepayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="finishedDate != null">
+        #{finishedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.Trade">
+    update trade
+    <set>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="inBoundAccount != null">
+        in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="outBoundAccount != null">
+        out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="limitMonths != null">
+        limit_months = #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payRate != null">
+        pay_rate = #{payRate,jdbcType=REAL},
+      </if>
+      <if test="exactDate != null">
+        exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTimePay != null">
+        next_time_pay = #{nextTimePay,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidPrincipal != null">
+        repaid_principal = #{repaidPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="repaidInterest != null">
+        repaid_interest = #{repaidInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="liquidatedMoney != null">
+        liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayPrincipal != null">
+        should_repay_principal = #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayInterest != null">
+        should_repay_interest = #{shouldRepayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldRepayLiquidatedMoney != null">
+        should_repay_liquidated_money = #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="finishedDate != null">
+        finished_date = #{finishedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.Trade">
+    update trade
+    set bill_id = #{billId,jdbcType=INTEGER},
+      in_bound_account = #{inBoundAccount,jdbcType=VARCHAR},
+      out_bound_account = #{outBoundAccount,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      limit_months = #{limitMonths,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=INTEGER},
+      pay_rate = #{payRate,jdbcType=REAL},
+      exact_date = #{exactDate,jdbcType=TIMESTAMP},
+      next_time_pay = #{nextTimePay,jdbcType=DOUBLE},
+      repaid_principal = #{repaidPrincipal,jdbcType=DOUBLE},
+      repaid_interest = #{repaidInterest,jdbcType=DOUBLE},
+      liquidated_money = #{liquidatedMoney,jdbcType=DOUBLE},
+      should_repay_principal = #{shouldRepayPrincipal,jdbcType=DOUBLE},
+      should_repay_interest = #{shouldRepayInterest,jdbcType=DOUBLE},
+      should_repay_liquidated_money = #{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+      finished_date = #{finishedDate,jdbcType=TIMESTAMP}
+    where serial_number = #{serialNumber,jdbcType=INTEGER}
+  </update>
+</mapper>

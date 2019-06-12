@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.UserRequiredInfoMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.UserRequiredInfo">
+    <id column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+
+  <!-- 判断用户是否已注册 -->
+  <select  id="ifRegistered"  parameterType="String"  resultType="int">
+        select count(*) from  user_required_info  where  phone_number=#{phone_number}
+  </select>
+
+  <!-- 用户查找 -->
+  <select id="findUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_required_info
+    where id_card = #{idCard,jdbcType=CHAR}
+  </select>
+
+  <!-- 新用户添加 -->
+  <insert id="addNewUser" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+    insert into user_required_info (id_card, phone_number, user_name, 
+      bank_account, user_type, password
+      )
+    values (#{idCard,jdbcType=CHAR}, #{phoneNumber,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{bankAccount,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!-- 根据手机号判断登录用户类型，以显示相应界面 -->
+  <select id="checkUserType" parameterType="String" resultType="int">
+        select user_type
+        from user_required_info
+        where phone_number=#{phone_number}
+  </select>
+
+  <!--根据手机号查找密码-->
+  <select  id="loginCheck" parameterType="String" resultType="String">
+          select  *  from  user_required_info  where  phone_number=#{phone_number};
+  </select>
+
+  <!--修改姓名和手机号-->
+  <update id="updateUserRequiredInfo" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+    update user_required_info
+    <set>
+      <if test="phoneNumber != null">
+        phone_number = #{phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null">
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+
+  <sql id="Base_Column_List">
+    id_card, phone_number, user_name, bank_account, user_type, password
+  </sql>
+
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+    insert into user_required_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="phoneNumber != null">
+        phone_number,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="bankAccount != null">
+        bank_account,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null">
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.UserRequiredInfo">
+    update user_required_info
+    set phone_number = #{phoneNumber,jdbcType=CHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR}
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+
+</mapper>

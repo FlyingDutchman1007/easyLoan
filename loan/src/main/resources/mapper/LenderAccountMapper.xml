@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.LenderAccountMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.LenderAccount">
+    <id column="funds_account" jdbcType="VARCHAR" property="fundsAccount" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="account_balance" jdbcType="DOUBLE" property="accountBalance" />
+    <result column="lent_money" jdbcType="DOUBLE" property="lentMoney" />
+    <result column="current_income" jdbcType="DOUBLE" property="currentIncome" />
+    <result column="expected_income" jdbcType="DOUBLE" property="expectedIncome" />
+  </resultMap>
+
+  <!-- 新用户注册后分配资金账号 -->
+  <insert id="addNewLender">
+        insert into lender_account
+        values (#{funds_account},#{id_card},0.00,0.00,0.00,0.00)
+    </insert>
+
+  <!-- 由身份证号找到该用户的资金账号 -->
+  <select id="findFundsAccount"  resultType="String">
+  select funds_account
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 提现后修改用户资金账户余额 -->
+  <update  id="updateWithdrawAccount">
+        update lender_account
+        set  account_balance=account_balance-#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 充值后修改用户资金账户余额 -->
+  <update  id="updateRechargeAccount">
+        update lender_account
+        set  account_balance=account_balance+#{withdraw_money}
+        where  funds_account=#{funds_account}
+    </update>
+
+  <!-- 查询借出方的帐户余额 -->
+  <select id="selectAccountBalance" parameterType="String" resultType="double">
+  select account_balance
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 借出方查看个人账户 -->
+  <select id="viewLenderAccount" parameterType="String">
+  select account_balance,lent_money,current_income,expected_income
+  from lender_account
+  where id_card=#{id_card}
+  </select>
+
+  <!-- 债权关系确立 -->
+  <select id="findLenderFundsAccount" resultType="String">
+  select funds_account
+  from ${finish_raising_temp} inner join lender_account
+  on ${finish_raising_temp}.lender_id=lender_account.id_card
+  </select>
+
+  <!--更新借出者账户-->
+  <update id="updateLenderAccount">
+        update lender_account
+        set account_balance=account_balance-#{lend_money},lent_money=lent_money+#{lend_money}
+        where funds_account=#{funds_account}
+    </update>
+
+  <sql id="Base_Column_List">
+    funds_account, id_card, account_balance, lent_money, current_income, expected_income
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lender_account
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from lender_account
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.LenderAccount">
+    insert into lender_account (funds_account, id_card, account_balance, 
+      lent_money, current_income, expected_income
+      )
+    values (#{fundsAccount,jdbcType=VARCHAR}, #{idCard,jdbcType=CHAR}, #{accountBalance,jdbcType=DOUBLE}, 
+      #{lentMoney,jdbcType=DOUBLE}, #{currentIncome,jdbcType=DOUBLE}, #{expectedIncome,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.LenderAccount">
+    insert into lender_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        funds_account,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="accountBalance != null">
+        account_balance,
+      </if>
+      <if test="lentMoney != null">
+        lent_money,
+      </if>
+      <if test="currentIncome != null">
+        current_income,
+      </if>
+      <if test="expectedIncome != null">
+        expected_income,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fundsAccount != null">
+        #{fundsAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="accountBalance != null">
+        #{accountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lentMoney != null">
+        #{lentMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="currentIncome != null">
+        #{currentIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="expectedIncome != null">
+        #{expectedIncome,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.LenderAccount">
+    update lender_account
+    <set>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="accountBalance != null">
+        account_balance = #{accountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lentMoney != null">
+        lent_money = #{lentMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="currentIncome != null">
+        current_income = #{currentIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="expectedIncome != null">
+        expected_income = #{expectedIncome,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.LenderAccount">
+    update lender_account
+    set id_card = #{idCard,jdbcType=CHAR},
+      account_balance = #{accountBalance,jdbcType=DOUBLE},
+      lent_money = #{lentMoney,jdbcType=DOUBLE},
+      current_income = #{currentIncome,jdbcType=DOUBLE},
+      expected_income = #{expectedIncome,jdbcType=DOUBLE}
+    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
+  </update>
+</mapper>
