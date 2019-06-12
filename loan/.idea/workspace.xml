@@ -51,11 +51,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/loan/easyLoan/controller/RegisterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="204" column="15" lean-forward="true" selection-start-line="204" selection-start-column="15" selection-end-line="204" selection-end-column="15" />
+            <state relative-caret-position="144">
+              <caret line="189" column="70" lean-forward="true" selection-start-line="189" selection-start-column="70" selection-end-line="189" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" column="71" selection-start-line="7" selection-start-column="71" selection-end-line="7" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -119,7 +128,6 @@
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/service/TradeService.java" />
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/mapper/TradeMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/service/impl/TradeServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.yml" />
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/mapper/UserRequiredInfoMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/entity/BorrowerAccount.java" />
         <option value="$PROJECT_DIR$/src/main/java/loan/easyLoan/entity/CreditParameter.java" />
@@ -140,6 +148,7 @@
         <option value="$PROJECT_DIR$/src/main/resources/mapper/RepayMoneyFlowMapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/mapper/TradeMapper.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/mapper/BorrowerAccountMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.yml" />
       </list>
     </option>
   </component>
@@ -167,7 +176,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="950" />
     <option name="width" value="980" />
     <option name="height" value="1040" />
@@ -341,12 +350,12 @@
       <workItem from="1559961594069" duration="33000" />
       <workItem from="1560047137958" duration="3923000" />
       <workItem from="1560062322775" duration="84386000" />
-      <workItem from="1560308527772" duration="7503000" />
+      <workItem from="1560308527772" duration="7812000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122594000" />
+    <option name="totallyTimeSpent" value="122903000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -579,13 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -792,8 +794,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/loan/easyLoan/controller/RegisterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="204" column="15" lean-forward="true" selection-start-line="204" selection-start-column="15" selection-end-line="204" selection-end-column="15" />
+        <state relative-caret-position="144">
+          <caret line="189" column="70" lean-forward="true" selection-start-line="189" selection-start-column="70" selection-end-line="189" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="71" selection-start-line="7" selection-start-column="71" selection-end-line="7" selection-end-column="71" />
         </state>
       </provider>
     </entry>
