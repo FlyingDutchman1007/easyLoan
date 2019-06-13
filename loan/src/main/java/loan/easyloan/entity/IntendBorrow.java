@@ -6,7 +6,7 @@ public class IntendBorrow {
   private int billId;
   private String idCard;
   private double intendMoney;
-  private java.sql.Timestamp startDate;
+  private java.sql.Date startDate;
   private double payRate;
   private int payType;
   private int limitMonths;
@@ -41,11 +41,11 @@ public class IntendBorrow {
   }
 
 
-  public java.sql.Timestamp getStartDate() {
+  public java.sql.Date getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(java.sql.Timestamp startDate) {
+  public void setStartDate(java.sql.Date startDate) {
     this.startDate = startDate;
   }
 

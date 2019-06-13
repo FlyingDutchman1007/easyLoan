@@ -25,4 +25,22 @@ public class DepositoryServiceImpl implements DepositoryService {
             return false;
         }
     }
+
+    @Override
+    public boolean selectIfExistFundsAccount(String fundsAccount) {
+        if(depositoryMapper.selectIfExistFundsAccount(fundsAccount)==0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean selectIfExistDepositoryAccount(String depositoryAccount) {
+        if(depositoryMapper.selectIfExistDepositoryAccount(depositoryAccount)==0){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

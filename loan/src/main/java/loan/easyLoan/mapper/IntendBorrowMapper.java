@@ -1,6 +1,7 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.IntendBorrow;
+import loan.easyLoan.entity.PendingTransaction;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -34,12 +35,12 @@ public interface IntendBorrowMapper {
     
     void insertApplicateForBorrow(int billId, String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths); //申请借入
     
-    List<IntendBorrow> selectPendingTransaction( String idCard);    //借入方查看待交易记录
+    List<PendingTransaction> selectPendingTransaction(String idCard);    //借入方查看待交易记录
     
     List<Integer> selectLoseEfficacy();  //选择已失效的意向借入
     
     int updateInvalidState(List<Integer> list); //失效数据更新状态
 
-    // 新加入的方法，
-    void insertApplicationForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);
+
+    void insertApplicateForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);// 新加入的方法，
 }
