@@ -8,7 +8,9 @@ import loan.easyLoan.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,25 @@ public class TradeServiceImpl implements TradeService {
 
     @Autowired
     private TradeMapper tradeMapper;
+
+    //返回该期未还款的截止日期
+    @Override
+    public String judgeDeadline(int billId) {
+        Date exactDate = tradeMapper.selectExactDate(billId);
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        //Date currentDate = dateFormat.parse(date);
+
+        Calendar exactDate1 = Calendar.getInstance();
+        Calendar currentDate = Calendar.getInstance();
+        exactDate1.setTime(exactDate);
+        currentDate.setTime(date);
+        int result = currentDate.get(Calendar.MONTH) - exactDate1.get(Calendar.MONTH);
+        int month = (currentDate.get(Calendar.YEAR) - exactDate1.get(Calendar.YEAR)) * 12;
+        exactDate1.add(Calendar.MONTH,Math.abs(month + result)+1);
+        return dateFormat.format(exactDate1.getTime());
+    }
+
 
     @Override
     public List<Trade> selectPendingRepayment(String inBoundAccount) {

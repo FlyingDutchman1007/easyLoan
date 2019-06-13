@@ -13,6 +13,9 @@ import java.util.List;
  * @date 2019/6/11 9:01
  */
 public interface TradeService {
+
+    String  judgeDeadline(int billId);  //判断截止日期
+
     List<Trade> selectPendingRepayment(String inBoundAccount);   //借入方查看待还款记录
     List<Trade> selectPendingReceivable(String outBoundAccount);   //借出方查看待收款记录
 

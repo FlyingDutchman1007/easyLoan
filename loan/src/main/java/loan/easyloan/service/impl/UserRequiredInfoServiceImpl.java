@@ -42,7 +42,8 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Override
     public boolean verifyPhoneMsg(String phoneNumber, int verifyCode) {
-        if (verifyCode == 123456){
+        int code = 123456;
+        if (verifyCode == code){
             return true;
         }else {
             return false;
@@ -104,7 +105,7 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
     @Override
     public CreditParameter getCreditParameter(String idCard, String bankAccount) {
         Random rm = new Random();
-        int creditScore = rm.nextInt(549) + 100;
+        int creditScore = rm.nextInt(100) + 550;
         double totalLimit = ((int)(3E-9 * Math.pow(creditScore, 4.50757555))/100 + 1) * 100;
         CreditParameter creditParameter = new CreditParameter();
         creditParameter.setCreditScore(creditScore);
