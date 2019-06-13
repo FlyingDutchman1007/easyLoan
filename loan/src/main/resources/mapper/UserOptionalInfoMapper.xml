@@ -13,34 +13,32 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="loan.easyLoan.entity.UserOptionalInfo">
     <result column="avatar" jdbcType="LONGVARBINARY" property="avatar" />
   </resultMap>
-  <!--  &lt;!&ndash; 多表联合查询 &ndash;&gt;
-    <resultMap id="optionalResultMap" type="UserOptionalInfo">
-      <id column="id_card" property="idCard" />
-      <result column="sex" jdbcType="CHAR" property="sex" />
-      <result column="educational_level" jdbcType="VARCHAR" property="educationalLevel" />
-      <result column="marriage" jdbcType="CHAR" property="marriage" />
-      <result column="profession" jdbcType="VARCHAR" property="profession" />
-      <result column="address" jdbcType="VARCHAR" property="address" />
-      <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
-    </resultMap>
-    <resultMap id="requiredResultMap" type="UserRequiredInfo">
-      <id column="id_card" jdbcType="CHAR" property="idCard" />
-      <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
-      <result column="user_name" jdbcType="VARCHAR" property="userName" />
-      <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
-      <result column="user_type" jdbcType="INTEGER" property="userType" />
-      <result column="password" jdbcType="VARCHAR" property="password" />
-    </resultMap>-->
 
+
+  <resultMap id="optionalResultMap" type="UserOptionalInfo">
+    <id column="id_card" property="idCard" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="educational_level" jdbcType="VARCHAR" property="educationalLevel" />
+    <result column="marriage" jdbcType="CHAR" property="marriage" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
+    <association property="supervisor" resultMap="requiredResultMap"/>
+  </resultMap>
+  <resultMap id="requiredResultMap" type="UserRequiredInfo">
+    <id column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
 
   <!-- 查看个人资料 -->
-  <select id="viewUserInfo" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from user_optional_info
-    where id_card = #{idCard,jdbcType=CHAR}
+  <select  id="viewUserInfo" parameterType="String" resultType="UserOptionalInfo">
+  select address,avatar,educational_level,marriage,profession,sex,special_identity
+  from  user_optional_info
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 特殊认证 -->
@@ -154,6 +152,14 @@
     avatar
   </sql>
 
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user_optional_info
+    where id_card = #{idCard,jdbcType=CHAR}
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user_optional_info

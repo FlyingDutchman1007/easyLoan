@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan.easyLoan.mapper.IntendBorrowMapper">
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.IntendBorrow">
+    <id column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="intend_money" jdbcType="DOUBLE" property="intendMoney" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="pay_rate" jdbcType="REAL" property="payRate" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="limit_months" jdbcType="INTEGER" property="limitMonths" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="raised_money" jdbcType="DOUBLE" property="raisedMoney" />
+  </resultMap>
+
+  <resultMap type="loan.easyLoan.entity.IntendBorrow" id="counterparty_map">
+    <!-- id是主键的映射，其中property是pojo中主键的属性，column是返回结果中主键的列 -->
+    <id property="bill_id" column="billId" />
+    <!-- 普通列使用result映射 -->
+    <result column="intend_money" property="intendMoney" />
+    <result column="start_date" property="startDate" />
+    <result column="pay_rate" property="payRate" />
+    <result column="pay_type" property="payType" />
+    <result column="limit_months" property="limitMonths" />
+    <result column="state" property="state" />
+    <result column="raised_money" property="raisedMoney" />
+  </resultMap>
+
+  <!-- 根据借入方用户身份证号查找用户账目id -->
+  <select id="selectBillId" parameterType="String" resultType="int">
+  select bill_id
+  from intend_borrow
+  where id_card=#{idCard,jdbcType=CHAR} and state=2
+  order by start_date desc
+  limit 1
+  </select>
+
+  <!--  查询意向借入方并按照利率从高到低排序 -->
+  <select  id="selectCounterParty" resultMap="counterparty_map">
+  select  bill_id,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
+  from  intend_borrow
+  where  pay_rate=#{expectRate} and state=0 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
+  order by  pay_rate  desc
+  </select>
+
+  <!--  借出方选择好对手方并确定借出之后 -->
+  <update  id="updateRaisedMoney">
+        update  intend_borrow
+        set  raised_money=raised_money+#{lendMoney}
+    </update>
+
+  <!-- 债权关系确立的过程 -->
+  <update id="prepareForTradeCreateTempTable">
+        create temporary table ${finish_raising_temp} as select  intend_borrow.bill_id,intend_borrow.id_card borrower_id,intend_lend.id_card lender_id,pay_rate,pay_type,lend_money,intend_money,limit_months
+        from  intend_lend left join intend_borrow
+        on intend_borrow.bill_id
+        where  raised_money=intend_money  and state=1
+        order by start_date
+        limit 1
+    </update>
+  <update id="addColumn">
+        alter table ${finish_raising_temp} add in_bound_account varchar(30);
+        alter table ${finish_raising_temp} add out_bound_account varchar(30);
+    </update>
+  <update id="updateBoundAccount">
+        update ${finish_raising_temp}
+        set ${finish_raising_temp}.in_bound_account=#{borrowerFundsAccount},${finish_raising_temp}.out_bound_account=#{lenderFundsAccount}
+    </update>
+  <update id="dropTempTable">
+        drop table if exists ${finish_raising_temp}
+    </update>
+  <!-- 筹集齐资金后，债权关系确立，该笔交易才生效 -->
+  <update id="updateState" parameterType="int">
+        update intend_borrow
+        set state=2
+        where bill_id=#{billId,jdbcType=INTEGER}
+    </update>
+
+  <!-- 申请借入 -->
+  <insert id="insertApplicateForBorrow">
+        insert into intend_borrow
+        values (#{billId,jdbcType=INTEGER},#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
+    </insert>
+
+  <!-- 借入方查看待交易记录 -->
+  <select id="selectPendingTransaction" parameterType="String">
+  select bill_id,intend_money,intend_borrow.start_date,pay_rate,pay_type,limit_months,state,raised_money
+  from intend_borrow left join intend_lend
+  on bill_id
+  where intend_borrow.state=1 or intend_borrow.state=4 and id_card=#{idCard,jdbcType=CHAR}
+  </select>
+
+  <!-- 选择已失效的意向借入 -->
+  <select id="selectLoseEfficacy" resultType="java.lang.Integer">
+  select bill_id
+  from  intend_borrow
+  where state=1 and date_sub(now(),INTERVAL 7 DAY)>=start_date
+  </select>
+
+  <!-- 失效数据更新状态 -->
+  <update id="updateInvalidState" parameterType="List">
+    update intend_borrow
+    <foreach collection="list" item="billID" index="index" separator=",">
+      set state=0
+      where bill_id=#{billId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+  <!-- 申请借入新方法，让billId递增 -->
+  <insert id="insertApplicationForBorrower">
+        insert into intend_borrow
+        values (#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
+    </insert>
+
+
+  <sql id="Base_Column_List">
+    bill_id, id_card, intend_money, start_date, pay_rate, pay_type, limit_months, state, 
+    raised_money
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from intend_borrow
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from intend_borrow
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="loan.easyLoan.entity.IntendBorrow">
+    insert into intend_borrow (bill_id, id_card, intend_money, 
+      start_date, pay_rate, pay_type, 
+      limit_months, state, raised_money
+      )
+    values (#{billId,jdbcType=INTEGER}, #{idCard,jdbcType=CHAR}, #{intendMoney,jdbcType=DOUBLE}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{payRate,jdbcType=REAL}, #{payType,jdbcType=INTEGER}, 
+      #{limitMonths,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{raisedMoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.IntendBorrow">
+    insert into intend_borrow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="intendMoney != null">
+        intend_money,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="payRate != null">
+        pay_rate,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="limitMonths != null">
+        limit_months,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="raisedMoney != null">
+        raised_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="billId != null">
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="intendMoney != null">
+        #{intendMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payRate != null">
+        #{payRate,jdbcType=REAL},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="limitMonths != null">
+        #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="raisedMoney != null">
+        #{raisedMoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.IntendBorrow">
+    update intend_borrow
+    <set>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="intendMoney != null">
+        intend_money = #{intendMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payRate != null">
+        pay_rate = #{payRate,jdbcType=REAL},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="limitMonths != null">
+        limit_months = #{limitMonths,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="raisedMoney != null">
+        raised_money = #{raisedMoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="loan.easyLoan.entity.IntendBorrow">
+    update intend_borrow
+    set id_card = #{idCard,jdbcType=CHAR},
+      intend_money = #{intendMoney,jdbcType=DOUBLE},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      pay_rate = #{payRate,jdbcType=REAL},
+      pay_type = #{payType,jdbcType=INTEGER},
+      limit_months = #{limitMonths,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      raised_money = #{raisedMoney,jdbcType=DOUBLE}
+    where bill_id = #{billId,jdbcType=INTEGER}
+  </update>
+</mapper>
