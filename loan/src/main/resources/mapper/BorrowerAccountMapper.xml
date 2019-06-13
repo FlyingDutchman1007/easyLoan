@@ -25,6 +25,14 @@
     <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
   </resultMap>-->
 
+  <!--更新借入方额度-->
+  <update id="updateAvailableLimit">
+    update borrower_account
+    set available_limit=available_limit-#{intendMoney,jdbcType=DOUBLE}
+    where id_card=#{idCard,jdbcType=CHAR}
+  </update>
+
+
   <!-- 新用户注册后分配资金账号 -->
   <insert id="addNewBorrower">
         insert into borrower_account
@@ -48,7 +56,7 @@
   <!-- 充值后修改用户资金账户余额 -->
   <update  id="updateRechargeAccount">
         update borrower_account
-        set  account_balance=account_balance+#{withdrawMoney}
+        set  account_balance=account_balance+#{rechargeMoney}
         where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 

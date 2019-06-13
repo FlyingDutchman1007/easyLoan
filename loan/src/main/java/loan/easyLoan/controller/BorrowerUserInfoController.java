@@ -39,7 +39,6 @@ public class BorrowerUserInfoController {
         //将对象属性分别copy到VO中
         BeanUtils.copyProperties(userRequiredInfo, borrowerInfoVO);
         BeanUtils.copyProperties(userOptionalInfo, borrowerInfoVO);
-        System.out.println(borrowerInfoVO.getPhoneNumber());
 
         return borrowerInfoVO;
     }

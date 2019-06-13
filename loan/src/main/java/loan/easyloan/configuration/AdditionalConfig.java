@@ -25,7 +25,6 @@ public class AdditionalConfig {
                 jacksonObjectMapperBuilder.failOnUnknownProperties(false);
                 jacksonObjectMapperBuilder.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
             }
-
         };
     }
 }

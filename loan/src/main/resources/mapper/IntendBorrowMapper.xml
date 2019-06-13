@@ -38,7 +38,7 @@
   <select id="selectBillId" parameterType="String" resultType="int">
   select bill_id
   from intend_borrow
-  where id_card=#{idCard,jdbcType=CHAR} and state=0
+  where id_card=#{idCard,jdbcType=CHAR} and state=1
   order by start_date desc
   limit 1
   </select>
@@ -47,7 +47,7 @@
   <select  id="selectCounterParty" resultMap="BaseResultMap">
   select  bill_id,id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
   from  intend_borrow
-  where  pay_rate=#{expectRate} and state=0 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
+  where  pay_rate=#{expectRate} and state=1 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
   order by  pay_rate  desc
   </select>
 

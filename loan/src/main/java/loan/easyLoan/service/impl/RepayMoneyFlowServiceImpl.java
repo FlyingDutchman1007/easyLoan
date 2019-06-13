@@ -2,7 +2,7 @@ package loan.easyLoan.service.impl;
 
 import loan.easyLoan.entity.RepayMoneyFlow;
 import loan.easyLoan.mapper.RepayMoneyFlowMapper;
-import loan.easyLoan.service.RepayMoneyFlowSrevice;
+import loan.easyLoan.service.RepayMoneyFlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2019/6/10 21:57
  */
 @Service
-public class RepayMoneyFlowSreviceImpl implements RepayMoneyFlowSrevice {
+public class RepayMoneyFlowServiceImpl implements RepayMoneyFlowService {
 
     @Autowired
     private RepayMoneyFlowMapper repayMoneyFlowMapper;

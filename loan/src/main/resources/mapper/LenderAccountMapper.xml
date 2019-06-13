@@ -33,7 +33,7 @@
   <!-- 充值后修改用户资金账户余额 -->
   <update  id="updateRechargeAccount">
         update lender_account
-        set  account_balance=account_balance+#{withdrawMoney}
+        set  account_balance=account_balance+#{rechargeMoney}
         where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
@@ -45,10 +45,11 @@
   </select>
 
   <!-- 借出方查看个人账户 -->
-  <select id="viewLenderAccount" parameterType="String">
-  select account_balance,lent_money,current_income,expected_income
-  from lender_account
-  where id_card=#{idCard,jdbcType=CHAR}
+  <select id="viewLenderAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from lender_account
+    where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 债权关系确立 -->
@@ -68,12 +69,7 @@
   <sql id="Base_Column_List">
     funds_account, id_card, account_balance, lent_money, current_income, expected_income
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from lender_account
-    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from lender_account
     where funds_account = #{fundsAccount,jdbcType=VARCHAR}

@@ -17,6 +17,15 @@ public class BorrowerAccountServiceImpl implements BorrowerAccountService {
     private BorrowerAccountMapper borrowerAccountMapper;
 
     @Override
+    public boolean updateAvailableLimit(String idCard, double intendMoney) {
+        if(borrowerAccountMapper.updateAvailableLimit(idCard,intendMoney) == 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
     public boolean addNewBorrower(String fundsAccount, String idCard, int creditScore, double totalLimit, double availableLimit) {
         int result = borrowerAccountMapper.addNewBorrower(fundsAccount,idCard,creditScore,totalLimit,availableLimit);
         if (result == 1){

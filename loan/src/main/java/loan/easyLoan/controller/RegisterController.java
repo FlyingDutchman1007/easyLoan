@@ -185,6 +185,12 @@ public class RegisterController {
 
         UserOptionalInfo userOptionalInfo = new UserOptionalInfo();
         userOptionalInfo.setIdCard(idCard);
+        userOptionalInfo.setSex("-1");
+        userOptionalInfo.setEducationalLevel("未填");
+        userOptionalInfo.setMarriage("未填");
+        userOptionalInfo.setProfession("未填");
+        userOptionalInfo.setAddress("未填");
+        userOptionalInfo.setSpecialIdentity("1");
 
 
         Depository depository = userRequiredInfoService.verifyBankAccount(bankAccount,phoneNumber,verifyCode);

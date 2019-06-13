@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public interface BorrowerAccountMapper {
 
+    int updateAvailableLimit(String idCard,double intendMoney);//借入方意向借入完成后更新额度
+
     int addNewBorrower(String fundsAccount, String idCard, int creditScore, double totalLimit, double availableLimit);  //新用户注册后分配资金账号
 
     String findFundsAccount(String idCard);  //根据身份证号找到用户的资金账号

@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Ywr
  * @date 2019/6/10 21:57
  */
-public interface RepayMoneyFlowSrevice {
+public interface RepayMoneyFlowService {
 
     boolean insertRepayRecord(ArrayList<RepayMoneyFlow> list);   //借入方还款
 
