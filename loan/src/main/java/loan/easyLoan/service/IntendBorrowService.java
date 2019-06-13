@@ -1,6 +1,7 @@
 package loan.easyLoan.service;
 
 import loan.easyLoan.entity.IntendBorrow;
+import loan.easyLoan.entity.PendingTransaction;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface IntendBorrowService {
 
     void insertApplicateForBorrow(int billId, String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths); //申请借入
 
-    List<IntendBorrow> selectPendingTransaction( String idCard);    //借入方查看待交易记录
+    List<PendingTransaction> selectPendingTransaction(String idCard);    //借入方查看待交易记录
 
     List<Integer> selectLoseEfficacy();  //选择已失效的意向借入
 

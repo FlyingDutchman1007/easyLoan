@@ -2,6 +2,7 @@ package loan.easyLoan.controller;
 
 
 import loan.easyLoan.entity.IntendBorrow;
+import loan.easyLoan.entity.PendingTransaction;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.IntendBorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @RestController
 @RequestMapping
 public class BorrowerUnfinishedFundController {
@@ -22,18 +24,21 @@ public class BorrowerUnfinishedFundController {
     private IntendBorrowService intendBorrowService;
 
     @GetMapping(value = "/borrowerToTrade", produces = "application/json;charset=UTF-8")
-    public IntendBorrow borrowerToTrade(HttpServletRequest httpServletRequest){
+    public List<PendingTransaction> borrowerToTrade(HttpServletRequest httpServletRequest){
         HttpSession session = httpServletRequest.getSession();// 获取session并将userName存入session对象
         // 根据sessionId获取存放在session中的userRequiredInfo
-        UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
-        String id = userRequiredInfo.getIdCard();//获取id号
 
-        int billId = intendBorrowService.selectBillId(id);//取得billID
-        for(IntendBorrow intendBorrow : intendBorrowService.selectPendingTransaction(id)){ //遍历pending队列
-            if(intendBorrow.getBillId() == billId){ //若有匹配的则返回
-                return intendBorrow;
-            }
+        System.out.println("借入的session: "+session.getId());
+        UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
+        String idCard = userRequiredInfo.getIdCard();//获取id号
+
+        System.out.println("目前取得的"+idCard);
+        System.out.println(intendBorrowService.selectPendingTransaction(idCard).isEmpty());
+
+        if(intendBorrowService.selectPendingTransaction(idCard).isEmpty()==false){// 判断列表是否为空
+            System.out.println(intendBorrowService.selectPendingTransaction(idCard).get(0));
+            return intendBorrowService.selectPendingTransaction(idCard); // 取出第一个
         }
-        return new IntendBorrow(); //若无则返回一个空对象
+        return null; //返回取到的结果
     }
 }

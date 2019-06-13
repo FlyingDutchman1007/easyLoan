@@ -1,22 +1,22 @@
 package loan.easyLoan.VO;
 
 public class BorrowerFundVO {
-    private String userNmae;
+    private String userName;
     private String bankAccount;
     private double accountBalance;
     private String fundsAccount;
     private String idCard;
     private double borrowedMoney;
-    private long creditScore;
+    private int creditScore;
     private double totalLimit;
     private double availableLimit;
 
-    public String getUserNmae() {
-        return userNmae;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserNmae(String userNmae) {
-        this.userNmae = userNmae;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getBankAccount() {
@@ -63,7 +63,7 @@ public class BorrowerFundVO {
         return creditScore;
     }
 
-    public void setCreditScore(long creditScore) {
+    public void setCreditScore(int creditScore) {
         this.creditScore = creditScore;
     }
 
@@ -83,8 +83,8 @@ public class BorrowerFundVO {
         this.availableLimit = availableLimit;
     }
 
-    public BorrowerFundVO(String userNmae, String bankAccount, double accountBalance, String fundsAccount, String idCard, double borrowedMoney, long creditScore, double totalLimit, double availableLimit) {
-        this.userNmae = userNmae;
+    public BorrowerFundVO(String userNmae, String bankAccount, double accountBalance, String fundsAccount, String idCard, double borrowedMoney, int creditScore, double totalLimit, double availableLimit) {
+        this.userName = userNmae;
         this.bankAccount = bankAccount;
         this.accountBalance = accountBalance;
         this.fundsAccount = fundsAccount;

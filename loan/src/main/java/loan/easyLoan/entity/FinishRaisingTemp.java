@@ -1,6 +1,7 @@
 package loan.easyLoan.entity;
 
 public class FinishRaisingTemp {
+
     private int billId;
     private String borrowerId;
     private String lenderId;
@@ -90,5 +91,21 @@ public class FinishRaisingTemp {
 
     public void setOutBoundAccount(String outBoundAccount) {
         this.outBoundAccount = outBoundAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "FinishRaisingTemp{" +
+                "billId=" + billId +
+                ", borrowerId='" + borrowerId + '\'' +
+                ", lenderId='" + lenderId + '\'' +
+                ", lendMoney=" + lendMoney +
+                ", intendMoney=" + intendMoney +
+                ", payRate=" + payRate +
+                ", payType=" + payType +
+                ", limitMonths=" + limitMonths +
+                ", inBoundAccount='" + inBoundAccount + '\'' +
+                ", outBoundAccount='" + outBoundAccount + '\'' +
+                '}';
     }
 }

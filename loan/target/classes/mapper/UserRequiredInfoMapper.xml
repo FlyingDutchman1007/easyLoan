@@ -17,7 +17,7 @@
 
   <!-- 用户查找 -->
   <select id="findUserByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_required_info
     where id_card = #{idCard,jdbcType=CHAR}
