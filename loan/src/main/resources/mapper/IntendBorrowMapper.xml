@@ -38,7 +38,7 @@
   <select id="selectBillId" parameterType="String" resultType="int">
   select bill_id
   from intend_borrow
-  where id_card=#{idCard,jdbcType=CHAR} and state=2
+  where id_card=#{idCard,jdbcType=CHAR} and state=0
   order by start_date desc
   limit 1
   </select>
@@ -92,7 +92,7 @@
 
   <!-- 申请借入 -->
   <insert id="insertApplicateForBorrower">
-        insert into intend_borrow
+        insert into intend_borrow(id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money)
         values (#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
     </insert>
 
@@ -101,7 +101,7 @@
   select intend_borrow.bill_id,intend_money,intend_borrow.start_date,intend_borrow.pay_rate,intend_borrow.pay_type,intend_borrow.limit_months,intend_borrow.raised_money
   from intend_borrow left join intend_lend
   on intend_borrow.bill_id
-  where intend_borrow.state=1 or intend_borrow.state=4 and intend_borrow.id_card=#{idCard,jdbcType=CHAR}
+  where (intend_borrow.state=1 or intend_borrow.state=4) and intend_borrow.id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 选择已失效的意向借入 -->

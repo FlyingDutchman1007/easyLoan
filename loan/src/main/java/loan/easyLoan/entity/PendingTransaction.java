@@ -75,4 +75,18 @@ public class PendingTransaction {
     public void setRaisedMoney(double raisedMoney) {
         this.raisedMoney = raisedMoney;
     }
+
+    @Override
+    public String toString() {
+        return "PendingTransaction{" +
+                "billId=" + billId +
+                ", intendMoney=" + intendMoney +
+                ", intendBorrow=" + intendBorrow +
+                ", startDate=" + startDate +
+                ", payRate=" + payRate +
+                ", payType=" + payType +
+                ", limitMonths=" + limitMonths +
+                ", raisedMoney=" + raisedMoney +
+                '}';
+    }
 }

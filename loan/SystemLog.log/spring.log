@@ -3476,4 +3476,107 @@
 ""2019-06-13 12:43:16 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [{timestamp=Thu Jun 13 12:43:16 CST 2019, status=500, error=Internal Server Error, message=
 ### Erro (truncated)...]
 ""2019-06-13 12:43:16 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Exiting from "ERROR" dispatch, status 500
+""2019-06-13 14:20:07 [main] INFO  loan.easyLoan.LoanApplication - Starting LoanApplication on DESKTOP-84OD6M0 with PID 16060 (D:\IDEAprojects\loan\target\classes started by dell in D:\IDEAprojects\loan)
+""2019-06-13 14:20:07 [main] INFO  loan.easyLoan.LoanApplication - No active profile set, falling back to default profiles: default
+""2019-06-13 14:20:08 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5e0605ef] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2019-06-13 14:20:09 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+""2019-06-13 14:20:09 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+""2019-06-13 14:20:09 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.19]
+""2019-06-13 14:20:09 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+""2019-06-13 14:20:09 [main] DEBUG o.s.web.context.ContextLoader - Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+""2019-06-13 14:20:09 [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2092 ms
+""2019-06-13 14:20:10 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 17 mappings in 'requestMappingHandlerMapping'
+""2019-06-13 14:20:10 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+""2019-06-13 14:20:10 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/**/favicon.ico] in 'faviconHandlerMapping'
+""2019-06-13 14:20:10 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+""2019-06-13 14:20:10 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+""2019-06-13 14:20:10 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+""2019-06-13 14:20:10 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+""2019-06-13 14:20:10 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+""2019-06-13 14:20:10 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+""2019-06-13 14:20:10 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+""2019-06-13 14:20:10 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+""2019-06-13 14:20:10 [main] INFO  loan.easyLoan.LoanApplication - Started LoanApplication in 4.736 seconds (JVM running for 6.387)
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 12 ms
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/subRepayment", parameters={}
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Mapped to ResourceHttpRequestHandler ["classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/", "/"]
+""2019-06-13 14:20:15 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 403 FORBIDDEN
+""2019-06-13 14:20:33 [main] INFO  loan.easyLoan.LoanApplication - Starting LoanApplication on DESKTOP-84OD6M0 with PID 9180 (D:\IDEAprojects\loan\target\classes started by dell in D:\IDEAprojects\loan)
+""2019-06-13 14:20:33 [main] INFO  loan.easyLoan.LoanApplication - No active profile set, falling back to default profiles: default
+""2019-06-13 14:20:35 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$36826712] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+""2019-06-13 14:20:36 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+""2019-06-13 14:20:36 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+""2019-06-13 14:20:36 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.19]
+""2019-06-13 14:20:36 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+""2019-06-13 14:20:36 [main] DEBUG o.s.web.context.ContextLoader - Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+""2019-06-13 14:20:36 [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2326 ms
+""2019-06-13 14:20:37 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 17 mappings in 'requestMappingHandlerMapping'
+""2019-06-13 14:20:37 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+""2019-06-13 14:20:37 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/**/favicon.ico] in 'faviconHandlerMapping'
+""2019-06-13 14:20:37 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+""2019-06-13 14:20:37 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+""2019-06-13 14:20:37 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+""2019-06-13 14:20:37 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+""2019-06-13 14:20:37 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+""2019-06-13 14:20:37 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+""2019-06-13 14:20:37 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+""2019-06-13 14:20:37 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+""2019-06-13 14:20:37 [main] INFO  loan.easyLoan.LoanApplication - Started LoanApplication in 4.791 seconds (JVM running for 6.327)
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 13 ms
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/user/register/checkPhoneNumber", parameters={}
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.RegisterController.checkPhoneNumber(java.util.Map)
+""2019-06-13 14:20:49 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:20:49 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - POST "/user/register/checkPhoneNumber", parameters={}
+""2019-06-13 14:20:49 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.RegisterController.checkPhoneNumber(java.util.Map)
+""2019-06-13 14:20:49 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [{phoneNumber=13303498596}]
+""2019-06-13 14:20:49 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+""2019-06-13 14:20:50 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+""2019-06-13 14:20:50 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:20:50 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing ["{"state":"register"}"]
+""2019-06-13 14:20:50 [http-nio-8080-exec-2] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:08 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/user/register/checkPhoneNumber", parameters={}
+""2019-06-13 14:21:08 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.RegisterController.checkPhoneNumber(java.util.Map)
+""2019-06-13 14:21:08 [http-nio-8080-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - POST "/user/register/checkPhoneNumber", parameters={}
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.RegisterController.checkPhoneNumber(java.util.Map)
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [{phoneNumber=13303498596}]
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing ["{"state":"register"}"]
+""2019-06-13 14:21:08 [http-nio-8080-exec-5] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:08 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/user/login", parameters={}
+""2019-06-13 14:21:08 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.LoginController.login(java.util.Map)
+""2019-06-13 14:21:08 [http-nio-8080-exec-4] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - POST "/user/login", parameters={}
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.LoginController.login(java.util.Map)
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [{phoneNumber=13303498596, password=ywr12345}]
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing ["{"state":"0"}"]
+""2019-06-13 14:21:08 [http-nio-8080-exec-6] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:12 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - GET "/borrowerFund", parameters={}
+""2019-06-13 14:21:12 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public loan.easyLoan.VO.BorrowerFundVO loan.easyLoan.controller.BorrowerFundController.borrowerFund()
+""2019-06-13 14:21:12 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:21:12 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [loan.easyLoan.VO.BorrowerFundVO@6d588f52]
+""2019-06-13 14:21:12 [http-nio-8080-exec-7] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:24 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - OPTIONS "/subBorrow", parameters={}
+""2019-06-13 14:21:24 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.BorrowerController.subBorrow(java.util.Map)
+""2019-06-13 14:21:24 [http-nio-8080-exec-8] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:24 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - POST "/subBorrow", parameters={}
+""2019-06-13 14:21:24 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public java.lang.String loan.easyLoan.controller.BorrowerController.subBorrow(java.util.Map)
+""2019-06-13 14:21:24 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [{intendMoney=10000, rate=3, payType=1, limitMonths=6月, startDate=2019-06-13 14:21:24}]
+""2019-06-13 14:21:25 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:21:25 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing ["{"state":"successful"}"]
+""2019-06-13 14:21:25 [http-nio-8080-exec-9] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+""2019-06-13 14:21:26 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - GET "/borrowerFund", parameters={}
+""2019-06-13 14:21:26 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public loan.easyLoan.VO.BorrowerFundVO loan.easyLoan.controller.BorrowerFundController.borrowerFund()
+""2019-06-13 14:21:26 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [application/json, text/javascript, */*;q=0.01] and supported [application/json;charset=UTF-8]
+""2019-06-13 14:21:26 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [loan.easyLoan.VO.BorrowerFundVO@252deb08]
+""2019-06-13 14:21:26 [http-nio-8080-exec-10] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
 "
