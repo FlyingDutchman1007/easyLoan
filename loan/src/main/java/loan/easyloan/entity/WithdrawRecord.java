@@ -1,10 +1,12 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class WithdrawRecord {
 
   private int serialNumber;
-  private java.sql.Timestamp withdrawDate;
+  private Date withdrawDate;
   private double withdrawMoney;
   private String bankAccount;
 
@@ -18,11 +20,11 @@ public class WithdrawRecord {
   }
 
 
-  public java.sql.Timestamp getWithdrawDate() {
+  public Date getWithdrawDate() {
     return withdrawDate;
   }
 
-  public void setWithdrawDate(java.sql.Timestamp withdrawDate) {
+  public void setWithdrawDate(Date withdrawDate) {
     this.withdrawDate = withdrawDate;
   }
 

@@ -1,12 +1,14 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class IntendLend {
 
   private int billId;
   private String idCard;
   private double lendMoney;
-  private java.sql.Timestamp startDate;
+  private Date startDate;
   private int state;
 
 
@@ -37,11 +39,11 @@ public class IntendLend {
   }
 
 
-  public java.sql.Timestamp getStartDate() {
+  public Date getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(java.sql.Timestamp startDate) {
+  public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
 

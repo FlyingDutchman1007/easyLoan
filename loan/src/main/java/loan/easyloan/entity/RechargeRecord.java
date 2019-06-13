@@ -1,10 +1,12 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class RechargeRecord {
 
   private int serialNumber;
-  private java.sql.Timestamp rechargeDate;
+  private Date rechargeDate;
   private double rechargeMoney;
   private String bankAccount;
 
@@ -18,11 +20,11 @@ public class RechargeRecord {
   }
 
 
-  public java.sql.Timestamp getRechargeDate() {
+  public Date getRechargeDate() {
     return rechargeDate;
   }
 
-  public void setRechargeDate(java.sql.Timestamp rechargeDate) {
+  public void setRechargeDate(Date rechargeDate) {
     this.rechargeDate = rechargeDate;
   }
 
