@@ -82,6 +82,12 @@
         values (#{billId,jdbcType=INTEGER},#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
     </insert>
 
+  <!-- 申请借入，无需billId的 -->
+  <insert id="insertApplicateForBorrower">
+        insert into intend_borrow
+        values (#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
+    </insert>
+
   <!-- 借入方查看待交易记录 -->
   <select id="selectPendingTransaction" parameterType="String">
   select bill_id,intend_money,intend_borrow.start_date,pay_rate,pay_type,limit_months,state,raised_money

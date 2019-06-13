@@ -17,7 +17,7 @@
   <insert id="insertRepayRecord" parameterType="java.util.ArrayList">
     insert into repay_money_flow values
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.serial_number},#{item.bill_id},#{item.in_bound_account},#{item.out_bound_account},#{item.exact_date},#{item.money},#{item.interest_money},#{item.liquidated_money},#{item.principal_money})
+      (#{item.serialNumber},#{item.billId},#{item.inBoundAccount},#{item.outBoundAccount},#{item.exactDate},#{item.money},#{item.interestMoney},#{item.liquidatedMoney},#{item.principalMoney})
     </foreach>
   </insert>
 

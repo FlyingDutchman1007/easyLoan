@@ -25,6 +25,7 @@ public class BorrowerFundController {
     public BorrowerFundVO borrowerFund(HttpServletRequest request){
         HttpSession session = request.getSession(); //获取session并将userName存入session对象
         // 根据sessionId获取存放在session中的userRequiredInfo
+        System.out.println(session.getId());
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String id = userRequiredInfo.getIdCard(); //获取id号
 
@@ -35,7 +36,7 @@ public class BorrowerFundController {
 
         borrowerFundVO.setIdCard(id); //为VO设置主键
         BeanUtils.copyProperties(borrowerAccount, borrowerFundVO); // 复制属性
-
+        borrowerFundVO.setUserNmae(userRequiredInfo.getUserName());
         return borrowerFundVO;
 
     }

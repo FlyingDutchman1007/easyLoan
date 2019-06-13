@@ -26,6 +26,7 @@ public class BorrowerController {
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String id = userRequiredInfo.getIdCard();//获取id号
 
+
         if(intendBorrowService.selectPendingTransaction(id)== null){ //如果没有已有的交易记录，说明可以提交借款申请
 
             // 获取一个新账单的所有数据
