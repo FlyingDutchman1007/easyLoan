@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.Map;
 
 @CrossOrigin(allowCredentials="true",allowedHeaders="*")
@@ -42,14 +43,17 @@ public class BorrowerController {
         String id = userRequiredInfo.getIdCard();
 
         //如果没有已有的交易记录，说明可以提交借款申请
-        if(intendBorrowService.selectPendingTransaction(id)== null){
+        if(intendBorrowService.selectPendingTransaction(id).isEmpty()){
 
             // 获取一个新账单的所有数据
-            double intendMoney = (double)obj.get("intendMoney");
-            java.sql.Timestamp startDate = (java.sql.Timestamp)obj.get("startDate");
-            float payRate = (float) obj.get("rate");
-            int payType = (int) obj.get("payType");
-            int limitMonths = (int) obj.get("limitMonths");
+            double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
+            java.sql.Timestamp startDate = Timestamp.valueOf((String)obj.get("startDate"));
+            float rate = Float.parseFloat((String)obj.get("rate"));
+            float payRate = rate/100;
+            int payType = Integer.parseInt((String) obj.get("payType"));
+            String limitMonth = (String) obj.get("limitMonths");
+            int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+            System.out.println(payRate);
 
             // 调用Service提供的方法
             intendBorrowService.insertApplicateForBorrower(id, intendMoney, startDate, payRate, payType, limitMonths);

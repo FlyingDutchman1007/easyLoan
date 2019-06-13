@@ -103,6 +103,6 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
     @Override
     public void insertApplicateForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths) {
         //需要加入的方法
-
+        intendBorrowMapper.insertApplicateForBorrower(idCard,intendMoney,startDate,payRate,payType,limitMonths);
     }
 }

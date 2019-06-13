@@ -40,6 +40,6 @@ public interface IntendBorrowMapper {
     
     int updateInvalidState(List<Integer> list); //失效数据更新状态
 
-    // 新加入的方法，
-    void insertApplicationForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);
+
+    void insertApplicateForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths);// 新加入的方法，
 }
