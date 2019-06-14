@@ -43,10 +43,10 @@ public class BorrowerController {
         // 根据sessionId获取存放在session中的userRequiredInfo
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         //获取id号
-        String id = userRequiredInfo.getIdCard();
+        String idCard = userRequiredInfo.getIdCard();
 
         //如果没有已有的交易记录，说明可以提交借款申请
-        if(intendBorrowService.selectPendingTransaction(id).isEmpty()){
+        if(intendBorrowService.selectPendingTransaction(idCard).isEmpty()){
 
             // 获取一个新账单的所有数据
             double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
@@ -57,10 +57,14 @@ public class BorrowerController {
             String limitMonth = (String) obj.get("limitMonths");
             int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
 
+            if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
+                // 调用Service提供的方法
+                intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);
+                borrowerAccountService.updateAvailableLimit(idCard,intendMoney);
+            }else{
+                return "{\"state\":\"fail\"}"; // 报错 剩余金额不足
+            }
 
-            // 调用Service提供的方法
-            intendBorrowService.insertApplicateForBorrower(id, intendMoney, startDate, payRate, payType, limitMonths);
-            borrowerAccountService.updateAvailableLimit(id,intendMoney);
 
             return "{\"state\":\"successful\"}";
         }else{
