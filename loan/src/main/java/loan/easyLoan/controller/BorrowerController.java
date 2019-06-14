@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.entity.UserRequiredInfo;
+import loan.easyLoan.service.BorrowerAccountService;
 import loan.easyLoan.service.IntendBorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,9 @@ public class BorrowerController {
     private IntendBorrowService intendBorrowService;
 
     @Autowired
+    private BorrowerAccountService borrowerAccountService;
+
+    @Autowired
     private HttpServletRequest httpServletRequest;
 
 
@@ -34,7 +38,6 @@ public class BorrowerController {
     @ApiOperation(value = "意向借入",notes = "意向借入接口")
     @PostMapping(value = "/subBorrow", produces = "application/json;charset=UTF-8")
     public String subBorrow(@RequestBody Map obj){
-
         // 获取session并将userName存入session对象
         HttpSession session = httpServletRequest.getSession();
         // 根据sessionId获取存放在session中的userRequiredInfo
@@ -47,16 +50,18 @@ public class BorrowerController {
 
             // 获取一个新账单的所有数据
             double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
-            java.sql.Timestamp startDate = Timestamp.valueOf((String)obj.get("startDate"));
+            Timestamp startDate = Timestamp.valueOf((String)obj.get("startDate"));
             float rate = Float.parseFloat((String)obj.get("rate"));
             float payRate = rate/100;
             int payType = Integer.parseInt((String) obj.get("payType"));
             String limitMonth = (String) obj.get("limitMonths");
             int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
-            System.out.println(payRate);
+
 
             // 调用Service提供的方法
             intendBorrowService.insertApplicateForBorrower(id, intendMoney, startDate, payRate, payType, limitMonths);
+            borrowerAccountService.updateAvailableLimit(id,intendMoney);
+
             return "{\"state\":\"successful\"}";
         }else{
             return "{\"state\":\"fail\"}";
