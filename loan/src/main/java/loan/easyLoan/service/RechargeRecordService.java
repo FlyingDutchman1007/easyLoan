@@ -8,6 +8,8 @@ import loan.easyLoan.entity.RechargeRecord;
  */
 public interface RechargeRecordService {
 
+    int getSerialNumber(String sCode);//生成充值流水号
+
     boolean insertRechargeRecord(RechargeRecord rechargeRecord);  //生成充值记录
 
 }

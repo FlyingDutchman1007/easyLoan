@@ -185,7 +185,7 @@ public class RegisterController {
 
         UserOptionalInfo userOptionalInfo = new UserOptionalInfo();
         userOptionalInfo.setIdCard(idCard);
-        userOptionalInfo.setSex("-1");
+        userOptionalInfo.setSex("0");
         userOptionalInfo.setEducationalLevel("未填");
         userOptionalInfo.setMarriage("未填");
         userOptionalInfo.setProfession("未填");

@@ -52,7 +52,7 @@ public class UserInfoController {
             userOptionalInfo.setSex((String) obj.get("sex"));
             userOptionalInfo.setEducationalLevel((String) obj.get("educationalLevel"));
             userOptionalInfo.setMarriage((String) obj.get("marriage"));
-            userOptionalInfo.setEducationalLevel((String) obj.get("profession"));
+            userOptionalInfo.setProfession((String) obj.get("profession"));
             userOptionalInfo.setAddress((String) obj.get("address"));
             // 调用Service提供的方法
             userOptionalInfoService.updateUserOptionalInfo(userOptionalInfo);

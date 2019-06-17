@@ -14,14 +14,18 @@ public interface IntendBorrowService {
 
     int selectBillId(String idCard);    //根据用户身份证号查找用户账目id
 
-    List<IntendBorrow> selectCounterParty(float payRate, int limitMonths, double lendMoney);    //查询意向借入方并按照利率从高到低排序
+    List<IntendBorrow> selectCounterParty(float payRate, int limitMonths);    //查询意向借入方并按照利率从高到低排序
 
     boolean updateRaisedMoney(double lendMoney);    //借出方选择好对手方并确定借出之后更新已筹集的资金信息
+
+    IntendBorrow selectIntendAndRaisedMoney(int billId);//查询意向借入总额和已经筹集到的资金
 
     /**
      * 按照目前的逻辑用到的临时表，不是接口，之后再商量，因为不确定临时表的使用是否有问题，可能会改变方式
      */
-    void prepareForTradeCreateTempTable();    //为债权关系确立建立临时表
+    void prepareForTradeCreateTempTable(int billId);    //为债权关系确立建立临时表
+
+    int selectCount();//返回插入trade数量
 
     void addColumn();  //临时表增加字段
 

@@ -1,6 +1,7 @@
 package loan.easyLoan.service.impl;
 
 import loan.easyLoan.entity.IntendLend;
+import loan.easyLoan.entity.PendingTransaction;
 import loan.easyLoan.mapper.IntendLendMapper;
 import loan.easyLoan.service.IntendLendService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,12 @@ public class IntendLendServiceImpl implements IntendLendService {
     }
 
     @Override
-    public List<IntendLend> viewPendingTransaction(String idCard) {
+    public List<IntendLend> selectLender(int billId) {
+        return intendLendMapper.selectLender(billId);
+    }
+
+    @Override
+    public List<PendingTransaction> viewPendingTransaction(String idCard) {
         return intendLendMapper.viewPendingTransaction(idCard);
     }
 

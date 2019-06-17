@@ -14,7 +14,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  */
 @Configuration
 public class AdditionalConfig {
-    /*接口驼峰转换*/
+/*    *//*接口驼峰转换*//*
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customJackson() {
         return new Jackson2ObjectMapperBuilderCustomizer() {
@@ -26,5 +26,5 @@ public class AdditionalConfig {
                 jacksonObjectMapperBuilder.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
             }
         };
-    }
+    }*/
 }

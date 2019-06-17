@@ -1,11 +1,12 @@
 package loan.easyLoan.VO;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 public class BorrowerFinishedRecordVO {
 
     private int billId;
-    private Timestamp startDate;
+    private Date startDate;
     private double money;
     private double interest;
     private double liquidatedMoney;
@@ -13,11 +14,11 @@ public class BorrowerFinishedRecordVO {
     private double rate;
     private int payType;
     private int limitMonths;
-    private Timestamp settleDate;
+    private Date settleDate;
 
     public BorrowerFinishedRecordVO() {}
 
-    public BorrowerFinishedRecordVO(int billId, Timestamp startDate, double money, double interest, double liquidatedMoney, double totalMoney, double rate, int payType, int limitMonths, Timestamp settleDate) {
+    public BorrowerFinishedRecordVO(int billId, Date startDate, double money, double interest, double liquidatedMoney, double totalMoney, double rate, int payType, int limitMonths, Date settleDate) {
         this.billId = billId;
         this.startDate = startDate;
         this.money = money;
@@ -38,11 +39,11 @@ public class BorrowerFinishedRecordVO {
         this.billId = billId;
     }
 
-    public Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
@@ -102,11 +103,11 @@ public class BorrowerFinishedRecordVO {
         this.limitMonths = limitMonths;
     }
 
-    public Timestamp getSettleDate() {
+    public Date getSettleDate() {
         return settleDate;
     }
 
-    public void setSettleDate(Timestamp settleDate) {
+    public void setSettleDate(Date settleDate) {
         this.settleDate = settleDate;
     }
 }

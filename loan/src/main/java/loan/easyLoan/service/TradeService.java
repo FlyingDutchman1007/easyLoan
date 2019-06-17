@@ -1,8 +1,6 @@
 package loan.easyLoan.service;
 
-import loan.easyLoan.entity.Item;
-import loan.easyLoan.entity.RepayMoneyFlow;
-import loan.easyLoan.entity.Trade;
+import loan.easyLoan.entity.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +17,7 @@ public interface TradeService {
     List<Trade> selectPendingRepayment(String inBoundAccount);   //借入方查看待还款记录
     List<Trade> selectPendingReceivable(String outBoundAccount);   //借出方查看待收款记录
 
-    void prepareForTrade();   //将临时表中的数据插入交易表
+    boolean prepareForTrade();   //将临时表中的数据插入交易表
     int selectBillId();
 
     void establish1(int billId, Date exactDate);
@@ -45,4 +43,9 @@ public interface TradeService {
 
     List<Trade> selectBadDebt();    //查询坏账的交易,后期平台对这些借出方进行赔付
     boolean updateBadDebt(List<Trade> list2);   //更新坏账的交易记录
+
+    int selectPayType(int billId);  //根据账目id查看还款类型
+
+    boolean trade(IntendBorrow intendBorrow,List<IntendLend> intendLends);
+    boolean insertRecord(List<Trade> list);
 }

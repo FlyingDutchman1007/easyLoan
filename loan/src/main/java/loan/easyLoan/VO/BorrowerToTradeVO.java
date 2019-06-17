@@ -1,10 +1,12 @@
 package loan.easyLoan.VO;
-// 可用于lendMatchController
+
+import java.util.Date;
+
 public class BorrowerToTradeVO {
 
     private int billId;
     private double intendMoney;
-    private java.sql.Timestamp startDate;
+    private Date startDate;
     private double rate;
     private int payType;
     private int limitMonths;
@@ -12,7 +14,7 @@ public class BorrowerToTradeVO {
 
     public BorrowerToTradeVO() {}
 
-    public BorrowerToTradeVO(int billId, double intendMoney, java.sql.Timestamp startDate, double rate, int payType, int limitMonths, double raisedMoney) {
+    public BorrowerToTradeVO(int billId, double intendMoney, Date startDate, double rate, int payType, int limitMonths, double raisedMoney) {
         this.billId = billId;
         this.intendMoney = intendMoney;
         this.startDate = startDate;
@@ -38,11 +40,11 @@ public class BorrowerToTradeVO {
         this.intendMoney = intendMoney;
     }
 
-    public java.sql.Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(java.sql.Timestamp startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 

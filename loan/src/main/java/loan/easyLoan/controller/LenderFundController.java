@@ -3,14 +3,20 @@ package loan.easyLoan.controller;
 import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.LenderFundVO;
 import loan.easyLoan.entity.LenderAccount;
+import loan.easyLoan.entity.RechargeRecord;
 import loan.easyLoan.entity.UserRequiredInfo;
+import loan.easyLoan.entity.WithdrawRecord;
 import loan.easyLoan.service.LenderAccountService;
+import loan.easyLoan.service.RechargeRecordService;
+import loan.easyLoan.service.UserRequiredInfoService;
+import loan.easyLoan.service.WithdrawRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -26,6 +32,15 @@ public class LenderFundController {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private RechargeRecordService rechargeRecordService;
+
+    @Autowired
+    private UserRequiredInfoService userRequiredInfoService;
+
+    @Autowired
+    private WithdrawRecordService withdrawRecordService;
 
     @ApiOperation(value = "展示借出方资金账户")
     @GetMapping(value = "/lenderFund", produces = "application/json;charset=UTF-8")
@@ -63,8 +78,13 @@ public class LenderFundController {
         String fundsAccount =lenderAccountService.findFundsAccount(id);
 
         boolean ifRechargeSuccessful = lenderAccountService.updateRechargeAccount(Double.parseDouble((String)obj.get("money")),fundsAccount);
-        System.out.println(ifRechargeSuccessful);
         if(ifRechargeSuccessful){
+            RechargeRecord rechargeRecord = new RechargeRecord();
+            rechargeRecord.setSerialNumber(rechargeRecordService.getSerialNumber("recharge"));
+            rechargeRecord.setBankAccount(userRequiredInfoService.findUserByIdCard(id).getBankAccount());
+            rechargeRecord.setRechargeDate(new Date());
+            rechargeRecord.setRechargeMoney(Double.parseDouble((String)obj.get("money")));
+            rechargeRecordService.insertRechargeRecord(rechargeRecord);
             return "{\"state\": \"successful\" }";
         }else {
             return "{\"state\": \"fail\" }";
@@ -82,13 +102,27 @@ public class LenderFundController {
 
         System.out.println(Double.parseDouble((String)obj.get("money")));
 
+        LenderAccount lenderAccount = lenderAccountService.viewLenderAccount(id);
         String  fundsAccount= lenderAccountService.findFundsAccount(id);
-        boolean ifWithdrawSuccessful= lenderAccountService.updateWithdrawAccount(Double.parseDouble((String)obj.get("money")),fundsAccount);
+        double money = Double.parseDouble((String)obj.get("money"));
 
-        if(ifWithdrawSuccessful){
-            return "{\"state\": \"successful\" }";
+        if(lenderAccount.getAccountBalance()>=money){
+            boolean ifWithdrawSuccessful= lenderAccountService.updateWithdrawAccount(Double.parseDouble((String)obj.get("money")),fundsAccount);
+            WithdrawRecord withdrawRecord = new WithdrawRecord();
+            withdrawRecord.setSerialNumber(rechargeRecordService.getSerialNumber("withdraw"));
+            withdrawRecord.setBankAccount(userRequiredInfoService.findUserByIdCard(id).getBankAccount());
+            withdrawRecord.setWithdrawDate(new Date());
+            withdrawRecord.setWithdrawMoney(Double.parseDouble((String)obj.get("money")));
+            System.out.println(withdrawRecord.toString());
+            withdrawRecordService.insertWithdrawRecord(withdrawRecord);
+            if(ifWithdrawSuccessful){
+                return "{\"state\": \"successful\" }";
+            }else {
+                return "{\"state\": \"fail\" }";
+            }
         }else {
             return "{\"state\": \"fail\" }";
         }
+
     }
 }
