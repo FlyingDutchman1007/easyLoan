@@ -34,6 +34,19 @@
     <result property="should_repay_liquidated_money" column="shouldRepayLiquidatedMoney" />
   </resultMap>
 
+  <resultMap id="finishedRecord" type="loan.easyLoan.entity.Trade">
+    <id property="bill_id" column="billId" />
+    <result property="exact_date" column="exactDate" />
+    <result property="money" column="money" />
+    <result property="pay_rate" column="payRate" />
+    <result property="pay_type" column="payType" />
+    <result property="limit_months" column="limitMonths" />
+    <result property="repaid_interest" column="repaidInterest" />
+    <result property="liquidated_money" column="liquidatedMoney" />
+    <result property="finished_date" column="finishedDate" />
+  </resultMap>
+
+
   <!-- 借入方查看待还款记录 -->
   <select  id="selectPendingRepayment" parameterType="String" resultMap="pendingRepaymentRecord_map">
   select bill_id,exact_date,money,pay_rate,pay_type,should_repay_principal,should_repay_interest,should_repay_liquidated_money
@@ -84,14 +97,14 @@
   </select>
 
   <!-- 借入方查看已完成记录 -->
-  <select id="borrowViewFinishedRecord" parameterType="String">
+  <select id="borrowViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
   select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
   from trade
   where in_bound_account=#{fundsAccount,jdbcType=VARCHAR} and finished_date!=null
   </select>
 
   <!-- 借出方查看已完成记录 -->
-  <select id="lendViewFinishedRecord" parameterType="String">
+  <select id="lendViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
   select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
   from trade
   where out_bound_account=#{fundsAccount,jdbcType=VARCHAR} and finished_date!=null
