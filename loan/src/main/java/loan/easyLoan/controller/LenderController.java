@@ -43,6 +43,12 @@ public class LenderController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+
+    @GetMapping(value = "/index")
+    public String aaa(){
+        return "helloWorld";
+    }
+
     @ApiImplicitParams({
             @ApiImplicitParam(name="lendMoney",value="金额",paramType="json"),
             @ApiImplicitParam(name="limitMonths",value="借款期限",paramType="json"),
@@ -72,7 +78,7 @@ public class LenderController {
 
 
     @ApiOperation(value = "意向借出")
-    @GetMapping(value = "/lendMatch", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/lendMatch", produces = "application/json;charset=UTF-8")
     public List<BorrowerToTradeVO> lendMatch(@RequestBody Map obj){
         double lendMoney = Double.parseDouble((String)obj.get("lendMoney"));
         String limitMonth = (String) obj.get("limitMonths");

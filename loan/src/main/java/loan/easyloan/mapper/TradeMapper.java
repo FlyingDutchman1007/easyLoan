@@ -47,4 +47,6 @@ public interface TradeMapper {
 
     int selectPayType(int billId);  //根据账目id查看还款类型
     int insertRecord(List<Trade> list);
+
+    int updateTradeList(Trade trade);//修改交易某条信息
 }

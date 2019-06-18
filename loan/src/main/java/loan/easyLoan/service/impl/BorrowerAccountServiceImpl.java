@@ -84,4 +84,9 @@ public class BorrowerAccountServiceImpl implements BorrowerAccountService {
             return false;
         }
     }
+
+    @Override
+    public double getMoney(String fundsAccount) {
+        return borrowerAccountMapper.getMoney(fundsAccount);
+    }
 }

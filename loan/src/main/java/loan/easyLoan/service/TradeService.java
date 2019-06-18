@@ -48,4 +48,6 @@ public interface TradeService {
 
     boolean trade(IntendBorrow intendBorrow,List<IntendLend> intendLends);
     boolean insertRecord(List<Trade> list);
+
+    boolean updateTradeList(Trade trade);//修改交易某条信息
 }

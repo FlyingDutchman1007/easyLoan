@@ -75,4 +75,9 @@ public class LenderAccountServiceImpl implements LenderAccountService {
             return false;
         }
     }
+
+    @Override
+    public double getMoney(String fundsAccount) {
+        return lenderAccountMapper.getMoney(fundsAccount);
+    }
 }

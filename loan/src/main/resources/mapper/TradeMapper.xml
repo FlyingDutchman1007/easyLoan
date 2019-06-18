@@ -48,6 +48,29 @@
     <result property="finished_date" column="finishedDate" />
   </resultMap>
 
+  <!--修改某条交易信息-->
+  <update id="updateTradeList" parameterType="Trade">
+    update trade
+    set
+    <if test="serial_number!=null">serial_number=#{serialNumber},</if>
+    <if test="bill_id!=null">bill_id=#{billId},</if>
+    <if test="in_bound_account!=null">in_bound_account=#{inBoundAccount},</if>
+    <if test="out_bound_account!=null">out_bound_account=#{outBoundAccount},</if>
+    <if test="money!=null">money=#{money},</if>
+    <if test="limit_months!=null">limit_months=#{limitMonths},</if>
+    <if test="pay_type!=null">pay_type=#{payType},</if>
+    <if test="pay_rate!=null">pay_rate=#{payRate},</if>
+    <if test="exact_date!=null">exact_date=#{exactDate},</if>
+    <if test="next_time_pay!=null">next_time_pay=#{nextTimePay},</if>
+    <if test="repaid_principal!=null">repaid_principal=#{repaidPrincipal},</if>
+    <if test="repaid_interest!=null">repaid_interest=#{repaidInterest},</if>
+    <if test="liquidate_money!=null">liquidate_money=#{liquidateMoney},</if>
+    <if test="should_repay_principal!=null">should_repay_principal=#{shouldRepayPrincipal},</if>
+    <if test="should_repay_interest!=null">should_repay_interest=#{shouldRepayInterest},</if>
+    <if test="should_repay_liquidate_money!=null">should_repay_liquidat_money=#{shouldRepayLiquidateMoney},</if>
+    <if test="finished_date!=null">finished_date=#{finishedDate}</if>
+  </update>
+
 
   <insert id="insertRecord" parameterType="java.util.List">
     insert into trade values

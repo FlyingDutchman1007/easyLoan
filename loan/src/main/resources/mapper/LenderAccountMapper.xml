@@ -10,6 +10,13 @@
     <result column="expected_income" jdbcType="DOUBLE" property="expectedIncome" />
   </resultMap>
 
+  <!--根据资金账户找到帐户余额-->
+  <select id="getMoney" parameterType="String" resultType="double">
+  select account_balance
+  from lender_account
+  where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </select>
+
   <!-- 新用户注册后分配资金账号 -->
   <insert id="addNewLender">
         insert into lender_account

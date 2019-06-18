@@ -255,4 +255,13 @@ public class TradeServiceImpl implements TradeService {
             return false;
         }
     }
+
+    @Override
+    public boolean updateTradeList(Trade trade) {
+        if(tradeMapper.updateTradeList(trade)==1){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
