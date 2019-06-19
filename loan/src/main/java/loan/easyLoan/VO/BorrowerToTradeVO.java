@@ -7,7 +7,7 @@ public class BorrowerToTradeVO {
     private int billId;
     private double intendMoney;
     private Date startDate;
-    private double rate;
+    private double payRate;
     private int payType;
     private int limitMonths;
     private double raisedMoney;
@@ -18,7 +18,7 @@ public class BorrowerToTradeVO {
         this.billId = billId;
         this.intendMoney = intendMoney;
         this.startDate = startDate;
-        this.rate = rate;
+        this.payRate = rate;
         this.payType = payType;
         this.limitMonths = limitMonths;
         this.raisedMoney = raisedMoney;
@@ -49,11 +49,11 @@ public class BorrowerToTradeVO {
     }
 
     public double getRate() {
-        return rate;
+        return payRate;
     }
 
-    public void setRate(double rate) {
-        this.rate = rate;
+    public void setRate(double payRate) {
+        this.payRate = payRate;
     }
 
     public int getPayType() {
@@ -78,5 +78,18 @@ public class BorrowerToTradeVO {
 
     public void setRaisedMoney(double raisedMoney) {
         this.raisedMoney = raisedMoney;
+    }
+
+    @Override
+    public String toString() {
+        return "BorrowerToTradeVO{" +
+                "billId=" + billId +
+                ", intendMoney=" + intendMoney +
+                ", startDate=" + startDate +
+                ", rate=" + payRate +
+                ", payType=" + payType +
+                ", limitMonths=" + limitMonths +
+                ", raisedMoney=" + raisedMoney +
+                '}';
     }
 }

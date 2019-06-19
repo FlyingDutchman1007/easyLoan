@@ -62,6 +62,7 @@ public class LenderFundController {
         // 复制属性
         BeanUtils.copyProperties(lenderAccount, lenderFundVO);
         BeanUtils.copyProperties(userRequiredInfo,lenderFundVO);
+        lenderFundVO.setAvailableMoney(lenderFundVO.getAccountBalance() - lenderFundVO.getLendMoney());
         System.out.println(lenderFundVO.toString());
 
         return lenderFundVO;

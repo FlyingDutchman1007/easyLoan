@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.BorrowerToTradeVO;
 import loan.easyLoan.entity.IntendBorrow;
 import loan.easyLoan.entity.IntendLend;
+import loan.easyLoan.entity.LenderAccount;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.*;
 import org.springframework.beans.BeanUtils;
@@ -43,25 +44,26 @@ public class LenderController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-
     @GetMapping(value = "/index")
     public String aaa(){
         return "helloWorld";
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name="lendMoney",value="金额",paramType="json"),
+            @ApiImplicitParam(name="intendMoney",value="金额",paramType="json"),
             @ApiImplicitParam(name="limitMonths",value="借款期限",paramType="json"),
-            @ApiImplicitParam(name="expectRate",value="预期利率",paramType="json")
+            @ApiImplicitParam(name="expectRate",value="预期利率",paramType="json"),
+            @ApiImplicitParam(name="payType",value="还款方式",paramType="json")
     })
     @ApiOperation(value = "意向借出")
     @PostMapping(value = "/subLendQuery", produces = "application/json;charset=UTF-8")
     public String subLendQuery(@RequestBody Map obj){
-        double lendMoney = Double.parseDouble((String)obj.get("lendMoney"));
+        double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
         String limitMonth = (String) obj.get("limitMonths");
         int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
         float rate = Float.parseFloat((String)obj.get("expectRate"));
         float expectRate = rate/100;
+        int payType = Integer.parseInt((String) obj.get("payType"));
 
         HttpSession session = httpServletRequest.getSession();
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
@@ -69,7 +71,7 @@ public class LenderController {
 
         double balance =  lenderAccountService.selectAccountBalance(idCard);
 
-        if (balance > lendMoney){
+        if (balance > intendMoney){
             return "{\"state\":\"successful\"}";
         }else {
             return "{\"state\":\"fail\"}";
@@ -80,30 +82,23 @@ public class LenderController {
     @ApiOperation(value = "意向借出")
     @PostMapping(value = "/lendMatch", produces = "application/json;charset=UTF-8")
     public List<BorrowerToTradeVO> lendMatch(@RequestBody Map obj){
-        double lendMoney = Double.parseDouble((String)obj.get("lendMoney"));
+        double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
         String limitMonth = (String) obj.get("limitMonths");
         int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
-        float rate = Float.parseFloat((String)obj.get("expectRate"));
-        float expectRate = rate/100;
+        float expectRate = Float.parseFloat((String)obj.get("expectRate"));
+        float rate = expectRate/100;
 
-        List<IntendBorrow> list =  intendBorrowService.selectCounterParty(expectRate,limitMonths);
-        IntendBorrow intendBorrow1 = list.get(0);
-        IntendBorrow intendBorrow2 = list.get(1);
-        IntendBorrow intendBorrow3 = list.get(2);
-
-        BorrowerToTradeVO borrowerToTradeVO1 = new BorrowerToTradeVO();
-        BorrowerToTradeVO borrowerToTradeVO2 = new BorrowerToTradeVO();
-        BorrowerToTradeVO borrowerToTradeVO3 = new BorrowerToTradeVO();
-
-        BeanUtils.copyProperties(intendBorrow1, borrowerToTradeVO1);
-        BeanUtils.copyProperties(intendBorrow2, borrowerToTradeVO2);
-        BeanUtils.copyProperties(intendBorrow3, borrowerToTradeVO3);
-
+        List<IntendBorrow> list =  intendBorrowService.selectCounterParty(rate,limitMonths);
         List<BorrowerToTradeVO> list1 = new ArrayList<>();
-        list1.add(borrowerToTradeVO1);
-        list1.add(borrowerToTradeVO2);
-        list1.add(borrowerToTradeVO3);
 
+        for (int i = 0;i<list.size();i++){
+            IntendBorrow intendBorrow1 = list.get(i);
+            BorrowerToTradeVO borrowerToTradeVO = new BorrowerToTradeVO();
+            BeanUtils.copyProperties(intendBorrow1, borrowerToTradeVO);
+            list1.add(borrowerToTradeVO);
+
+            System.out.println(borrowerToTradeVO.toString());
+        }
         return list1;
     }
 
@@ -132,7 +127,7 @@ public class LenderController {
         if (balance >= lendMoney){
             intendLendService.insertIntendLend(billId,idCard,lendMoney,intendLendDate);
             intendBorrowService.updateRaisedMoney(lendMoney);
-            lenderAccountService.updateLenderAccount(lendMoney,lenderAccountService.findFundsAccount(idCard));
+            lenderAccountService.updateLentMoney(lendMoney,lenderAccountService.findFundsAccount(idCard));
             if(intendBorrowService.selectIntendAndRaisedMoney(billId).getIntendMoney() == intendBorrowService.selectIntendAndRaisedMoney(billId).getRaisedMoney()){
                 intendLendService.updateState(billId);
                 intendBorrowService.updateState(billId);
@@ -147,5 +142,4 @@ public class LenderController {
             return "{\"state\":\"fail\"}";
         }
     }
-
 }
