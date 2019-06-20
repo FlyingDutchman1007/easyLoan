@@ -4,9 +4,12 @@ import loan.easyLoan.entity.CreditParameter;
 import loan.easyLoan.entity.Depository;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.mapper.UserRequiredInfoMapper;
+import loan.easyLoan.service.DepositoryService;
 import loan.easyLoan.service.UserRequiredInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 
 /**
@@ -18,6 +21,9 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Autowired
     private UserRequiredInfoMapper userRequiredInfoMapper;
+
+    @Autowired
+    private DepositoryService depositoryService;
 
     @Override
     public boolean ifRegistered(String phoneNumber) {
@@ -31,26 +37,44 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Override
     public boolean sendPhoneMsg(String phoneNumber) {
+        return true;
     }
 
     @Override
     public boolean verifyPhoneMsg(String phoneNumber, int verifyCode) {
-
+        int code = 123456;
+        if (verifyCode == code){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public boolean verifyIdCard(String userName, String idCard) {
-
+        return true;
     }
 
     @Override
     public boolean boundBankAccount(String bankAccount) {
-
+        return true;
     }
 
     @Override
     public Depository verifyBankAccount(String bankAccount, String phoneNumber, int verifyCode) {
-
+        int num1,num2;
+        do {
+            Random rm = new Random();
+            num1 = rm.nextInt(1000000);
+        }while (!depositoryService.selectIfExistFundsAccount(Integer.toString(num1)));
+        do {
+            Random rm = new Random();
+            num2 = rm.nextInt(10000000);
+        }while (!depositoryService.selectIfExistDepositoryAccount(Integer.toString(num2)));
+        Depository depository = new Depository();
+        depository.setFundsAccount(Integer.toString(num1));
+        depository.setDepositoryAccount(Integer.toString(num2));
+        return depository;
     }
 
     @Override
@@ -80,7 +104,14 @@ public class UserRequiredInfoServiceImpl implements UserRequiredInfoService {
 
     @Override
     public CreditParameter getCreditParameter(String idCard, String bankAccount) {
-
+        Random rm = new Random();
+        int creditScore = rm.nextInt(100) + 550;
+        double totalLimit = ((int)(3E-9 * Math.pow(creditScore, 4.50757555))/100 + 1) * 100;
+        CreditParameter creditParameter = new CreditParameter();
+        creditParameter.setCreditScore(creditScore);
+        creditParameter.setTotalLimit(totalLimit);
+        creditParameter.setAvailableLimit(totalLimit);
+        return creditParameter;
     }
 
     @Override

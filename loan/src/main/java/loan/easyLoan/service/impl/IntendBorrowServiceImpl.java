@@ -1,6 +1,7 @@
 package loan.easyLoan.service.impl;
 
 import loan.easyLoan.entity.IntendBorrow;
+import loan.easyLoan.entity.PendingTransaction;
 import loan.easyLoan.mapper.IntendBorrowMapper;
 import loan.easyLoan.service.IntendBorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
     }
 
     @Override
-    public List<IntendBorrow> selectPendingTransaction(String idCard) {
+    public List<PendingTransaction> selectPendingTransaction(String idCard) {
         return intendBorrowMapper.selectPendingTransaction(idCard);
     }
 
@@ -103,6 +104,6 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
     @Override
     public void insertApplicateForBorrower(String idCard, double intendMoney, Date startDate, float payRate, int payType, int limitMonths) {
         //需要加入的方法
-
+        intendBorrowMapper.insertApplicateForBorrower(idCard,intendMoney,startDate,payRate,payType,limitMonths);
     }
 }

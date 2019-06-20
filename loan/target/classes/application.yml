@@ -5,8 +5,7 @@ spring:
   datasource:
     username: loan
     password: 123456
-    url: jdbc:mysql://192.168.0.189:3306/qingsongdai?serverTimezone=UTC
-#    url: jdbc:mysql://192.168.18.54:3306/qingsongdai?serverTimezone=UTC
+    url: jdbc:mysql://192.168.0.189:3306/qingsongdai?serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
@@ -15,3 +14,25 @@ mybatis:
   typeAliasesPackage: loan.easyLoan.entity
   mapperLocations: classpath:mapper/*.xml
 
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+#上传图片保存的路径
+img:
+  location: E:/test/
+
+#配置上传文件的最大值
+servlet:
+  multipart:
+    max-file-size: 5Mb
+    max-request-size: 50Mb
+
+#自定义文件上传路径
+web:
+  upload-path: D:/Program/nginx-1.14.2/html/static/assets/img/faces/

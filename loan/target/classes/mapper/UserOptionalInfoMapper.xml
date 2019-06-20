@@ -11,98 +11,31 @@
     <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="loan.easyLoan.entity.UserOptionalInfo">
-    <result column="avatar" jdbcType="LONGVARBINARY" property="avatar" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
   </resultMap>
+  <!--  &lt;!&ndash; 多表联合查询 &ndash;&gt;
+    <resultMap id="optionalResultMap" type="UserOptionalInfo">
+      <id column="id_card" property="idCard" />
+      <result column="sex" jdbcType="CHAR" property="sex" />
+      <result column="educational_level" jdbcType="VARCHAR" property="educationalLevel" />
+      <result column="marriage" jdbcType="CHAR" property="marriage" />
+      <result column="profession" jdbcType="VARCHAR" property="profession" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+      <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
+    </resultMap>
+    <resultMap id="requiredResultMap" type="UserRequiredInfo">
+      <id column="id_card" jdbcType="CHAR" property="idCard" />
+      <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
+      <result column="user_name" jdbcType="VARCHAR" property="userName" />
+      <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+      <result column="user_type" jdbcType="INTEGER" property="userType" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+    </resultMap>-->
 
-  <!-- 多表联合查询 -->
-  <resultMap id="optionalResultMap" type="UserOptionalInfo">
-    <id column="id_card" property="idCard" />
-    <result column="sex" jdbcType="CHAR" property="sex" />
-    <result column="educational_level" jdbcType="VARCHAR" property="educationalLevel" />
-    <result column="marriage" jdbcType="CHAR" property="marriage" />
-    <result column="profession" jdbcType="VARCHAR" property="profession" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
-    <association property="supervisor" resultMap="requiredResultMap"/>
-  </resultMap>
-  <resultMap id="requiredResultMap" type="UserRequiredInfo">
-    <id column="id_card" jdbcType="CHAR" property="idCard" />
-    <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
-    <result column="user_type" jdbcType="INTEGER" property="userType" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-  </resultMap>
 
   <!-- 查看个人资料 -->
-  <select  id="viewUserInfo" parameterType="String" resultMap="optionalResultMap">
-  select rt.id_card,rt.phone_number,rt.bank_account,rt.user_name,rt.user_type,ot.address,ot.avatar,ot.educational_level,ot.marriage,ot.profession,ot.sex,ot.special_identity
-  from  user_required_info rt  inner join  user_optional_info ot
-  on rt.id_card=ot.id_card
-  where  rt.id_card=#{id_card};
-  </select>
-
-  <!-- 特殊认证 -->
-  <update id="updateSpecialIdentity">
-    update  user_optional_info
-    set  special_identity=#{specialIdentity}
-    where  id_card=#{id_card}
-  </update>
-
-  <!-- 判断是否为特殊用户 -->
-  <select  id="specialUserCheck" parameterType="String" resultType="String">
-  select special_identity
-  from  user_optional_info
-  where  id_card=#{id_card}
-  </select>
-
-  <!-- 新用户添加 -->
-  <insert  id="addOptionalInfo">
-    insert  into  user_optional_info(id_card)  values(#{id_card})
-  </insert>
-
-  <!--编辑个人信息-->
-  <update id="updateUserOptionalInfo" parameterType="loan.easyLoan.entity.UserOptionalInfo">
-    update user_optional_info
-    <set>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=CHAR},
-      </if>
-      <if test="educationalLevel != null">
-        educational_level = #{educationalLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="marriage != null">
-        marriage = #{marriage,jdbcType=CHAR},
-      </if>
-      <if test="profession != null">
-        profession = #{profession,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="specialIdentity != null">
-        special_identity = #{specialIdentity,jdbcType=CHAR},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=LONGVARBINARY},
-      </if>
-    </set>
-    where id_card = #{idCard,jdbcType=CHAR}
-  </update>
-
-
-
-
-  <sql id="Base_Column_List">
-    id_card, sex, educational_level, marriage, profession, address, special_identity
-  </sql>
-
-  <sql id="Blob_Column_List">
-    avatar
-  </sql>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
+  <select id="viewUserInfo" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -110,21 +43,22 @@
     where id_card = #{idCard,jdbcType=CHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user_optional_info
-    where id_card = #{idCard,jdbcType=CHAR}
-  </delete>
+  <!-- 特殊认证 -->
+  <update id="updateSpecialIdentity">
+    update  user_optional_info
+    set  special_identity=#{specialIdentity}
+    where  id_card=#{idCard,jdbcType=CHAR},
+  </update>
 
-  <insert id="insert" parameterType="loan.easyLoan.entity.UserOptionalInfo">
-    insert into user_optional_info (id_card, sex, educational_level, 
-      marriage, profession, address, 
-      special_identity, avatar)
-    values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR}, 
-      #{marriage,jdbcType=CHAR}, #{profession,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=LONGVARBINARY})
-  </insert>
+  <!-- 判断是否为特殊用户 -->
+  <select  id="specialUserCheck" parameterType="String" resultType="String">
+  select special_identity
+  from  user_optional_info
+  where  id_card=#{idCard,jdbcType=CHAR},
+  </select>
 
-  <insert id="insertSelective" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+  <!-- 新用户添加 -->
+  <insert id="addOptionalInfo" parameterType="loan.easyLoan.entity.UserOptionalInfo">
     insert into user_optional_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="idCard != null">
@@ -175,9 +109,64 @@
         #{specialIdentity,jdbcType=CHAR},
       </if>
       <if test="avatar != null">
-        #{avatar,jdbcType=LONGVARBINARY},
+        #{avatar,jdbcType=VARCHAR},
       </if>
     </trim>
+  </insert>
+
+  <!--编辑个人信息-->
+  <update id="updateUserOptionalInfo" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    update user_optional_info
+    <set>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="educationalLevel != null">
+        educational_level = #{educationalLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null">
+        marriage = #{marriage,jdbcType=CHAR},
+      </if>
+      <if test="profession != null">
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="specialIdentity != null">
+        special_identity = #{specialIdentity,jdbcType=CHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id_card = #{idCard,jdbcType=CHAR}
+  </update>
+
+
+
+
+  <sql id="Base_Column_List">
+    id_card, sex, educational_level, marriage, profession, address, special_identity
+  </sql>
+
+  <sql id="Blob_Column_List">
+    avatar
+  </sql>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_optional_info
+    where id_card = #{idCard,jdbcType=CHAR}
+  </delete>
+
+  <insert id="insert" parameterType="loan.easyLoan.entity.UserOptionalInfo">
+    insert into user_optional_info (id_card, sex, educational_level, 
+      marriage, profession, address, 
+      special_identity, avatar)
+    values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR},
+      #{marriage,jdbcType=CHAR}, #{profession,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="loan.easyLoan.entity.UserOptionalInfo">
@@ -188,7 +177,7 @@
       profession = #{profession,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       special_identity = #{specialIdentity,jdbcType=CHAR},
-      avatar = #{avatar,jdbcType=LONGVARBINARY}
+      avatar = #{avatar,jdbcType=VARCHAR}
     where id_card = #{idCard,jdbcType=CHAR}
   </update>
 

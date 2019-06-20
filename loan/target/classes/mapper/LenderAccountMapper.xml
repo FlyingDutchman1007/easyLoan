@@ -13,42 +13,42 @@
   <!-- 新用户注册后分配资金账号 -->
   <insert id="addNewLender">
         insert into lender_account
-        values (#{funds_account},#{id_card},0.00,0.00,0.00,0.00)
+        values (#{fundsAccount,jdbcType=VARCHAR},#{idCard,jdbcType=CHAR},0.00,0.00,0.00,0.00)
     </insert>
 
   <!-- 由身份证号找到该用户的资金账号 -->
   <select id="findFundsAccount"  resultType="String">
   select funds_account
   from lender_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 提现后修改用户资金账户余额 -->
   <update  id="updateWithdrawAccount">
         update lender_account
-        set  account_balance=account_balance-#{withdraw_money}
-        where  funds_account=#{funds_account}
+        set  account_balance=account_balance-#{withdrawMoney}
+        where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
   <!-- 充值后修改用户资金账户余额 -->
   <update  id="updateRechargeAccount">
         update lender_account
-        set  account_balance=account_balance+#{withdraw_money}
-        where  funds_account=#{funds_account}
+        set  account_balance=account_balance+#{withdrawMoney}
+        where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
   <!-- 查询借出方的帐户余额 -->
   <select id="selectAccountBalance" parameterType="String" resultType="double">
   select account_balance
   from lender_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 借出方查看个人账户 -->
   <select id="viewLenderAccount" parameterType="String">
   select account_balance,lent_money,current_income,expected_income
   from lender_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 债权关系确立 -->
@@ -61,8 +61,8 @@
   <!--更新借出者账户-->
   <update id="updateLenderAccount">
         update lender_account
-        set account_balance=account_balance-#{lend_money},lent_money=lent_money+#{lend_money}
-        where funds_account=#{funds_account}
+        set account_balance=account_balance-#{lendMoney},lent_money=lent_money+#{lendMoney}
+        where funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
   <sql id="Base_Column_List">
@@ -86,49 +86,7 @@
       #{lentMoney,jdbcType=DOUBLE}, #{currentIncome,jdbcType=DOUBLE}, #{expectedIncome,jdbcType=DOUBLE}
       )
   </insert>
-  <insert id="insertSelective" parameterType="loan.easyLoan.entity.LenderAccount">
-    insert into lender_account
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fundsAccount != null">
-        funds_account,
-      </if>
-      <if test="idCard != null">
-        id_card,
-      </if>
-      <if test="accountBalance != null">
-        account_balance,
-      </if>
-      <if test="lentMoney != null">
-        lent_money,
-      </if>
-      <if test="currentIncome != null">
-        current_income,
-      </if>
-      <if test="expectedIncome != null">
-        expected_income,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fundsAccount != null">
-        #{fundsAccount,jdbcType=VARCHAR},
-      </if>
-      <if test="idCard != null">
-        #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="accountBalance != null">
-        #{accountBalance,jdbcType=DOUBLE},
-      </if>
-      <if test="lentMoney != null">
-        #{lentMoney,jdbcType=DOUBLE},
-      </if>
-      <if test="currentIncome != null">
-        #{currentIncome,jdbcType=DOUBLE},
-      </if>
-      <if test="expectedIncome != null">
-        #{expectedIncome,jdbcType=DOUBLE},
-      </if>
-    </trim>
-  </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="loan.easyLoan.entity.LenderAccount">
     update lender_account
     <set>

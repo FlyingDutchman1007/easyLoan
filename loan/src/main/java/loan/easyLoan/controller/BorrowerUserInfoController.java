@@ -1,5 +1,6 @@
 package loan.easyLoan.controller;
 
+import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.BorrowerInfoVO;
 import loan.easyLoan.entity.UserOptionalInfo;
 import loan.easyLoan.entity.UserRequiredInfo;
@@ -12,19 +13,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-@CrossOrigin
+@CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @RestController
 @RequestMapping
 public class BorrowerUserInfoController {
+
+
     @Autowired
-    private UserRequiredInfoService userRequiredInfoService;
     private UserOptionalInfoService userOptionalInfoService;
 
+    @ApiOperation(value = "借入方个人信息")
     @GetMapping(value = "/borrowerInfo", produces = "application/json;charset=UTF-8")
     public BorrowerInfoVO borrowerInfo(HttpServletRequest request){
 
-
-        HttpSession session = request.getSession();//获取session并将userName存入session对象
+        //获取session并将userName存入session对象
+        HttpSession session = request.getSession();
         // 根据sessionId获取存放在session中的userRequiredInfo
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         // 根据RequiredInfo中的id_card号码获取Optional信息
@@ -33,8 +36,10 @@ public class BorrowerUserInfoController {
 
         // 生成VO
         BorrowerInfoVO borrowerInfoVO = new BorrowerInfoVO();
-        BeanUtils.copyProperties(userRequiredInfo, borrowerInfoVO);//将对象属性分别copy到VO中
+        //将对象属性分别copy到VO中
+        BeanUtils.copyProperties(userRequiredInfo, borrowerInfoVO);
         BeanUtils.copyProperties(userOptionalInfo, borrowerInfoVO);
+        System.out.println(borrowerInfoVO.getPhoneNumber());
 
         return borrowerInfoVO;
     }

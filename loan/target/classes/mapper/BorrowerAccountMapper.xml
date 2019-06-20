@@ -9,52 +9,75 @@
     <result column="credit_score" jdbcType="INTEGER" property="creditScore" />
     <result column="total_limit" jdbcType="DOUBLE" property="totalLimit" />
     <result column="available_limit" jdbcType="DOUBLE" property="availableLimit" />
+    <!--<association property="finishRaisingTemp" javaType="FinishRaisingTemp" resultMap="finishRaisingTempMap"></association>-->
   </resultMap>
+  
+  <!--<resultMap id="finishRaisingTempMap" type="FinishRaisingTemp">
+    <id column="lender_id" jdbcType="VARCHAR" property="fundsAccount" />
+    <result column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="borrower_id" jdbcType="VARCHAR" property="borrowerId" />
+    <result column="lend_money" jdbcType="DOUBLE" property="lendMoney" />
+    <result column="intend_money" jdbcType="DOUBLE" property="intendMoney" />
+    <result column="pay_rate" jdbcType="FLOAT" property="payRate" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="limit_months" jdbcType="INTEGER" property="limitMonths" />
+    <result column="in_bound_account" jdbcType="VARCHAR" property="inBoundAccount" />
+    <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
+  </resultMap>-->
+
+  <!--更新借入方额度-->
+  <update id="updateAvailableLimit">
+    update borrower_account
+    set available_limit=available_limit-#{intendMoney,jdbcType=DOUBLE}
+    where id_card=#{idCard,jdbcType=CHAR}
+  </update>
+
 
   <!-- 新用户注册后分配资金账号 -->
   <insert id="addNewBorrower">
         insert into borrower_account
-        values (#{funds_account},#{id_card},0.00,0.00,#{credit_score},#{total_limit},#{available_limit})
+        values (#{fundsAccount,jdbcType=VARCHAR},#{idCard,jdbcType=CHAR},0.00,0.00,#{creditScore,jdbcType=INTEGER},#{totalLimit,jdbcType=DOUBLE},#{availableLimit,jdbcType=DOUBLE})
   </insert>
 
   <!-- 由身份证号找到该用户的资金账号 -->
   <select id="findFundsAccount"  resultType="String">
   select funds_account
   from borrower_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 提现后修改用户资金账户余额 -->
   <update  id="updateWithdrawAccount">
         update borrower_account
-        set  account_balance=account_balance-#{withdraw_money}
-        where  funds_account=#{funds_account}
+        set  account_balance=account_balance-#{withdrawMoney}
+        where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
   <!-- 充值后修改用户资金账户余额 -->
   <update  id="updateRechargeAccount">
         update borrower_account
-        set  account_balance=account_balance+#{withdraw_money}
-        where  funds_account=#{funds_account}
+        set  account_balance=account_balance+#{rechargeMoney}
+        where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
   <!-- 借入方查看个人账户 -->
-  <select id="findBorrowerFundsAccount" parameterType="String">
-  select account_balance,credit_score,total_limit,available_limit
+  <select id="viewBorrowerAccount" parameterType="String" resultType="BorrowerAccount">
+  /*select account_balance,credit_score,total_limit,available_limit*/
+  select *
   from borrower_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 查看借入方的额度 -->
   <select id="selectAvailableLimit" parameterType="String" resultType="double">
   select available_limit
   from borrower_account
-  where id_card=#{id_card}
+  where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 债权关系确立 -->
-  <select id="viewBorrowerAccount" resultType="String">
-  select funds_account
+  <select id="findBorrowerFundsAccount" resultType="String">
+  select in_bound_account
   from ${finish_raising_temp} inner join borrower_account
   on ${finish_raising_temp}.borrower_id=borrower_account.id_card
   </select>
@@ -62,8 +85,8 @@
   <!--更新借入方资金账户-->
   <update id="updateBorrowerAccount">
         update borrower_account
-        set account_balance=account_balance+#{intend_money},borrowed_money=borrowed_money+#{intend_money}
-        where funds_account=#{funds_account}
+        set account_balance=account_balance+#{intendMoney},borrowed_money=borrowed_money+#{intendMoney}
+        where funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
 

@@ -13,40 +13,48 @@
     <result column="raised_money" jdbcType="DOUBLE" property="raisedMoney" />
   </resultMap>
 
-  <resultMap type="loan.easyLoan.entity.IntendBorrow" id="counterparty_map">
-    <!-- id是主键的映射，其中property是pojo中主键的属性，column是返回结果中主键的列 -->
-    <id property="bill_id" column="bill_id" />
-    <!-- 普通列使用result映射 -->
-    <result column="intend_money" property="intend_money" />
-    <result column="start_date" property="start_date" />
-    <result column="pay_rate" property="pay_rate" />
-    <result column="pay_type" property="pay_type" />
-    <result column="limit_months" property="limit_months" />
-    <result column="state" property="state" />
-    <result column="raised_money" property="raised_money" />
+  <resultMap id="borrowAndLend" type="IntendBorrow">
+    <id column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="intend_money" jdbcType="DOUBLE" property="intendMoney" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="pay_rate" jdbcType="REAL" property="payRate" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="limit_months" jdbcType="INTEGER" property="limitMonths" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="raised_money" jdbcType="DOUBLE" property="raisedMoney" />
+    <association property="intendLend" javaType="IntendLend" resultMap="intendLendMap"></association>
+  </resultMap>
+
+  <resultMap id="intendLendMap" type="loan.easyLoan.entity.IntendLend">
+    <id column="bill_id" jdbcType="INTEGER" property="billId" />
+    <id column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="lend_money" jdbcType="DOUBLE" property="lendMoney" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
 
   <!-- 根据借入方用户身份证号查找用户账目id -->
   <select id="selectBillId" parameterType="String" resultType="int">
   select bill_id
   from intend_borrow
-  where id_card=#{id_card} and state=2
+  where id_card=#{idCard,jdbcType=CHAR} and state=1
   order by start_date desc
   limit 1
   </select>
 
   <!--  查询意向借入方并按照利率从高到低排序 -->
-  <select  id="selectCounterParty" resultMap="counterparty_map">
-  select  bill_id,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
+  <select  id="selectCounterParty" resultMap="BaseResultMap">
+  select  bill_id,id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
   from  intend_borrow
-  where  pay_rate=#{expect_rate} and state=0 and limit_months=#{expect_months} and #{lend_money}>intend_money-raised_money
+  where  pay_rate=#{expectRate} and state=1 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
   order by  pay_rate  desc
   </select>
 
   <!--  借出方选择好对手方并确定借出之后 -->
   <update  id="updateRaisedMoney">
         update  intend_borrow
-        set  raised_money=raised_money+#{lend_money}
+        set  raised_money=raised_money+#{lendMoney}
     </update>
 
   <!-- 债权关系确立的过程 -->
@@ -64,7 +72,7 @@
     </update>
   <update id="updateBoundAccount">
         update ${finish_raising_temp}
-        set ${finish_raising_temp}.in_bound_account=#{borrower_funds_account},${finish_raising_temp}.out_bound_account=#{lender_funds_account}
+        set ${finish_raising_temp}.in_bound_account=#{borrowerFundsAccount},${finish_raising_temp}.out_bound_account=#{lenderFundsAccount}
     </update>
   <update id="dropTempTable">
         drop table if exists ${finish_raising_temp}
@@ -73,21 +81,27 @@
   <update id="updateState" parameterType="int">
         update intend_borrow
         set state=2
-        where bill_id=#{bill_id}
+        where bill_id=#{billId,jdbcType=INTEGER}
     </update>
 
   <!-- 申请借入 -->
   <insert id="insertApplicateForBorrow">
         insert into intend_borrow
-        values (#{bill_id},#{id_card},#{intend_money},#{start_date},#{pay_rate},#{pay_type},#{limit_months},1,0.00)
+        values (#{billId,jdbcType=INTEGER},#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
+    </insert>
+
+  <!-- 申请借入 -->
+  <insert id="insertApplicateForBorrower">
+        insert into intend_borrow(id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money)
+        values (#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
     </insert>
 
   <!-- 借入方查看待交易记录 -->
-  <select id="selectPendingTransaction" parameterType="String">
-  select bill_id,intend_money,intend_borrow.start_date,pay_rate,pay_type,limit_months,state,raised_money
+  <select id="selectPendingTransaction" parameterType="String" resultType="PendingTransaction">
+  select intend_borrow.bill_id,intend_money,intend_borrow.start_date,intend_borrow.pay_rate,intend_borrow.pay_type,intend_borrow.limit_months,intend_borrow.raised_money
   from intend_borrow left join intend_lend
-  on bill_id
-  where intend_borrow.state=1 or intend_borrow.state=4 and id_card=#{id_card}
+  on intend_borrow.bill_id
+  where (intend_borrow.state=1 or intend_borrow.state=4) and intend_borrow.id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 选择已失效的意向借入 -->
@@ -102,14 +116,14 @@
     update intend_borrow
     <foreach collection="list" item="billID" index="index" separator=",">
       set state=0
-      where bill_id=#{billID}
+      where bill_id=#{billId,jdbcType=INTEGER}
     </foreach>
   </update>
 
   <!-- 申请借入新方法，让billId递增 -->
   <insert id="insertApplicationForBorrower">
         insert into intend_borrow
-        values (#{id_card},#{intend_money},#{start_date},#{pay_rate},#{pay_type},#{limit_months},1,0.00)
+        values (#{idCard,jdbcType=CHAR},#{intendMoney,jdbcType=DOUBLE},#{startDate,jdbcType=TIMESTAMP},#{payRate,jdbcType=REAL},#{payType,jdbcType=INTEGER},#{limitMonths,jdbcType=INTEGER},1,0.00)
     </insert>
 
 
