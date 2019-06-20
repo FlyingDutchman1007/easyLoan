@@ -11,7 +11,7 @@
     <result column="special_identity" jdbcType="CHAR" property="specialIdentity" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="loan.easyLoan.entity.UserOptionalInfo">
-    <result column="avatar" jdbcType="LONGVARBINARY" property="avatar" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
   </resultMap>
   <!--  &lt;!&ndash; 多表联合查询 &ndash;&gt;
     <resultMap id="optionalResultMap" type="UserOptionalInfo">
@@ -109,7 +109,7 @@
         #{specialIdentity,jdbcType=CHAR},
       </if>
       <if test="avatar != null">
-        #{avatar,jdbcType=LONGVARBINARY},
+        #{avatar,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -137,7 +137,7 @@
         special_identity = #{specialIdentity,jdbcType=CHAR},
       </if>
       <if test="avatar != null">
-        avatar = #{avatar,jdbcType=LONGVARBINARY},
+        avatar = #{avatar,jdbcType=VARCHAR},
       </if>
     </set>
     where id_card = #{idCard,jdbcType=CHAR}
@@ -164,9 +164,9 @@
     insert into user_optional_info (id_card, sex, educational_level, 
       marriage, profession, address, 
       special_identity, avatar)
-    values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR}, 
+    values (#{idCard,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{educationalLevel,jdbcType=VARCHAR},
       #{marriage,jdbcType=CHAR}, #{profession,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=LONGVARBINARY})
+      #{specialIdentity,jdbcType=CHAR}, #{avatar,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="loan.easyLoan.entity.UserOptionalInfo">
@@ -177,7 +177,7 @@
       profession = #{profession,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       special_identity = #{specialIdentity,jdbcType=CHAR},
-      avatar = #{avatar,jdbcType=LONGVARBINARY}
+      avatar = #{avatar,jdbcType=VARCHAR}
     where id_card = #{idCard,jdbcType=CHAR}
   </update>
 

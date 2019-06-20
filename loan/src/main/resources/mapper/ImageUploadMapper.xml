@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="loan.easyLoan.entity.ImageUploadMapper" >
+  <resultMap id="BaseResultMap" type="loan.easyLoan.entity.ImageUpload" >
+    <id column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+  </resultMap>
+  <insert id="insert" parameterType="loan.easyLoan.entity.ImageUpload" useGeneratedKeys="true" keyProperty="imgPath">
+    insert into imgUploadInfo (imgPath)
+    values (#{imgPath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="loan.easyLoan.entity.ImageUpload" useGeneratedKeys="true" keyProperty="imgPath">
+    insert into imgUploadInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imgPath != null" >
+        imgPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imgPath != null" >
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertImgPath" parameterType="loan.easyLoan.entity.ImageUpload">
+    update user_optional_info
+    set avatar=#{avatar, jdbcType = VARCHAR}
+    where id_card=#{idCard, jdbcType=VARCHAR}
+
+  </insert>
+</mapper>

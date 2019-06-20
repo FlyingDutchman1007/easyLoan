@@ -65,7 +65,6 @@ public class BorrowerController {
                 return "{\"state\":\"fail\"}"; // 报错 剩余金额不足
             }
 
-
             return "{\"state\":\"successful\"}";
         }else{
             return "{\"state\":\"fail\"}";
