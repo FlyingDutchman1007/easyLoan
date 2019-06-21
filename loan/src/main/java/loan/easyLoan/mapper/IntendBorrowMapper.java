@@ -16,7 +16,7 @@ public interface IntendBorrowMapper {
     
     int selectBillId(String idCard);    //根据用户身份证号查找用户账目id
     
-    List<IntendBorrow> selectCounterParty(float payRate, int limitMonths);    //查询意向借入方并按照利率从高到低排序
+    List<IntendBorrow> selectCounterParty(float payRate, int limitMonths,int payType);    //查询意向借入方并按照利率从高到低排序
     
     int updateRaisedMoney(double lendMoney);    //借出方选择好对手方并确定借出之后更新已筹集的资金信息
 

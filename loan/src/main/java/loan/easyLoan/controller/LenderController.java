@@ -1,6 +1,7 @@
 package loan.easyLoan.controller;
 
 
+import loan.easyLoan.entity.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +10,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.BorrowerToTradeVO;
-import loan.easyLoan.entity.IntendBorrow;
-import loan.easyLoan.entity.IntendLend;
-import loan.easyLoan.entity.LenderAccount;
-import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +62,7 @@ public class LenderController {
     @PostMapping(value = "/subLendQuery", produces = "application/json;charset=UTF-8")
     public String subLendQuery(@RequestBody Map obj){
         double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
-        String limitMonth = (String) obj.get("limitMonths");
-        int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+        int limitMonths = (Integer) obj.get("limitMonths");
         float rate = Float.parseFloat((String)obj.get("expectRate"));
         float expectRate = rate/100;
         int payType = Integer.parseInt((String) obj.get("payType"));
@@ -89,18 +85,18 @@ public class LenderController {
     @PostMapping(value = "/lendMatch", produces = "application/json;charset=UTF-8")
     public List<BorrowerToTradeVO> lendMatch(@RequestBody Map obj){
         double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
-        String limitMonth = (String) obj.get("limitMonths");
-        int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+        int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
         float expectRate = Float.parseFloat((String)obj.get("expectRate"));
         float rate = expectRate/100;
+        int payType = Integer.parseInt((String)obj.get("payType"));
 
-        List<IntendBorrow> list =  intendBorrowService.selectCounterParty(rate,limitMonths);
+        List<Match> list =  intendBorrowService.selectCounterParty(rate,limitMonths,payType);
         List<BorrowerToTradeVO> list1 = new ArrayList<>();
 
         for (int i = 0;i<list.size();i++){
-            IntendBorrow intendBorrow1 = list.get(i);
+            Match match = list.get(i);
             BorrowerToTradeVO borrowerToTradeVO = new BorrowerToTradeVO();
-            BeanUtils.copyProperties(intendBorrow1, borrowerToTradeVO);
+            BeanUtils.copyProperties(match, borrowerToTradeVO);
             list1.add(borrowerToTradeVO);
 
             System.out.println(borrowerToTradeVO.toString());

@@ -38,16 +38,12 @@ public class BorrowerController {
     @ApiOperation(value = "意向借入",notes = "意向借入接口")
     @PostMapping(value = "/subBorrow", produces = "application/json;charset=UTF-8")
     public String subBorrow(@RequestBody Map obj){
-<<<<<<< HEAD
         // 获取session并将userName存入session对象
         HttpSession session = httpServletRequest.getSession();
         // 根据sessionId获取存放在session中的userRequiredInfo
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         //获取id号
-=======
-        HttpSession session = httpServletRequest.getSession();
-        UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
->>>>>>> Ywr470832459-patch-1
+
         String idCard = userRequiredInfo.getIdCard();
 
         //如果没有已有的交易记录，说明可以提交借款申请
@@ -63,7 +59,6 @@ public class BorrowerController {
             int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
 
             if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
-<<<<<<< HEAD
                 // 调用Service提供的方法
                 intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);
                 borrowerAccountService.updateAvailableLimit(idCard,intendMoney);
@@ -71,13 +66,6 @@ public class BorrowerController {
                 return "{\"state\":\"fail\"}"; // 报错 剩余金额不足
             }
 
-=======
-                intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);
-                borrowerAccountService.updateAvailableLimit(idCard,intendMoney);
-            }else{
-                return "{\"state\":\"fail\"}";
-            }
->>>>>>> Ywr470832459-patch-1
             return "{\"state\":\"successful\"}";
         }else{
             return "{\"state\":\"fail\"}";

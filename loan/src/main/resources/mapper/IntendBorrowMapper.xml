@@ -58,9 +58,9 @@
 
   <!--  查询意向借入方并按照利率从高到低排序 -->
   <select  id="selectCounterParty" resultMap="BaseResultMap">
-  select  bill_id,id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
+  select *
   from  intend_borrow
-  where  pay_rate=#{payRate} and state=1 and limit_months=#{limitMonths}
+  where  pay_rate &gt;= #{payRate} and state=1 and pay_type=#{payType,jdbcType=INTEGER} and limit_months &lt;= #{limitMonths}
   order by  pay_rate  desc
   </select>
 
@@ -160,11 +160,11 @@
 
 
   <sql id="Base_Column_List">
-    bill_id, id_card, intend_money, start_date, pay_rate, pay_type, limit_months, state, 
+    bill_id, id_card, intend_money, start_date, pay_rate, pay_type, limit_months, state,
     raised_money
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from intend_borrow
     where bill_id = #{billId,jdbcType=INTEGER}
@@ -174,12 +174,12 @@
     where bill_id = #{billId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="loan.easyLoan.entity.IntendBorrow">
-    insert into intend_borrow (bill_id, id_card, intend_money, 
-      start_date, pay_rate, pay_type, 
+    insert into intend_borrow (bill_id, id_card, intend_money,
+      start_date, pay_rate, pay_type,
       limit_months, state, raised_money
       )
-    values (#{billId,jdbcType=INTEGER}, #{idCard,jdbcType=CHAR}, #{intendMoney,jdbcType=DOUBLE}, 
-      #{startDate,jdbcType=TIMESTAMP}, #{payRate,jdbcType=REAL}, #{payType,jdbcType=INTEGER}, 
+    values (#{billId,jdbcType=INTEGER}, #{idCard,jdbcType=CHAR}, #{intendMoney,jdbcType=DOUBLE},
+      #{startDate,jdbcType=TIMESTAMP}, #{payRate,jdbcType=REAL}, #{payType,jdbcType=INTEGER},
       #{limitMonths,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{raisedMoney,jdbcType=DOUBLE}
       )
   </insert>

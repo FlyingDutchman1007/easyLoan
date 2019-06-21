@@ -5,6 +5,8 @@ import loan.easyLoan.mapper.TradeMapper;
 import loan.easyLoan.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,10 +43,10 @@ public class TradeServiceImpl implements TradeService {
     private RepayMoneyFlowService repayMoneyFlowService;
 
     @Override
-    public String judgeDeadline(int billId) {
-        int payType = tradeMapper.selectPayType(billId);
+    public String judgeDeadline(int serialNumber) {
+        int payType = tradeMapper.selectPayType(serialNumber);
 
-        Date exactDate = tradeMapper.selectExactDate(billId);
+        Date exactDate = tradeMapper.selectExactDate(serialNumber);
         Date date = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -201,11 +203,11 @@ public class TradeServiceImpl implements TradeService {
             double nextTimePay;
             if(payType==1){
                 shouldRepayPrincipal = money/limitMonths;
-                shouldRepayInterest = money*payRate/limitMonths;
+                shouldRepayInterest = money*payRate;
                 nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
             }else {
                 shouldRepayPrincipal = money/limitMonths*3;
-                shouldRepayInterest = money*payRate/limitMonths*3;
+                shouldRepayInterest = money*payRate*3;
                 nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
             }
             double shouldRepayLiquidatedMoney = 0.0;
@@ -311,19 +313,24 @@ public class TradeServiceImpl implements TradeService {
             //更新每笔还款信息
 
         }
+
+        boolean judgeInMoneyFlow;
+        /**
+         * 4.更新借入方账户余额
+         */
+        judgeInMoneyFlow = borrowerAccountService.updateWithdrawAccount(repaymentmoney, inAccount);
         //更新成功返回true
-        return true;
+        if (judgeInMoneyFlow)
+            return true;
+        return false;
     }
 
     //用来更新每条Trade中的数据并更新对应的还款流水、资金账户数据库 该方法在updateAccount()调用
+    @Transactional(rollbackFor=Exception.class)
     public boolean updateEveryRepayment(Trade tra, double rateMoney){
 
         //若还款金额大于本次应还直接输出false
         if (rateMoney > tra.getNextTimePay()) {
-            return false;
-        }
-        //若已有日期则该笔交易已结束
-        if(tra.getFinishedDate() != null) {
             return false;
         }
         //记录本次还款违约金
@@ -332,6 +339,7 @@ public class TradeServiceImpl implements TradeService {
         double needPayInterest = 0;
         //记录本次还款本金
         double needPayPrincipal = 0;
+
         /**
          * 1.先还违约金
          */
@@ -353,20 +361,21 @@ public class TradeServiceImpl implements TradeService {
             needPayLiquidate = tra.getShouldRepayLiquidatedMoney() - tra.getLiquidatedMoney();
             //更新已还违约金金额
             tra.setLiquidatedMoney(tra.getShouldRepayLiquidatedMoney());
-
-            /**
-             * 2.再还利息
-             */
-            //剩余还款金额小于利息直接还款到利息金
-            if(rateMoney < tra.getNextTimePay() - tra.getShouldRepayPrincipal()){
-                //更新已还利息
-                tra.setRepaidInterest(tra.getRepaidInterest() + rateMoney);
-                //更新当期应还
-                tra.setNextTimePay(tra.getNextTimePay() - rateMoney);
-                //计算本次还款利息
-                needPayInterest = rateMoney;
-            }
-            else{//剩余金额大于等于还款利息 利息全部还完
+}
+        /**
+         * 2.再还利息
+         */
+        //剩余还款金额小于利息直接还款到利息金
+        if(rateMoney < tra.getNextTimePay() - tra.getShouldRepayPrincipal()){
+            //更新已还利息
+            tra.setRepaidInterest(tra.getRepaidInterest() + rateMoney);
+            //更新当期应还
+            tra.setNextTimePay(tra.getNextTimePay() - rateMoney);
+            //计算本次还款利息
+            needPayInterest = rateMoney;
+        }
+        else{//剩余金额大于等于还款利息 利息全部还完
+            if((tra.getNextTimePay() - tra.getShouldRepayPrincipal())> 0) {
                 //计算剩余金额
                 rateMoney = rateMoney - (tra.getNextTimePay() - tra.getShouldRepayPrincipal());
                 //计算已支付利息
@@ -375,89 +384,75 @@ public class TradeServiceImpl implements TradeService {
                 needPayInterest = tra.getNextTimePay() - tra.getShouldRepayPrincipal();
                 //计算当期应还金额
                 tra.setNextTimePay(tra.getNextTimePay() - needPayInterest);
-
-                /**
-                 * 3.最后还本金
-                 */
-                //更新当前应还金额
-                tra.setNextTimePay(tra.getNextTimePay() - rateMoney);
-                //更新已支付本金
-                tra.setRepaidPrincipal(tra.getRepaidPrincipal() + rateMoney);
-                //计算本次还款本金
-                needPayPrincipal = rateMoney;
             }
-        }
 
+            /**
+             * 3.最后还本金
+             */
+            //更新当前应还金额
+            tra.setNextTimePay(tra.getNextTimePay() - rateMoney);
+            //更新已支付本金
+            tra.setRepaidPrincipal(tra.getRepaidPrincipal() + rateMoney);
+            //计算本次还款本金
+            needPayPrincipal = rateMoney;
+        }
         //还款完成更新日期
-        if(tra.getNextTimePay() == 0) {
+        if(tra.getMoney() == tra.getRepaidPrincipal()) {
             tra.setFinishedDate(new Date());
         }
         /**
-         * 计算完成 更新数据库
+         * 计算完成 更新数据库 执行失败进行回滚
          */
+        //判断更新是否正常
+        boolean judgeTradeList;
+        //增加流水成功判断
+        boolean judgeRepayMoneyFlow;
+        //借出到账成功判断
+        boolean judgeOutMoneyFlow;
 
-        /**
-         * 1.还款完成更新trade表单
-         */
-        boolean judgeTradeList = tradeService.updateTradeList(tra);
-        //boolean updateTradeList(Trade trade);
-        // System.out.println(tradeService.updateTradeList(tra));
-        // boolean judgeTradeList = true;
-        //System.out.println("11111");
-        /**
-         * 2.增加还款新流水
-         */
+        try {
+            /**
+             * 1.还款完成更新trade表单
+             */
+            judgeTradeList= tradeService.updateTradeList(tra);
 
-        boolean judgeRepayMoneyFlow;//增加流水成功判断
-        RepayMoneyFlow repayMoneyFlow = new RepayMoneyFlow();
-        repayMoneyFlow.setBillId(tra.getBillId());
-        repayMoneyFlow.setInBoundAccount(tra.getInBoundAccount());
-        repayMoneyFlow.setOutBoundAccount(tra.getOutBoundAccount());
-        Date date = new Date();
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //System.out.println(sdf.format(date));
-        repayMoneyFlow.setExactDate(date);
-        repayMoneyFlow.setInterestMoney(needPayInterest);
-        repayMoneyFlow.setLiquidatedMoney(needPayLiquidate);
-        repayMoneyFlow.setMoney(rateMoney);
-        repayMoneyFlow.setPrincipalMoney(needPayPrincipal);
-        repayMoneyFlow.setSerialNumber(rechargeRecordService.getSerialNumber("repay_money_flow"));
+            /**
+             * 2.增加还款新流水
+             */
+            //将值赋值到还款流水号中
+            RepayMoneyFlow repayMoneyFlow = new RepayMoneyFlow();
+            repayMoneyFlow.setBillId(tra.getBillId());
+            repayMoneyFlow.setInBoundAccount(tra.getInBoundAccount());
+            repayMoneyFlow.setOutBoundAccount(tra.getOutBoundAccount());
+            Date date = new Date();
+            repayMoneyFlow.setExactDate(date);
+            repayMoneyFlow.setInterestMoney(needPayInterest);
+            repayMoneyFlow.setLiquidatedMoney(needPayLiquidate);
+            repayMoneyFlow.setMoney(rateMoney);
+            repayMoneyFlow.setPrincipalMoney(needPayPrincipal);
+            repayMoneyFlow.setSerialNumber(rechargeRecordService.getSerialNumber("repay_money_flow"));
 
+            //将RepayMoneyFlow添加到list中
+            List<RepayMoneyFlow> repayMoneyFlows = new ArrayList<>();
+            repayMoneyFlows.add(repayMoneyFlow);
+            judgeRepayMoneyFlow = repayMoneyFlowService.insertRepayRecord((ArrayList<RepayMoneyFlow>) repayMoneyFlows);
 
-        List<RepayMoneyFlow> repayMoneyFlows = new ArrayList<RepayMoneyFlow>();//将RepayMoneyFlow添加到list中
-        repayMoneyFlows.add(repayMoneyFlow);
-        judgeRepayMoneyFlow = repayMoneyFlowService.insertRepayRecord((ArrayList<RepayMoneyFlow>) repayMoneyFlows);
-        System.out.println("22222");
-
-
-
-        /**
-         * 3.更新借出方账户余额
-         */
-
-        boolean judgeOutMoneyFlow;//借出到账成功判断
-        double inMoney = borrowerAccountService.getMoney(tra.getInBoundAccount());
-        judgeOutMoneyFlow = lenderAccountService.updateRechargeAccount(rateMoney+inMoney,tra.getOutBoundAccount());
-        System.out.println("33333");
+            /**
+             * 3.更新借出方账户余额
+             */
+            judgeOutMoneyFlow = lenderAccountService.updateRechargeAccount(rateMoney, tra.getOutBoundAccount());
+            //借入出钱成功判断
 
 
-
-        /**
-         * 4.更新借入方账户余额
-         */
-
-        boolean judgeInMoneyFlow;//借入出钱成功判断
-        double outMoney = borrowerAccountService.getMoney(tra.getOutBoundAccount());
-        judgeInMoneyFlow = borrowerAccountService.updateWithdrawAccount(rateMoney+outMoney, tra.getInBoundAccount());
-
-        System.out.println("44444");
-
-
-        if(judgeTradeList && judgeInMoneyFlow && judgeOutMoneyFlow && judgeRepayMoneyFlow) {
-            //if(judgeTradeList)
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//如果update2()抛了异常,update()会回滚,不影响事物正常执行
+            return false;
+        }
+        //全部更新完成返回成功
+        if(judgeTradeList && judgeOutMoneyFlow && judgeRepayMoneyFlow) {
             return true;
         }
         return false;
     }
-
 }

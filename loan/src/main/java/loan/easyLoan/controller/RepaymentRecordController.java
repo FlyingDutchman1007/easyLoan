@@ -1,10 +1,12 @@
 package loan.easyLoan.controller;
 import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.RepaymentRecordVO;
+import loan.easyLoan.entity.IntendLend;
 import loan.easyLoan.entity.RepayMoneyFlow;
 import loan.easyLoan.entity.Trade;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.BorrowerAccountService;
+import loan.easyLoan.service.IntendLendService;
 import loan.easyLoan.service.RepayMoneyFlowService;
 import loan.easyLoan.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,8 @@ public class RepaymentRecordController {
     private BorrowerAccountService borrowerAccountService;  //实例化一个借入方交易服务
     @Autowired
     private RepayMoneyFlowService repayMoneyFlowService; //实例化一个借入方交易服务
-
+    @Autowired
+    private IntendLendService intendLendService;
     @Autowired
     private HttpServletRequest httpServletRequest;
 
@@ -41,8 +44,7 @@ public class RepaymentRecordController {
     //获取待还款交易记录
     public List<RepaymentRecordVO> list() throws ParseException {
 
-        //获取session并将userName存入session对象
-        HttpSession session = httpServletRequest.getSession();
+        HttpSession session = httpServletRequest.getSession();//获取session并将userName存入session对象
         //根据sessionId获取存放在session中的userRequiredInfo
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String id = userRequiredInfo.getIdCard(); //获取用户身份证号
@@ -64,6 +66,10 @@ public class RepaymentRecordController {
         double totalshouldpaymoney = 0;
         double totalLiquidatedMoney = 0;
         double totalStartMoney = 0;
+        //判断是否可以进行还款
+        double totalMoney = 0;
+        //获取billid
+        int billid = -1;
 
         //重新创建一个RepaymentRecordVO
         RepaymentRecordVO repaymentRecordVO = new RepaymentRecordVO();
@@ -86,9 +92,10 @@ public class RepaymentRecordController {
              * 未支付金额 = 剩余还款期数*(下期应还本金 + 下期应还利率 + 下期应还违约金)
              * 剩余还款期数 = 总期数 - (当前期数 - 起始日期)
              * */
+            /**
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             Date str1 = new Date();//获取当前时间
-            String str2 = tradeService.judgeDeadline(tra.getBillId());//下期还款时间
+            String str2 = tradeService.judgeDeadline(tra.getSerialNumber());//下期还款时间
             Calendar bef = Calendar.getInstance();
             Calendar aft = Calendar.getInstance();
             bef.setTime(str1);
@@ -96,16 +103,21 @@ public class RepaymentRecordController {
             //计算月数
             int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
             int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
+            //int surplus = aft.get(Calendar.DATE) - bef.get(Calendar.DATE);
+            //surplus = surplus <= 0 ? 1 : 0;
             //获取剩余期数
             int amountMonth = tra.getLimitMonths() - (Math.abs(month + result));
             //获取未支付金额
-            double amountMoney = amountMonth*(tra.getShouldRepayPrincipal() + tra.getShouldRepayLiquidatedMoney() + tra.getShouldRepayInterest());
+            double amountMoney = amountMonth*(tra.getShouldRepayPrincipal() + tra.getShouldRepayInterest()) + tra.getShouldRepayLiquidatedMoney();
 
+
+             */
+            double amountMoney = tra.getMoney()+ tra.getMoney()*tra.getLimitMonths()*tra.getPayRate() + tra.getShouldRepayLiquidatedMoney() - tra.getLiquidatedMoney() - tra.getRepaidInterest()-tra.getRepaidPrincipal();
             //5.添加未支付金额
             totalUnpayMoney += Math.abs(amountMoney);
 
             //下期应还金额=本期本金+本期利率+本期违约金
-            double shouldpaymoney = tra.getShouldRepayInterest() + tra.getShouldRepayLiquidatedMoney() + tra.getShouldRepayPrincipal();
+            double shouldpaymoney = tra.getNextTimePay();
             totalshouldpaymoney += shouldpaymoney;
             //6.获取下期应还金额
 
@@ -116,8 +128,12 @@ public class RepaymentRecordController {
             totalStartMoney += tra.getMoney();
 
             //9.本期还款截止日期设置
-            repaymentRecordVO.setDeadline(tradeService.judgeDeadline(tra.getBillId()));
+            repaymentRecordVO.setDeadline(tradeService.judgeDeadline(tra.getSerialNumber()));
             //System.out.println(repaymentRecordVO.getDeadline());
+            //计算已借款总额
+            totalMoney +=tra.getMoney();
+            //获取billid
+            billid = tra.getBillId();
 
         }
         //System.out.println(repaymentRecordVlist.get(0).getDeadline());
@@ -129,7 +145,14 @@ public class RepaymentRecordController {
         //添加到VO list 中
         repaymentRecordVlist.add(repaymentRecordVO);
 
-        return repaymentRecordVlist;
+        //本次借出者借出总金额
+        double intendMoney = 0;
+        for(IntendLend ilend :intendLendService.selectLender(billid)){
+            intendMoney += ilend.getLendMoney();
+        }
+        if (intendMoney == totalMoney)
+            return repaymentRecordVlist;
+        return null;
     }
 
 
@@ -149,7 +172,7 @@ public class RepaymentRecordController {
         String id = userRequiredInfo.getIdCard(); //获取用户身份证号
 
         //获取从前端返回的数据
-        //System.out.println(map.get("billId").toString());
+
         int billId = Integer.parseInt(map.get("billId").toString());
         String money = (String)map.get("money");
         String exactDate = (String)map.get("exactDate");

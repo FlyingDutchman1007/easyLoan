@@ -1,6 +1,7 @@
 package loan.easyLoan.service;
 
 import loan.easyLoan.entity.IntendBorrow;
+import loan.easyLoan.entity.Match;
 import loan.easyLoan.entity.PendingTransaction;
 
 import java.util.Date;
@@ -14,7 +15,7 @@ public interface IntendBorrowService {
 
     int selectBillId(String idCard);    //根据用户身份证号查找用户账目id
 
-    List<IntendBorrow> selectCounterParty(float payRate, int limitMonths);    //查询意向借入方并按照利率从高到低排序
+    List<Match> selectCounterParty(float payRate, int limitMonths,int payType);    //查询意向借入方并按照利率从高到低排序
 
     boolean updateRaisedMoney(double lendMoney);    //借出方选择好对手方并确定借出之后更新已筹集的资金信息
 
