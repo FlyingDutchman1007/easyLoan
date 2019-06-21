@@ -52,7 +52,7 @@ public class BorrowerController {
                 float rate = Float.parseFloat((String)obj.get("rate"));
                 float payRate = rate/100;
                 int payType = Integer.parseInt((String) obj.get("payType"));
-                int limitMonths = (Integer) obj.get("limitMonths");
+                int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
 
                 if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
                     intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);

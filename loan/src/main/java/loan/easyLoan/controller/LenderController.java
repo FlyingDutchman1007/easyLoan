@@ -82,8 +82,7 @@ public class LenderController {
     public List<BorrowerToTradeVO> lendMatch(@RequestBody Map obj){
         try{
             double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
-            String limitMonth = (String) obj.get("limitMonths");
-            int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+            int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
             float expectRate = Float.parseFloat((String)obj.get("expectRate"));
             float payRate = expectRate/100;
 

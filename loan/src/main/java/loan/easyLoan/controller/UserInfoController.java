@@ -60,8 +60,5 @@ public class UserInfoController {
         }else{
             return "{\"state\":\"fail\"}";
         }
-
     }
-
-
 }
