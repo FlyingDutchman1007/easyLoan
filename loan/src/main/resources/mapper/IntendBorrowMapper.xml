@@ -60,11 +60,7 @@
   <select  id="selectCounterParty" resultMap="BaseResultMap">
   select  bill_id,id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
   from  intend_borrow
-<<<<<<< HEAD
-  where  pay_rate=#{expectRate} and state=1 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
-=======
   where  pay_rate=#{payRate} and state=1 and limit_months=#{limitMonths}
->>>>>>> Ywr470832459-patch-1
   order by  pay_rate  desc
   </select>
 

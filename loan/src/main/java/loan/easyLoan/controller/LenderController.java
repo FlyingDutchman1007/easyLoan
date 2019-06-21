@@ -1,10 +1,10 @@
 package loan.easyLoan.controller;
 
-<<<<<<< HEAD
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-=======
+
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
->>>>>>> Ywr470832459-patch-1
 
 /**
  * @author Ywr
@@ -34,8 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class LenderController {
-<<<<<<< HEAD
-=======
+
 
     @Autowired
     private IntendLendService intendLendService;
@@ -150,5 +148,5 @@ public class LenderController {
             return "{\"state\":\"fail\"}";
         }
     }
->>>>>>> Ywr470832459-patch-1
+
 }

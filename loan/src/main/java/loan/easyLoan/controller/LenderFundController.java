@@ -1,14 +1,5 @@
 package loan.easyLoan.controller;
 
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-/**
- * @author Ywr
- * @date 2019/6/13 14:08
-=======
 import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.VO.LenderFundVO;
 import loan.easyLoan.entity.LenderAccount;
@@ -31,14 +22,11 @@ import java.util.Map;
 /**
  * @author Ywr
  * @date 2019/6/13 13:21
->>>>>>> Ywr470832459-patch-1
  */
 @CrossOrigin(allowCredentials="true",allowedHeaders="*")
 @RestController
 @RequestMapping
 public class LenderFundController {
-<<<<<<< HEAD
-=======
     @Autowired
     LenderAccountService lenderAccountService;
 
@@ -138,5 +126,4 @@ public class LenderFundController {
         }
 
     }
->>>>>>> Ywr470832459-patch-1
 }

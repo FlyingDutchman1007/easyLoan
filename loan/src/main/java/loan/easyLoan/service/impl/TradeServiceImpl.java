@@ -22,15 +22,6 @@ public class TradeServiceImpl implements TradeService {
     @Autowired
     private TradeMapper tradeMapper;
 
-<<<<<<< HEAD
-    //返回该期未还款的截止日期
-    @Override
-    public String judgeDeadline(int billId) {
-        Date exactDate = tradeMapper.selectExactDate(billId);
-        Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        //Date currentDate = dateFormat.parse(date);
-=======
     @Autowired
     private RechargeRecordService rechargeRecordService;
 
@@ -56,7 +47,6 @@ public class TradeServiceImpl implements TradeService {
         Date exactDate = tradeMapper.selectExactDate(billId);
         Date date = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
->>>>>>> Ywr470832459-patch-1
 
         Calendar exactDate1 = Calendar.getInstance();
         Calendar currentDate = Calendar.getInstance();
@@ -64,10 +54,6 @@ public class TradeServiceImpl implements TradeService {
         currentDate.setTime(date);
         int result = currentDate.get(Calendar.MONTH) - exactDate1.get(Calendar.MONTH);
         int month = (currentDate.get(Calendar.YEAR) - exactDate1.get(Calendar.YEAR)) * 12;
-<<<<<<< HEAD
-        exactDate1.add(Calendar.MONTH,Math.abs(month + result)+1);
-        return dateFormat.format(exactDate1.getTime());
-=======
 
         if(payType==1){
             exactDate1.add(Calendar.MONTH,Math.abs(month + result)+1);
@@ -76,7 +62,6 @@ public class TradeServiceImpl implements TradeService {
             exactDate1.add(Calendar.MONTH,(Math.abs(month + result)/3)*3+3);
             return dateFormat.format(exactDate1.getTime());
         }
->>>>>>> Ywr470832459-patch-1
     }
 
 

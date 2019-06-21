@@ -76,8 +76,6 @@ public class LenderInfoVO {
     public void setAddress(String address) {
         this.address = address;
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public String toString() {
@@ -91,5 +89,4 @@ public class LenderInfoVO {
                 ", address='" + address + '\'' +
                 '}';
     }
->>>>>>> Ywr470832459-patch-1
 }

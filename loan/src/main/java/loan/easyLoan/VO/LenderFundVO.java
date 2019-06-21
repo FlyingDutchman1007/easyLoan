@@ -5,11 +5,8 @@ public class LenderFundVO {
     private String userName;
     private String bankAccount;
     private double accountBalance;
-<<<<<<< HEAD
-=======
     private String fundsAccount;
     private String idCard;
->>>>>>> Ywr470832459-patch-1
     private double lendMoney;
     private double totalBenefit;
     private double futureBenefit;
@@ -82,8 +79,6 @@ public class LenderFundVO {
     public void setAvailableMoney(double availableMoney) {
         this.availableMoney = availableMoney;
     }
-<<<<<<< HEAD
-=======
 
     public String getFundsAccount() {
         return fundsAccount;
@@ -115,5 +110,4 @@ public class LenderFundVO {
                 ", availableMoney=" + availableMoney +
                 '}';
     }
->>>>>>> Ywr470832459-patch-1
 }

@@ -35,13 +35,10 @@
   </resultMap>
 
   <resultMap id="finishedRecord" type="loan.easyLoan.entity.Trade">
-<<<<<<< HEAD
-    <id property="bill_id" column="billId" />
-=======
+
     <!-- id是主键的映射，其中property是pojo中主键的属性，column是返回结果中主键的列 -->
     <id property="bill_id" column="billId" />
     <!-- 普通列使用result映射 -->
->>>>>>> Ywr470832459-patch-1
     <result property="exact_date" column="exactDate" />
     <result property="money" column="money" />
     <result property="pay_rate" column="payRate" />
@@ -52,8 +49,6 @@
     <result property="finished_date" column="finishedDate" />
   </resultMap>
 
-<<<<<<< HEAD
-=======
   <update id="updateTradeList" parameterType="Trade">
     update trade
     set
@@ -79,7 +74,6 @@
     from trade
     where bill_id=#{billId,jdbcType=INTEGER}
   </select>
->>>>>>> Ywr470832459-patch-1
 
   <!-- 借入方查看待还款记录 -->
   <select  id="selectPendingRepayment" parameterType="String" resultMap="pendingRepaymentRecord_map">

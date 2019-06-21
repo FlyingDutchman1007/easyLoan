@@ -1,10 +1,8 @@
 package loan.easyLoan.entity;
 
-<<<<<<< HEAD
-import java.sql.Date;
-=======
+
 import java.util.Date;
->>>>>>> Ywr470832459-patch-1
+
 
 public class PendingTransaction {
     private int billId;

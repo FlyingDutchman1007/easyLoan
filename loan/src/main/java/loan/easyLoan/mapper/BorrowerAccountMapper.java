@@ -10,11 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public interface BorrowerAccountMapper {
 
-<<<<<<< HEAD:loan/src/main/java/loan/easyLoan/mapper/BorrowerAccountMapper.java
-    int updateAvailableLimit(String idCard, double intendMoney);//借入方意向借入完成后更新额度
-=======
+
     int updateAvailableLimit(String idCard,double intendMoney);//借入方意向借入完成后更新额度
->>>>>>> Ywr470832459-patch-1:loan/src/main/java/loan/easyloan/mapper/BorrowerAccountMapper.java
 
     int addNewBorrower(String fundsAccount, String idCard, int creditScore, double totalLimit, double availableLimit);  //新用户注册后分配资金账号
 
@@ -30,11 +27,7 @@ public interface BorrowerAccountMapper {
 
     BorrowerAccount viewBorrowerAccount(String idCard); //借入方查看个人账户
 
-<<<<<<< HEAD:loan/src/main/java/loan/easyLoan/mapper/BorrowerAccountMapper.java
-    int updateBorrowerAccount(double intendMoney, String fundsAccount);//更新借入方资金账户
-=======
     int updateBorrowerAccount(double intendMoney,String fundsAccount);//更新借入方资金账户
 
     double getMoney(String fundsAccount);  //根据资金账户找到帐户余额
->>>>>>> Ywr470832459-patch-1:loan/src/main/java/loan/easyloan/mapper/BorrowerAccountMapper.java
 }

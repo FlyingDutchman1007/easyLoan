@@ -1,20 +1,14 @@
 package loan.easyLoan.VO;
 
-<<<<<<< HEAD
-import java.sql.Timestamp;
-=======
 
 import java.util.Date;
->>>>>>> Ywr470832459-patch-1
 
 public class BorrowerFinishedRecordVO {
 
     private int billId;
-<<<<<<< HEAD
-    private Timestamp startDate;
-=======
+
     private Date startDate;
->>>>>>> Ywr470832459-patch-1
+
     private double money;
     private double interest;
     private double liquidatedMoney;
@@ -22,19 +16,13 @@ public class BorrowerFinishedRecordVO {
     private double rate;
     private int payType;
     private int limitMonths;
-<<<<<<< HEAD
-    private Timestamp settleDate;
 
-    public BorrowerFinishedRecordVO() {}
-
-    public BorrowerFinishedRecordVO(int billId, Timestamp startDate, double money, double interest, double liquidatedMoney, double totalMoney, double rate, int payType, int limitMonths, Timestamp settleDate) {
-=======
     private Date settleDate;
 
     public BorrowerFinishedRecordVO() {}
 
     public BorrowerFinishedRecordVO(int billId, Date startDate, double money, double interest, double liquidatedMoney, double totalMoney, double rate, int payType, int limitMonths, Date settleDate) {
->>>>>>> Ywr470832459-patch-1
+
         this.billId = billId;
         this.startDate = startDate;
         this.money = money;
@@ -55,19 +43,12 @@ public class BorrowerFinishedRecordVO {
         this.billId = billId;
     }
 
-<<<<<<< HEAD
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Timestamp startDate) {
-=======
     public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
->>>>>>> Ywr470832459-patch-1
+
         this.startDate = startDate;
     }
 
@@ -127,19 +108,12 @@ public class BorrowerFinishedRecordVO {
         this.limitMonths = limitMonths;
     }
 
-<<<<<<< HEAD
-    public Timestamp getSettleDate() {
-        return settleDate;
-    }
 
-    public void setSettleDate(Timestamp settleDate) {
-=======
     public Date getSettleDate() {
         return settleDate;
     }
 
     public void setSettleDate(Date settleDate) {
->>>>>>> Ywr470832459-patch-1
         this.settleDate = settleDate;
     }
 }

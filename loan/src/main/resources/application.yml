@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 server:
   port: 8080
 
@@ -37,21 +36,3 @@ servlet:
 #自定义文件上传路径
 web:
   upload-path: D:/Program/nginx-1.14.2/html/static/assets/img/faces/
-=======
-server:
-  port: 8080
-
-spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/qingsongdai?serverTimezone=GMT%2B8
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-
-
-mybatis:
-  typeAliasesPackage: loan.easyLoan.entity
-  mapperLocations: classpath:mapper/*.xml
-
->>>>>>> Ywr470832459-patch-1
