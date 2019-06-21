@@ -39,7 +39,7 @@ public class RepaymentRecordController {
     //向前端发送请求
     @GetMapping(value = "/toPayRecord",produces = "application/json;charset=UTF-8")
     //获取待还款交易记录
-    public List<RepaymentRecordVO> list() throws ParseException {
+    public List<RepaymentRecordVO> toPayRecord() throws ParseException {
 
         //获取session并将userName存入session对象
         HttpSession session = httpServletRequest.getSession();
@@ -88,7 +88,7 @@ public class RepaymentRecordController {
              * */
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             Date str1 = new Date();//获取当前时间
-            String str2 = tradeService.judgeDeadline(tra.getBillId());//下期还款时间
+            String str2 = tradeService.judgeDeadline(tra.getBillId(),tra.getSerialNumber());//下期还款时间
             Calendar bef = Calendar.getInstance();
             Calendar aft = Calendar.getInstance();
             bef.setTime(str1);
@@ -116,7 +116,7 @@ public class RepaymentRecordController {
             totalStartMoney += tra.getMoney();
 
             //9.本期还款截止日期设置
-            repaymentRecordVO.setDeadline(tradeService.judgeDeadline(tra.getBillId()));
+            repaymentRecordVO.setDeadline(tradeService.judgeDeadline(tra.getBillId(),tra.getSerialNumber()));
             //System.out.println(repaymentRecordVO.getDeadline());
 
         }

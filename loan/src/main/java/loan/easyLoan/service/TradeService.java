@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TradeService {
 
-    String  judgeDeadline(int billId);  //判断截止日期
+    String  judgeDeadline(int billId, int serialNum);  //判断截止日期
 
     List<Trade> selectPendingRepayment(String inBoundAccount);   //借入方查看待还款记录
     List<Trade> selectPendingReceivable(String outBoundAccount);   //借出方查看待收款记录

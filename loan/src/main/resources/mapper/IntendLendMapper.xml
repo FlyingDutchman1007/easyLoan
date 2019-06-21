@@ -10,7 +10,7 @@
   </resultMap>
 
   <!--根据billId获取多个借出者对象-->
-  <select id="selectLender" resultType="int">
+  <select id="selectLender" resultMap="BaseResultMap">
   select *
   from intend_lend
   where bill_id=#{billId,jdbcType=INTEGER}
@@ -30,11 +30,11 @@
     </update>
 
   <!-- 借出方查看待交易记录 -->
-  <select id="viewPendingTransaction" parameterType="String">
-  select bill_id,intend_money,intend_borrow.start_date,pay_rate,pay_type,limit_months,state,raised_money,lend_money,intend_lend.start_date
+  <select id="viewPendingTransaction" parameterType="String"  resultType="PendingTransaction">
+  select intend_lend.bill_id,intend_money,intend_borrow.start_date,intend_borrow.pay_rate,intend_borrow.pay_type,intend_borrow.limit_months,intend_lend.state,raised_money,lend_money,intend_lend.start_date
   from intend_lend left join intend_borrow
-  on bill_id
-  where intend_lend.state=1 or intend_lend.state=4 and id_card=#{idCard,jdbcType=CHAR}
+  on intend_lend.bill_id
+  where (intend_lend.state=1 or intend_lend.state=4) and intend_lend.id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 失效数据更新状态 -->

@@ -22,13 +22,16 @@ public class ReceivalRecordController {
     private LenderAccountService lenderAccountService;
     @Autowired
     private TradeService tradeService;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
 
     @ResponseBody
     @GetMapping(value = "/lenderToReceive", produces = "application/json;charset=UTF-8")
-    public List<LenderToReceiveVO> borrowerFinishedRecord(HttpServletRequest request) {
+    public List<LenderToReceiveVO> borrowerFinishedRecord() {
 
         List<LenderToReceiveVO> lenderToReceiveVOList = new ArrayList<>();
-        HttpSession session = request.getSession();
+        HttpSession session = httpServletRequest.getSession();
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String id = userRequiredInfo.getIdCard();
 

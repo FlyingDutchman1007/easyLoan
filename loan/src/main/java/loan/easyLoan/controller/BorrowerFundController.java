@@ -72,19 +72,24 @@ public class BorrowerFundController {
 
         String fundsAccount =borrowerAccountService.findFundsAccount(id);
 
-        boolean ifRechargeSuccessful = borrowerAccountService.updateRechargeAccount(Double.parseDouble((String)obj.get("money")),fundsAccount);
+        try{
+            boolean ifRechargeSuccessful = borrowerAccountService.updateRechargeAccount(Double.parseDouble((String)obj.get("money")),fundsAccount);
 
-        if(ifRechargeSuccessful){
-            RechargeRecord rechargeRecord = new RechargeRecord();
-            rechargeRecord.setSerialNumber(rechargeRecordService.getSerialNumber("recharge"));
-            rechargeRecord.setBankAccount(userRequiredInfoService.findUserByIdCard(id).getBankAccount());
-            rechargeRecord.setRechargeDate(new Date());
-            rechargeRecord.setRechargeMoney(Double.parseDouble((String)obj.get("money")));
-            rechargeRecordService.insertRechargeRecord(rechargeRecord);
-            return "{\"state\": \"successful\" }";
-        }else {
+            if(ifRechargeSuccessful){
+                RechargeRecord rechargeRecord = new RechargeRecord();
+                rechargeRecord.setSerialNumber(rechargeRecordService.getSerialNumber("recharge"));
+                rechargeRecord.setBankAccount(userRequiredInfoService.findUserByIdCard(id).getBankAccount());
+                rechargeRecord.setRechargeDate(new Date());
+                rechargeRecord.setRechargeMoney(Double.parseDouble((String)obj.get("money")));
+                rechargeRecordService.insertRechargeRecord(rechargeRecord);
+                return "{\"state\": \"successful\" }";
+            }else {
+                return "{\"state\": \"fail\" }";
+            }
+        }catch (Exception e){
             return "{\"state\": \"fail\" }";
         }
+
     }
 
 

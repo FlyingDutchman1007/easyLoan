@@ -46,20 +46,24 @@ public class BorrowerController {
         if(intendBorrowService.selectPendingTransaction(idCard).isEmpty()){
 
             // 获取一个新账单的所有数据
-            double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
-            Timestamp startDate = Timestamp.valueOf((String)obj.get("startDate"));
-            float rate = Float.parseFloat((String)obj.get("rate"));
-            float payRate = rate/100;
-            int payType = Integer.parseInt((String) obj.get("payType"));
-            String limitMonth = (String) obj.get("limitMonths");
-            int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+            try{
+                double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
+                Timestamp startDate = Timestamp.valueOf((String)obj.get("startDate"));
+                float rate = Float.parseFloat((String)obj.get("rate"));
+                float payRate = rate/100;
+                int payType = Integer.parseInt((String) obj.get("payType"));
+                int limitMonths = (Integer) obj.get("limitMonths");
 
-            if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
-                intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);
-                borrowerAccountService.updateAvailableLimit(idCard,intendMoney);
-            }else{
+                if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
+                    intendBorrowService.insertApplicateForBorrower(idCard, intendMoney, startDate, payRate, payType, limitMonths);
+                    borrowerAccountService.updateAvailableLimit(idCard,intendMoney);
+                }else{
+                    return "{\"state\":\"fail\"}";
+                }
+            }catch (Exception e){
                 return "{\"state\":\"fail\"}";
             }
+
             return "{\"state\":\"successful\"}";
         }else{
             return "{\"state\":\"fail\"}";

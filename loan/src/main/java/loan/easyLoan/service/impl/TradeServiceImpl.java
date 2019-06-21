@@ -5,6 +5,8 @@ import loan.easyLoan.mapper.TradeMapper;
 import loan.easyLoan.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,11 +42,17 @@ public class TradeServiceImpl implements TradeService {
     @Autowired
     private RepayMoneyFlowService repayMoneyFlowService;
 
-    @Override
-    public String judgeDeadline(int billId) {
-        int payType = tradeMapper.selectPayType(billId);
+    @Autowired
+    private IntendLendService intendLendService;
 
-        Date exactDate = tradeMapper.selectExactDate(billId);
+    @Autowired
+    private IntendBorrowService intendBorrowService;
+
+    @Override
+    public String judgeDeadline(int billId, int serialNumber) {
+        int payType = tradeMapper.selectPayType(serialNumber);
+
+        Date exactDate = tradeMapper.selectExactDate(serialNumber);
         Date date = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -184,80 +192,103 @@ public class TradeServiceImpl implements TradeService {
         ArrayList<BorrowMoneyFlow> arrayList = new ArrayList<>();
         List<Trade> list = new ArrayList<>();
 
-        for(IntendLend intendLend : intendLends){
-            int serialTrade =  rechargeRecordService.getSerialNumber("trade");
-            String inBoundAccount = borrowerAccountService.findFundsAccount(intendBorrow.getIdCard());
-            String outBoundAccount = lenderAccountService.findFundsAccount(intendLend.getIdCard());
-            double money = intendLend.getLendMoney();
-            int limitMonths = intendBorrow.getLimitMonths();
-            int payType = intendBorrow.getPayType();
-            double payRate = intendBorrow.getPayRate();
-            Date exactDate = intendBorrow.getStartDate();
-            double repaidPrincipal = 0.0;
-            double repaidInterest = 0.0;
-            double liquidatedMoney = 0.0;
-            double shouldRepayPrincipal;
-            double shouldRepayInterest;
-            double nextTimePay;
-            if(payType==1){
-                shouldRepayPrincipal = money/limitMonths;
-                shouldRepayInterest = money*payRate/limitMonths;
-                nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
-            }else {
-                shouldRepayPrincipal = money/limitMonths*3;
-                shouldRepayInterest = money*payRate/limitMonths*3;
-                nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
+        try{
+            for(IntendLend intendLend : intendLends){
+                intendLendService.updateState(intendLend.getBillId());
+                intendBorrowService.updateState(intendBorrow.getBillId());
+
+                int serialTrade =  rechargeRecordService.getSerialNumber("trade");
+                String inBoundAccount = borrowerAccountService.findFundsAccount(intendBorrow.getIdCard());
+                String outBoundAccount = lenderAccountService.findFundsAccount(intendLend.getIdCard());
+                double money = intendLend.getLendMoney();
+                int limitMonths = intendBorrow.getLimitMonths();
+                int payType = intendBorrow.getPayType();
+                double payRate = intendBorrow.getPayRate();
+                Date exactDate = intendBorrow.getStartDate();
+                double repaidPrincipal = 0.0;
+                double repaidInterest = 0.0;
+                double liquidatedMoney = 0.0;
+                double shouldRepayPrincipal;
+                double shouldRepayInterest;
+                double nextTimePay;
+                try{
+                    if(payType==1){
+                        shouldRepayPrincipal = money/limitMonths;
+                        shouldRepayInterest = money*payRate/limitMonths;
+                        nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
+                    }else {
+                        shouldRepayPrincipal = money/limitMonths*3;
+                        shouldRepayInterest = money*payRate/limitMonths*3;
+                        nextTimePay = shouldRepayInterest+shouldRepayPrincipal;
+                    }
+                }catch (ArithmeticException e){
+                    return false;
+                }
+
+                double shouldRepayLiquidatedMoney = 0.0;
+
+                Trade trade = new Trade();
+                trade.setSerialNumber(serialTrade);
+                trade.setBillId(intendBorrow.getBillId());
+                trade.setInBoundAccount(inBoundAccount);
+                trade.setOutBoundAccount(outBoundAccount);
+                trade.setMoney(money);
+                trade.setLimitMonths(limitMonths);
+                trade.setPayType(payType);
+                trade.setPayRate(payRate);
+                trade.setExactDate(exactDate);
+                trade.setRepaidPrincipal(repaidPrincipal);
+                trade.setRepaidInterest(repaidInterest);
+                trade.setLiquidatedMoney(liquidatedMoney);
+                trade.setShouldRepayPrincipal(shouldRepayPrincipal);
+                trade.setShouldRepayInterest(shouldRepayInterest);
+                trade.setNextTimePay(nextTimePay);
+                trade.setShouldRepayLiquidatedMoney(shouldRepayLiquidatedMoney);
+                trade.setFinishedDate(exactDate);
+
+                list.add(trade);
+
+
+                int serialBorrowMoneyFlow =  rechargeRecordService.getSerialNumber("br_money_flow");
+                BorrowMoneyFlow borrowMoneyFlow = new BorrowMoneyFlow();
+                borrowMoneyFlow.setBillId(intendBorrow.getBillId());
+                borrowMoneyFlow.setExactDate(exactDate);
+                borrowMoneyFlow.setInBoundAccount(inBoundAccount);
+                borrowMoneyFlow.setOutBoundAccount(outBoundAccount);
+                borrowMoneyFlow.setMoney(money);
+                borrowMoneyFlow.setSerialNumber(serialBorrowMoneyFlow);
+
+                arrayList.add(borrowMoneyFlow);
+
+                try{
+                    lenderAccountService.updateAccountBalance(lenderAccountService.findFundsAccount(intendLend.getIdCard()));
+                }catch (NullPointerException e){
+                    return false;
+                }
             }
-            double shouldRepayLiquidatedMoney = 0.0;
+            try{
+                tradeService.insertRecord(list);
+                borrowMoneyFlowService.addBorrowFlow(arrayList);
 
-            Trade trade = new Trade();
-            trade.setSerialNumber(serialTrade);
-            trade.setBillId(intendBorrow.getBillId());
-            trade.setInBoundAccount(inBoundAccount);
-            trade.setOutBoundAccount(outBoundAccount);
-            trade.setMoney(money);
-            trade.setLimitMonths(limitMonths);
-            trade.setPayType(payType);
-            trade.setPayRate(payRate);
-            trade.setExactDate(exactDate);
-            trade.setRepaidPrincipal(repaidPrincipal);
-            trade.setRepaidInterest(repaidInterest);
-            trade.setLiquidatedMoney(liquidatedMoney);
-            trade.setShouldRepayPrincipal(shouldRepayPrincipal);
-            trade.setShouldRepayInterest(shouldRepayInterest);
-            trade.setNextTimePay(nextTimePay);
-            trade.setShouldRepayLiquidatedMoney(shouldRepayLiquidatedMoney);
-            trade.setFinishedDate(exactDate);
-
-            list.add(trade);
-
-
-            int serialBorrowMoneyFlow =  rechargeRecordService.getSerialNumber("br_money_flow");
-            BorrowMoneyFlow borrowMoneyFlow = new BorrowMoneyFlow();
-            borrowMoneyFlow.setBillId(intendBorrow.getBillId());
-            borrowMoneyFlow.setExactDate(exactDate);
-            borrowMoneyFlow.setInBoundAccount(inBoundAccount);
-            borrowMoneyFlow.setOutBoundAccount(outBoundAccount);
-            borrowMoneyFlow.setMoney(money);
-            borrowMoneyFlow.setSerialNumber(serialBorrowMoneyFlow);
-
-            arrayList.add(borrowMoneyFlow);
-
-            lenderAccountService.updateAccountBalance(lenderAccountService.findFundsAccount(intendLend.getIdCard()));
+                borrowerAccountService.updateBorrowerAccount(intendBorrow.getIntendMoney(),borrowerAccountService.findFundsAccount(intendBorrow.getIdCard()));
+            }catch (NullPointerException e){
+                return  false;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//如果update抛了异常,update()会回滚,不影响事物正常执行
+            return false;
         }
-        tradeService.insertRecord(list);
-        borrowMoneyFlowService.addBorrowFlow(arrayList);
 
-        borrowerAccountService.updateBorrowerAccount(intendBorrow.getIntendMoney(),borrowerAccountService.findFundsAccount(intendBorrow.getIdCard()));
         return true;
     }
 
     @Override
     public boolean insertRecord(List<Trade> list) {
-        if (tradeMapper.insertRecord(list) == 1){
-            return true;
-        }else {
+        if (tradeMapper.insertRecord(list) == 0){
             return false;
+        }else {
+            return true;
         }
     }
 
@@ -298,32 +329,22 @@ public class TradeServiceImpl implements TradeService {
             double outMoney = tra.getMoney() / amountMoney * repaymentmoney;
             //更新每条记录对应的数据
             //判断更新是否成功
-            System.out.println(tra.getSerialNumber());
-            System.out.println(tra.getBillId());
-            System.out.println("******************");
-
             boolean judegeUpdate = updateEveryRepayment(tra, outMoney);
             //判断更新失败直接跳出
             if (!judegeUpdate) {
                 return false;
             }
-            //rateMoney.add(outMoney);
-            //更新每笔还款信息
-
         }
         //更新成功返回true
         return true;
     }
 
     //用来更新每条Trade中的数据并更新对应的还款流水、资金账户数据库 该方法在updateAccount()调用
+    @Transactional(rollbackFor=Exception.class)
     public boolean updateEveryRepayment(Trade tra, double rateMoney){
 
         //若还款金额大于本次应还直接输出false
         if (rateMoney > tra.getNextTimePay()) {
-            return false;
-        }
-        //若已有日期则该笔交易已结束
-        if(tra.getFinishedDate() != null) {
             return false;
         }
         //记录本次还款违约金
@@ -332,6 +353,7 @@ public class TradeServiceImpl implements TradeService {
         double needPayInterest = 0;
         //记录本次还款本金
         double needPayPrincipal = 0;
+
         /**
          * 1.先还违约金
          */
@@ -389,72 +411,69 @@ public class TradeServiceImpl implements TradeService {
         }
 
         //还款完成更新日期
-        if(tra.getNextTimePay() == 0) {
+        // 更新过的
+        if(tra.getMoney() == tra.getRepaidPrincipal()) {
             tra.setFinishedDate(new Date());
         }
-        /**
-         * 计算完成 更新数据库
-         */
 
         /**
-         * 1.还款完成更新trade表单
+         * 计算完成 更新数据库 执行失败进行回滚
          */
-        boolean judgeTradeList = tradeService.updateTradeList(tra);
-        //boolean updateTradeList(Trade trade);
-        // System.out.println(tradeService.updateTradeList(tra));
-        // boolean judgeTradeList = true;
-        //System.out.println("11111");
-        /**
-         * 2.增加还款新流水
-         */
+        //判断更新是否正常
+        boolean judgeTradeList;
+        //增加流水成功判断
+        boolean judgeRepayMoneyFlow;
+        //借出到账成功判断
+        boolean judgeOutMoneyFlow;
+        //借入出钱成功判断
+        boolean judgeInMoneyFlow;
+        try {
+            /**
+             * 1.还款完成更新trade表单
+             */
+            judgeTradeList= tradeService.updateTradeList(tra);
 
-        boolean judgeRepayMoneyFlow;//增加流水成功判断
-        RepayMoneyFlow repayMoneyFlow = new RepayMoneyFlow();
-        repayMoneyFlow.setBillId(tra.getBillId());
-        repayMoneyFlow.setInBoundAccount(tra.getInBoundAccount());
-        repayMoneyFlow.setOutBoundAccount(tra.getOutBoundAccount());
-        Date date = new Date();
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //System.out.println(sdf.format(date));
-        repayMoneyFlow.setExactDate(date);
-        repayMoneyFlow.setInterestMoney(needPayInterest);
-        repayMoneyFlow.setLiquidatedMoney(needPayLiquidate);
-        repayMoneyFlow.setMoney(rateMoney);
-        repayMoneyFlow.setPrincipalMoney(needPayPrincipal);
-        repayMoneyFlow.setSerialNumber(rechargeRecordService.getSerialNumber("repay_money_flow"));
+            /**
+             * 2.增加还款新流水
+             */
+            //将值赋值到还款流水号中
+            RepayMoneyFlow repayMoneyFlow = new RepayMoneyFlow();
+            repayMoneyFlow.setBillId(tra.getBillId());
+            repayMoneyFlow.setInBoundAccount(tra.getInBoundAccount());
+            repayMoneyFlow.setOutBoundAccount(tra.getOutBoundAccount());
+            Date date = new Date();
+            repayMoneyFlow.setExactDate(date);
+            repayMoneyFlow.setInterestMoney(needPayInterest);
+            repayMoneyFlow.setLiquidatedMoney(needPayLiquidate);
+            repayMoneyFlow.setMoney(rateMoney);
+            repayMoneyFlow.setPrincipalMoney(needPayPrincipal);
+            repayMoneyFlow.setSerialNumber(rechargeRecordService.getSerialNumber("repay_money_flow"));
 
+            //将RepayMoneyFlow添加到list中
+            List<RepayMoneyFlow> repayMoneyFlows = new ArrayList<>();
+            repayMoneyFlows.add(repayMoneyFlow);
+            judgeRepayMoneyFlow = repayMoneyFlowService.insertRepayRecord((ArrayList<RepayMoneyFlow>) repayMoneyFlows);
 
-        List<RepayMoneyFlow> repayMoneyFlows = new ArrayList<RepayMoneyFlow>();//将RepayMoneyFlow添加到list中
-        repayMoneyFlows.add(repayMoneyFlow);
-        judgeRepayMoneyFlow = repayMoneyFlowService.insertRepayRecord((ArrayList<RepayMoneyFlow>) repayMoneyFlows);
-        System.out.println("22222");
+            /**
+             * 3.更新借出方账户余额
+             */
+            double inMoney = borrowerAccountService.getMoney(tra.getInBoundAccount());
+            judgeOutMoneyFlow = lenderAccountService.updateRechargeAccount(rateMoney+inMoney,tra.getOutBoundAccount());
 
-
-
-        /**
-         * 3.更新借出方账户余额
-         */
-
-        boolean judgeOutMoneyFlow;//借出到账成功判断
-        double inMoney = borrowerAccountService.getMoney(tra.getInBoundAccount());
-        judgeOutMoneyFlow = lenderAccountService.updateRechargeAccount(rateMoney+inMoney,tra.getOutBoundAccount());
-        System.out.println("33333");
-
-
-
-        /**
-         * 4.更新借入方账户余额
-         */
-
-        boolean judgeInMoneyFlow;//借入出钱成功判断
-        double outMoney = borrowerAccountService.getMoney(tra.getOutBoundAccount());
-        judgeInMoneyFlow = borrowerAccountService.updateWithdrawAccount(rateMoney+outMoney, tra.getInBoundAccount());
-
-        System.out.println("44444");
+            /**
+             * 4.更新借入方账户余额
+             */
+            double outMoney = lenderAccountService.getMoney(tra.getOutBoundAccount());
+            judgeInMoneyFlow = borrowerAccountService.updateWithdrawAccount(rateMoney+outMoney, tra.getInBoundAccount());
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//如果update2()抛了异常,update()会回滚,不影响事物正常执行
+            return false;
+        }
+        //全部更新完成返回成功
         if(judgeTradeList && judgeInMoneyFlow && judgeOutMoneyFlow && judgeRepayMoneyFlow) {
-            //if(judgeTradeList)
             return true;
         }
         return false;
