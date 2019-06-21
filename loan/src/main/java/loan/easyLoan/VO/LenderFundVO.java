@@ -5,6 +5,11 @@ public class LenderFundVO {
     private String userName;
     private String bankAccount;
     private double accountBalance;
+<<<<<<< HEAD
+=======
+    private String fundsAccount;
+    private String idCard;
+>>>>>>> Ywr470832459-patch-1
     private double lendMoney;
     private double totalBenefit;
     private double futureBenefit;
@@ -77,4 +82,38 @@ public class LenderFundVO {
     public void setAvailableMoney(double availableMoney) {
         this.availableMoney = availableMoney;
     }
+<<<<<<< HEAD
+=======
+
+    public String getFundsAccount() {
+        return fundsAccount;
+    }
+
+    public void setFundsAccount(String fundsAccount) {
+        this.fundsAccount = fundsAccount;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    @Override
+    public String toString() {
+        return "LenderFundVO{" +
+                "userName='" + userName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", accountBalance=" + accountBalance +
+                ", fundsAccount='" + fundsAccount + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", lendMoney=" + lendMoney +
+                ", totalBenefit=" + totalBenefit +
+                ", futureBenefit=" + futureBenefit +
+                ", availableMoney=" + availableMoney +
+                '}';
+    }
+>>>>>>> Ywr470832459-patch-1
 }

@@ -1,11 +1,19 @@
 package loan.easyLoan.VO;
 
+<<<<<<< HEAD
 import java.sql.Timestamp;
+=======
+import java.util.Date;
+>>>>>>> Ywr470832459-patch-1
 
 public class LenderToReceiveVO {
 
     private int billId;
+<<<<<<< HEAD
     private Timestamp startDate;
+=======
+    private Date startDate;
+>>>>>>> Ywr470832459-patch-1
     private double money;
     private double collectedMoney;
     private double interest;
@@ -16,11 +24,19 @@ public class LenderToReceiveVO {
     private double collectedTotalMoney;
     private double rate;
     private int payType;
+<<<<<<< HEAD
     private Timestamp deadline;
 
     public LenderToReceiveVO() {}
 
     public LenderToReceiveVO(int billId, Timestamp startDate, double money, double collectedMoney, double interest, double collectedInterest, double liquidatedMoney, double collectedLiquidatedMoney, double totalMoney, double collectedTotalMoney, double rate, int payType, Timestamp deadline) {
+=======
+    private Date deadline;
+
+    public LenderToReceiveVO() {}
+
+    public LenderToReceiveVO(int billId, Date startDate, double money, double collectedMoney, double interest, double collectedInterest, double liquidatedMoney, double collectedLiquidatedMoney, double totalMoney, double collectedTotalMoney, double rate, int payType, Date deadline) {
+>>>>>>> Ywr470832459-patch-1
         this.billId = billId;
         this.startDate = startDate;
         this.money = money;
@@ -44,11 +60,19 @@ public class LenderToReceiveVO {
         this.billId = billId;
     }
 
+<<<<<<< HEAD
     public Timestamp getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Timestamp startDate) {
+=======
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+>>>>>>> Ywr470832459-patch-1
         this.startDate = startDate;
     }
 
@@ -132,11 +156,19 @@ public class LenderToReceiveVO {
         this.payType = payType;
     }
 
+<<<<<<< HEAD
     public Timestamp getDeadline() {
         return deadline;
     }
 
     public void setDeadline(Timestamp deadline) {
+=======
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+>>>>>>> Ywr470832459-patch-1
         this.deadline = deadline;
     }
 }

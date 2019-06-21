@@ -27,8 +27,8 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
     }
 
     @Override
-    public List<IntendBorrow> selectCounterParty(float payRate, int limitMonths, double lendMoney) {
-        return intendBorrowMapper.selectCounterParty(payRate,limitMonths,lendMoney);
+    public List<IntendBorrow> selectCounterParty(float payRate, int limitMonths) {
+        return intendBorrowMapper.selectCounterParty(payRate,limitMonths);
     }
 
     @Override
@@ -42,8 +42,18 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
     }
 
     @Override
-    public void prepareForTradeCreateTempTable() {
-        intendBorrowMapper.prepareForTradeCreateTempTable();
+    public IntendBorrow selectIntendAndRaisedMoney(int billId) {
+        return intendBorrowMapper.selectIntendAndRaisedMoney(billId);
+    }
+
+    @Override
+    public void prepareForTradeCreateTempTable(int billId) {
+        intendBorrowMapper.prepareForTradeCreateTempTable(billId);
+    }
+
+    @Override
+    public int selectCount() {
+        return intendBorrowMapper.selectCount();
     }
 
     @Override

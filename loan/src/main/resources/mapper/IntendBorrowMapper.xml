@@ -34,6 +34,19 @@
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
 
+  <resultMap id="intendAndRaisedMoney" type="IntendBorrow">
+    <id column="bill_id" jdbcType="INTEGER" property="billId" />
+    <result column="intend_money" jdbcType="DOUBLE" property="intendMoney" />
+    <result column="raised_money" jdbcType="DOUBLE" property="raisedMoney" />
+  </resultMap>
+
+  <!-- 选择该笔意向借入记录中的意向金额和已筹集金额 -->
+  <select id="selectIntendAndRaisedMoney" parameterType="int" resultMap="BaseResultMap">
+  select *
+  from intend_borrow
+  where bill_id=#{billId,jdbcType=INTEGER}
+  </select>
+
   <!-- 根据借入方用户身份证号查找用户账目id -->
   <select id="selectBillId" parameterType="String" resultType="int">
   select bill_id
@@ -47,7 +60,11 @@
   <select  id="selectCounterParty" resultMap="BaseResultMap">
   select  bill_id,id_card,intend_money,start_date,pay_rate,pay_type,limit_months,state,raised_money
   from  intend_borrow
+<<<<<<< HEAD
   where  pay_rate=#{expectRate} and state=1 and limit_months=#{expectMonths} and #{lendMoney}>intend_money-raised_money
+=======
+  where  pay_rate=#{payRate} and state=1 and limit_months=#{limitMonths}
+>>>>>>> Ywr470832459-patch-1
   order by  pay_rate  desc
   </select>
 
@@ -58,25 +75,44 @@
     </update>
 
   <!-- 债权关系确立的过程 -->
-  <update id="prepareForTradeCreateTempTable">
+  <update id="prepareForTradeCreateTempTable" parameterType="int">
         create temporary table ${finish_raising_temp} as select  intend_borrow.bill_id,intend_borrow.id_card borrower_id,intend_lend.id_card lender_id,pay_rate,pay_type,lend_money,intend_money,limit_months
         from  intend_lend left join intend_borrow
         on intend_borrow.bill_id
-        where  raised_money=intend_money  and state=1
-        order by start_date
-        limit 1
-    </update>
+        where  intend_borrow.bill_id=#{billId,jdbcType=INTEGER}  and intend_borrow.state=1
+        order by intend_lend.start_date
+  </update>
+
+  <select id="selectCount" resultType="int">
+  select count(*)
+  from ${finish_raising_temp}
+  </select>
+
   <update id="addColumn">
+        alter table ${finish_raising_temp} add serial_number int(10);
         alter table ${finish_raising_temp} add in_bound_account varchar(30);
         alter table ${finish_raising_temp} add out_bound_account varchar(30);
-    </update>
-  <update id="updateBoundAccount">
-        update ${finish_raising_temp}
-        set ${finish_raising_temp}.in_bound_account=#{borrowerFundsAccount},${finish_raising_temp}.out_bound_account=#{lenderFundsAccount}
-    </update>
+  </update>
+
+  <update id="updateBoundAccount" parameterType="java.util.List">
+    update ${finish_raising_temp}
+    <foreach collection="list" item="item" index="index" separator=",">
+      set ${finish_raising_temp}.in_bound_account=#{item.borrowerFundsAccount},${finish_raising_temp}.out_bound_account=#{item.lenderFundsAccount}
+    </foreach>
+
+  </update>
+
+  <update id="updateSerialNumber" parameterType="java.util.List">
+    update ${finish_raising_temp}
+    <foreach collection="list" item="serialNumber" index="index" separator=",">
+      set ${finish_raising_temp}.serial_number=#{serialNumber}
+    </foreach>
+  </update>
+
   <update id="dropTempTable">
         drop table if exists ${finish_raising_temp}
     </update>
+
   <!-- 筹集齐资金后，债权关系确立，该笔交易才生效 -->
   <update id="updateState" parameterType="int">
         update intend_borrow

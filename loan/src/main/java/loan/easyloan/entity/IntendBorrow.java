@@ -1,12 +1,18 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class IntendBorrow {
 
   private int billId;
   private String idCard;
   private double intendMoney;
+<<<<<<< HEAD
   private java.sql.Date startDate;
+=======
+  private Date startDate;
+>>>>>>> Ywr470832459-patch-1
   private double payRate;
   private int payType;
   private int limitMonths;
@@ -41,11 +47,19 @@ public class IntendBorrow {
   }
 
 
+<<<<<<< HEAD
   public java.sql.Date getStartDate() {
     return startDate;
   }
 
   public void setStartDate(java.sql.Date startDate) {
+=======
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate) {
+>>>>>>> Ywr470832459-patch-1
     this.startDate = startDate;
   }
 

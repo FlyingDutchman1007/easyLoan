@@ -1,6 +1,7 @@
 package loan.easyLoan.mapper;
 
 import loan.easyLoan.entity.IntendLend;
+import loan.easyLoan.entity.PendingTransaction;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -17,7 +18,9 @@ public interface IntendLendMapper {
 
     int updateState(int billId);    //筹集齐资金后，债权关系确立，该笔交易才生效
 
-    List<IntendLend> viewPendingTransaction(String idCard); //借出方查看待交易记录
+    List<IntendLend> selectLender(int billId);//根据billId查找意向借出对象
+
+    List<PendingTransaction> viewPendingTransaction(String idCard); //借出方查看待交易记录
 
     int updateInvalidState(List<Integer> list);  //失效数据更新状态
 

@@ -22,5 +22,9 @@ public interface LenderAccountService {
 
     LenderAccount viewLenderAccount(String idCard);   //借出方查看个人账户
 
-    boolean updateLenderAccount(double lendMoney,String fundsAccount);//更新借出者账户
+    boolean updateLentMoney(double lendMoney,String fundsAccount);//更新借出者账户
+
+    boolean updateAccountBalance(String fundsAccount);
+
+    double getMoney(String fundsAccount);  //根据资金账户找到帐户余额
 }

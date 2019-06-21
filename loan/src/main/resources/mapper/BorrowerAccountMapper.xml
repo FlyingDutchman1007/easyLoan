@@ -25,6 +25,17 @@
     <result column="out_bound_account" jdbcType="VARCHAR" property="outBoundAccount" />
   </resultMap>-->
 
+<<<<<<< HEAD
+=======
+
+  <!--根据资金账户找到帐户余额-->
+  <select id="getMoney" parameterType="String" resultType="double">
+  select account_balance
+  from borrower_account
+  where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </select>
+
+>>>>>>> Ywr470832459-patch-1
   <!--更新借入方额度-->
   <update id="updateAvailableLimit">
     update borrower_account

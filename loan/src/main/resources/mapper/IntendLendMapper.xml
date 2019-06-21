@@ -9,6 +9,13 @@
     <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
 
+  <!--根据billId获取多个借出者对象-->
+  <select id="selectLender" resultType="int">
+  select *
+  from intend_lend
+  where bill_id=#{billId,jdbcType=INTEGER}
+  </select>
+
   <!--  借出方选择好对手方并确定借出之后 -->
   <insert  id="insertIntendLend">
         insert into intend_lend

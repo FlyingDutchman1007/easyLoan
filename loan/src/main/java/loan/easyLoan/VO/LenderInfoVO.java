@@ -76,4 +76,20 @@ public class LenderInfoVO {
     public void setAddress(String address) {
         this.address = address;
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public String toString() {
+        return "LenderInfoVO{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", userName='" + userName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", educationalLevel='" + educationalLevel + '\'' +
+                ", marriage='" + marriage + '\'' +
+                ", profession='" + profession + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+>>>>>>> Ywr470832459-patch-1
 }
