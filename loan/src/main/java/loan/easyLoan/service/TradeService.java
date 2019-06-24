@@ -52,4 +52,5 @@ public interface TradeService {
     boolean updateTradeList(Trade trade);//修改交易某条信息
 
     boolean updateAccount(int billId, String money, String exactDate, String idcard);
+
 }

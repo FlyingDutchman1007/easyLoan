@@ -300,9 +300,6 @@ public class TradeServiceImpl implements TradeService {
             double outMoney = tra.getMoney() / amountMoney * repaymentmoney;
             //更新每条记录对应的数据
             //判断更新是否成功
-            System.out.println(tra.getSerialNumber());
-            System.out.println(tra.getBillId());
-            System.out.println("******************");
 
             boolean judegeUpdate = updateEveryRepayment(tra, outMoney);
             //判断更新失败直接跳出
