@@ -1,6 +1,8 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class Trade {
 
   private int serialNumber;
@@ -11,7 +13,7 @@ public class Trade {
   private int limitMonths;
   private int payType;
   private double payRate;
-  private java.sql.Timestamp exactDate;
+  private Date exactDate;
   private double nextTimePay;
   private double repaidPrincipal;
   private double repaidInterest;
@@ -19,7 +21,7 @@ public class Trade {
   private double shouldRepayPrincipal;
   private double shouldRepayInterest;
   private double shouldRepayLiquidatedMoney;
-  private java.sql.Timestamp finishedDate;
+  private Date finishedDate;
 
 
   public int getSerialNumber() {
@@ -94,11 +96,11 @@ public class Trade {
   }
 
 
-  public java.sql.Timestamp getExactDate() {
+  public Date getExactDate() {
     return exactDate;
   }
 
-  public void setExactDate(java.sql.Timestamp exactDate) {
+  public void setExactDate(Date exactDate) {
     this.exactDate = exactDate;
   }
 
@@ -166,11 +168,11 @@ public class Trade {
   }
 
 
-  public java.sql.Timestamp getFinishedDate() {
+  public Date getFinishedDate() {
     return finishedDate;
   }
 
-  public void setFinishedDate(java.sql.Timestamp finishedDate) {
+  public void setFinishedDate(Date finishedDate) {
     this.finishedDate = finishedDate;
   }
 

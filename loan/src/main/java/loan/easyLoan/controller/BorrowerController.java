@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import loan.easyLoan.entity.UserRequiredInfo;
 import loan.easyLoan.service.BorrowerAccountService;
 import loan.easyLoan.service.IntendBorrowService;
+import loan.easyLoan.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,9 @@ public class BorrowerController {
 
     @Autowired
     private BorrowerAccountService borrowerAccountService;
+
+    @Autowired
+    private TradeService tradeService;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -43,10 +47,12 @@ public class BorrowerController {
         // 根据sessionId获取存放在session中的userRequiredInfo
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         //获取id号
+
         String idCard = userRequiredInfo.getIdCard();
 
         //如果没有已有的交易记录，说明可以提交借款申请
-        if(intendBorrowService.selectPendingTransaction(idCard).isEmpty()){
+        if((intendBorrowService.selectPendingTransaction(idCard).isEmpty()
+                && tradeService.selectPendingRepayment(userRequiredInfo.getBankAccount()).isEmpty())==true){
 
             // 获取一个新账单的所有数据
             double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));

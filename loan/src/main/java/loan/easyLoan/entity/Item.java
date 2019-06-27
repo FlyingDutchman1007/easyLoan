@@ -5,10 +5,10 @@ package loan.easyLoan.entity;
  * @date 2019/6/11 9:14
  */
 public class Item {
-    private double thisPeriodSumRepaidMoney;
-    private double repayMoney;
+    private double thisPeriodSumRepaidMoney; //这期总的还款金额，每月清零
+    private double repayMoney; // 最近一次还钱数，会覆盖的
     private int billId;
-    private String outBoundAccount;
+    private String outBoundAccount; // 借出方的账户
 
     public double getThisPeriodSumRepaidMoney() {
         return thisPeriodSumRepaidMoney;

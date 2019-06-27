@@ -10,6 +10,41 @@
     <result column="expected_income" jdbcType="DOUBLE" property="expectedIncome" />
   </resultMap>
 
+  <!--意向借出后更新借出者帐户余额-->
+  <update id="updateAccountBalance">
+    update lender_account
+    set account_balance=account_balance-lent_money
+    where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </update>
+
+  <!--债权关系确立后更新借出者账户-->
+  <update id="updateLentMoney">
+        update lender_account
+        set lent_money=lent_money+#{lendMoney}
+        where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+    </update>
+
+  <!--债权关系确立后更新预期收益-->
+  <update id="updateExpectedIncome">
+    update lender_account
+    set expected_income=expected_income+#{lendMoney}+#{lendMoney}*#{payRate}
+    where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </update>
+
+  <!--有还款后更新当前收益-->
+  <update id="updateCurrentIncome">
+    update lender_account
+    set current_income=current_income+#{repayMoney}
+    where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </update>
+
+  <!--根据资金账户找到帐户余额-->
+  <select id="getMoney" parameterType="String" resultType="double">
+  select account_balance
+  from lender_account
+  where funds_account=#{fundsAccount,jdbcType=VARCHAR}
+  </select>
+
   <!-- 新用户注册后分配资金账号 -->
   <insert id="addNewLender">
         insert into lender_account
@@ -33,7 +68,7 @@
   <!-- 充值后修改用户资金账户余额 -->
   <update  id="updateRechargeAccount">
         update lender_account
-        set  account_balance=account_balance+#{withdrawMoney}
+        set  account_balance=account_balance+#{rechargeMoney}
         where  funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
 
@@ -45,10 +80,11 @@
   </select>
 
   <!-- 借出方查看个人账户 -->
-  <select id="viewLenderAccount" parameterType="String">
-  select account_balance,lent_money,current_income,expected_income
-  from lender_account
-  where id_card=#{idCard,jdbcType=CHAR}
+  <select id="viewLenderAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from lender_account
+    where id_card=#{idCard,jdbcType=CHAR}
   </select>
 
   <!-- 债权关系确立 -->
@@ -58,22 +94,10 @@
   on ${finish_raising_temp}.lender_id=lender_account.id_card
   </select>
 
-  <!--更新借出者账户-->
-  <update id="updateLenderAccount">
-        update lender_account
-        set account_balance=account_balance-#{lendMoney},lent_money=lent_money+#{lendMoney}
-        where funds_account=#{fundsAccount,jdbcType=VARCHAR}
-    </update>
-
   <sql id="Base_Column_List">
     funds_account, id_card, account_balance, lent_money, current_income, expected_income
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from lender_account
-    where funds_account = #{fundsAccount,jdbcType=VARCHAR}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from lender_account
     where funds_account = #{fundsAccount,jdbcType=VARCHAR}

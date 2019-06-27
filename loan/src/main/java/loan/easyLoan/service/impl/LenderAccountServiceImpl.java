@@ -67,12 +67,48 @@ public class LenderAccountServiceImpl implements LenderAccountService {
     }
 
     @Override
-    public boolean updateLenderAccount(double lendMoney, String fundsAccount) {
-        int result = lenderAccountMapper.updateLenderAccount(lendMoney,fundsAccount);
+    public boolean updateLentMoney(double lendMoney, String fundsAccount) {
+        int result = lenderAccountMapper.updateLentMoney(lendMoney,fundsAccount);
         if (result == 1){
             return true;
         }else {
             return false;
         }
     }
+
+    @Override
+    public boolean updateAccountBalance(String fundsAccount) {
+        int result = lenderAccountMapper.updateAccountBalance(fundsAccount);
+        if (result == 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public double getMoney(String fundsAccount) {
+        return lenderAccountMapper.getMoney(fundsAccount);
+    }
+
+    @Override
+    public boolean updateExpectedIncome(double lendMoney, String fundsAccount,double payRate){
+        int result = lenderAccountMapper.updateExpectedIncome(lendMoney,fundsAccount,payRate);
+        if (result == 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean updateCurrentIncome(double repayMoney,String fundsAccount){//有还款后更新当前收益
+        int result = lenderAccountMapper.updateCurrentIncome(repayMoney,fundsAccount);
+        if (result == 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
 }

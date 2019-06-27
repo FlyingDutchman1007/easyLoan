@@ -1,6 +1,8 @@
 package loan.easyLoan.entity;
 
 
+import java.util.Date;
+
 public class BorrowMoneyFlow {
 
   private int serialNumber;
@@ -8,7 +10,7 @@ public class BorrowMoneyFlow {
   private String inBoundAccount;
   private String outBoundAccount;
   private double money;
-  private java.sql.Timestamp exactDate;
+  private Date exactDate;
 
 
   public int getSerialNumber() {
@@ -56,11 +58,11 @@ public class BorrowMoneyFlow {
   }
 
 
-  public java.sql.Timestamp getExactDate() {
+  public Date getExactDate() {
     return exactDate;
   }
 
-  public void setExactDate(java.sql.Timestamp exactDate) {
+  public void setExactDate(Date exactDate) {
     this.exactDate = exactDate;
   }
 

@@ -1,7 +1,7 @@
 package loan.easyLoan.controller;
 
 import io.swagger.annotations.ApiOperation;
-import loan.easyLoan.VO.BorrowerInfoVO;
+
 import loan.easyLoan.VO.LenderInfoVO;
 import loan.easyLoan.entity.UserOptionalInfo;
 import loan.easyLoan.entity.UserRequiredInfo;
@@ -45,7 +45,8 @@ public class LenderUserInfoController {
         //将对象属性分别copy到VO中
         BeanUtils.copyProperties(userRequiredInfo, lenderInfoVO);
         BeanUtils.copyProperties(userOptionalInfo, lenderInfoVO);
-        System.out.println(lenderInfoVO.getPhoneNumber());
+
+        System.out.println(lenderInfoVO.toString());
 
         return lenderInfoVO;
     }

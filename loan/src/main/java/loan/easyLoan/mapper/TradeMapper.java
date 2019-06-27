@@ -18,7 +18,7 @@ public interface TradeMapper {
     List<Trade> selectPendingRepayment(String inBoundAccount);   //借入方查看待还款记录
     List<Trade> selectPendingReceivable(String outBoundAccount);   //借出方查看待收款记录
 
-    void prepareForTrade();   //将临时表中的数据插入交易表
+    int prepareForTrade();   //将临时表中的数据插入交易表
     int selectBillId();
 
     void establish1(int billId, Date exactDate);
@@ -44,4 +44,10 @@ public interface TradeMapper {
 
     List<Trade> selectBadDebt();    //查询坏账的交易,后期平台对这些借出方进行赔付
     int updateBadDebt(List<Trade> list2);   //更新坏账的交易记录
+
+    int selectPayType(int billId);  //根据账目id查看还款类型
+    int insertRecord(List<Trade> list);
+
+    int updateTradeList(Trade trade);//修改交易某条信息
+    List<Trade> getAllActiveTrade();//获取所有还未了结的Trade
 }

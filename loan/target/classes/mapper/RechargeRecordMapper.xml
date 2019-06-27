@@ -8,6 +8,19 @@
     <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
   </resultMap>
 
+  <!--生成流水号-->
+  <parameterMap type="java.util.Map" id="getSerialMap">
+    <parameter property="tsCode" mode="IN" jdbcType="VARCHAR"/>
+    <parameter property="result" mode="OUT" jdbcType="VARCHAR"/>
+  </parameterMap>
+
+  <update id="getSerialNumber" parameterMap="getSerialMap" statementType="CALLABLE">
+    {call serial(
+        #{tsCode,mode=IN,jdbcType=VARCHAR},
+        #{result,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </update>
+
   <!-- 生成交易记录 -->
   <insert id="insertRechargeRecord" parameterType="loan.easyLoan.entity.RechargeRecord">
     insert into recharge_record (serial_number, recharge_date, recharge_money,

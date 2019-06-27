@@ -75,6 +75,12 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
+        <!-- 定时器任务 quartz需要导入的坐标 -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.8.5</version>
+        </dependency>
 
 
     </dependencies>

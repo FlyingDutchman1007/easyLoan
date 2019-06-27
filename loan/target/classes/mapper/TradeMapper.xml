@@ -35,7 +35,9 @@
   </resultMap>
 
   <resultMap id="finishedRecord" type="loan.easyLoan.entity.Trade">
+    <!-- id是主键的映射，其中property是pojo中主键的属性，column是返回结果中主键的列 -->
     <id property="bill_id" column="billId" />
+    <!-- 普通列使用result映射 -->
     <result property="exact_date" column="exactDate" />
     <result property="money" column="money" />
     <result property="pay_rate" column="payRate" />
@@ -46,27 +48,52 @@
     <result property="finished_date" column="finishedDate" />
   </resultMap>
 
+  <update id="updateTradeList" parameterType="Trade">
+    update trade
+    set
+    bill_id=#{billId,jdbcType=INTEGER},in_bound_account=#{inBoundAccount,jdbcType=VARCHAR},out_bound_account=#{outBoundAccount,jdbcType=VARCHAR},money=#{money,jdbcType=DOUBLE},
+    limit_months=#{limitMonths,jdbcType=INTEGER},pay_type=#{payType,jdbcType=INTEGER},pay_rate=#{payRate,jdbcType=REAL},exact_date=#{exactDate,jdbcType=TIMESTAMP},
+    next_time_pay=#{nextTimePay,jdbcType=DOUBLE},repaid_principal=#{repaidPrincipal,jdbcType=DOUBLE},repaid_interest=#{repaidInterest,jdbcType=DOUBLE},liquidated_money=#{liquidatedMoney,jdbcType=DOUBLE},
+    should_repay_principal=#{shouldRepayPrincipal,jdbcType=DOUBLE},should_repay_interest=#{shouldRepayInterest,jdbcType=DOUBLE},should_repay_liquidated_money=#{shouldRepayLiquidatedMoney,jdbcType=DOUBLE},
+    finished_date=#{finishedDate,jdbcType=TIMESTAMP}
+    where serial_number=#{serialNumber,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insertRecord" parameterType="java.util.List">
+    insert into trade values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.serialNumber},#{item.billId},#{item.inBoundAccount},#{item.outBoundAccount},#{item.money},#{item.limitMonths},#{item.payType},#{item.payRate},#{item.exactDate},
+      #{item.nextTimePay},#{item.repaidPrincipal},#{item.repaidInterest},#{item.liquidatedMoney},#{item.shouldRepayPrincipal},#{item.shouldRepayInterest},#{item.shouldRepayLiquidatedMoney},#{item.finishedDate})
+    </foreach>
+  </insert>
+
+  <!--根据账目id查看还款类型-->
+  <select id="selectPayType" parameterType="int" resultType="int">
+    select pay_type
+    from trade
+    where serial_number=#{serialNumber,jdbcType=INTEGER}
+  </select>
 
   <!-- 借入方查看待还款记录 -->
-  <select  id="selectPendingRepayment" parameterType="String" resultMap="pendingRepaymentRecord_map">
-  select bill_id,exact_date,money,pay_rate,pay_type,should_repay_principal,should_repay_interest,should_repay_liquidated_money
+  <select  id="selectPendingRepayment" parameterType="String" resultMap="BaseResultMap">
+  select *
   from trade
-  where should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0 and in_bound_account=#{fundsAccount,jdbcType=VARCHAR}
+  where exact_date = finished_date and in_bound_account=#{fundsAccount,jdbcType=VARCHAR}
   </select>
 
   <!-- 借出方查看待收款记录 -->
-  <select id="selectPendingReceivable" parameterType="String" resultMap="pendingRepaymentRecord_map">
-  select bill_id,exact_date,money,pay_rate,pay_type,should_repay_principal,should_repay_interest,should_repay_liquidated_money
+  <select id="selectPendingReceivable" parameterType="String" resultMap="BaseResultMap">
+  select *
   from trade
-  where should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0 and out_bound_account=#{fundsAccount,jdbcType=VARCHAR}
+  where (should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0) and out_bound_account=#{fundsAccount,jdbcType=VARCHAR}
   </select>
 
   <!-- 债权关系确立 -->
   <insert id="prepareForTrade">
-        insert into trade (bill_id,in_bound_account,out_bound_account,money,limit_months,pay_type,pay_rate)
-        select(${finish_raising_temp}.bill_id,${finish_raising_temp}.in_bound_account,${finish_raising_temp}.out_bound_account,${finish_raising_temp}.intend_money,${finish_raising_temp}.limit_months,${finish_raising_temp}.pay_type,${finish_raising_temp}.pay_rate)
+        insert into trade (serial_number,bill_id,in_bound_account,out_bound_account,money,limit_months,pay_type,pay_rate)
+        select(${finish_raising_temp}.serial_number,${finish_raising_temp}.bill_id,${finish_raising_temp}.in_bound_account,${finish_raising_temp}.out_bound_account,${finish_raising_temp}.intend_money,${finish_raising_temp}.limit_months,${finish_raising_temp}.pay_type,${finish_raising_temp}.pay_rate)
         from ${finish_raising_temp}
-    </insert>
+  </insert>
   <select id="selectBillId" resultType="int">
   select ${finish_raising_temp}.bill_id
   from  ${finish_raising_temp}
@@ -100,14 +127,14 @@
   <select id="borrowViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
   select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
   from trade
-  where in_bound_account=#{fundsAccount,jdbcType=VARCHAR} and finished_date!=null
+  where in_bound_account=#{fundsAccount,jdbcType=VARCHAR} and (finished_date != exact_date)
   </select>
 
   <!-- 借出方查看已完成记录 -->
   <select id="lendViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
   select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
   from trade
-  where out_bound_account=#{fundsAccount,jdbcType=VARCHAR} and finished_date!=null
+  where out_bound_account=#{fundsAccount,jdbcType=VARCHAR} and (finished_date != exact_date)
   </select>
 
   <!-- 借入方还款,先把该账目id的交易记录取出来 -->
@@ -130,7 +157,7 @@
   <select id="selectExactDate" parameterType="int" resultType="Date">
   select exact_date
   from trade
-  where bill_id=#{billId,jdbcType=INTEGER}
+  where serial_number=#{serialNumber,jdbcType=INTEGER}
   </select>
   <!-- 借入方还款,按照各个借出方的出资比例进行还款,先还违约金，再还利息，再还本金 -->
   <!-- 提前还清借款,暂无 -->
@@ -207,6 +234,13 @@
       where bill_id=#{item.billId}
     </foreach>
   </update>
+
+  <!-- 查询坏账的交易,后期平台对这些借出方进行赔付 -->
+  <select id="getAllActiveTrade" resultType="Trade">
+  select *
+  from trade
+  where finished_date = exact_date
+  </select>
 
 
 </mapper>

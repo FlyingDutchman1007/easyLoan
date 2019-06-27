@@ -8,7 +8,8 @@ import loan.easyLoan.entity.BorrowerAccount;
  */
 public interface BorrowerAccountService {
 
-    boolean updateAvailableLimit(String idCard, double intendMoney);//借入方意向借入完成后更新额度
+
+    boolean updateAvailableLimit(String idCard,double intendMoney);//借入方意向借入完成后更新额度
 
     boolean addNewBorrower(String fundsAccount, String idCard, int creditScore, double totalLimit, double availableLimit);  //新用户注册后分配资金账号
 
@@ -24,5 +25,9 @@ public interface BorrowerAccountService {
 
     BorrowerAccount viewBorrowerAccount(String idCard); //借入方查看个人账户
 
-    boolean updateBorrowerAccount(double intendMoney, String fundsAccount);//更新借入方资金账户
+    boolean updateBorrowerAccount(double intendMoney,String fundsAccount);//更新借入方资金账户
+
+    double getMoney(String fundsAccount);  //根据资金账户找到帐户余额
+
+    BorrowerAccount decreaseCreditScore(String fundsAccount);//减少账户信用额度
 }

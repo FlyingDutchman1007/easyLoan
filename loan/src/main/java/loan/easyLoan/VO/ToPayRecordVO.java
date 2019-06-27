@@ -1,22 +1,23 @@
 package loan.easyLoan.VO;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 public class ToPayRecordVO {
 
     private int billId;
-    private Timestamp startDate;
+    private Date startDate;
     private double money;
     private double unpayMoney;
     private double nextTimeShouldPay;
     private double liquidatedMoney;
     private double rate;
     private int payType;
-    private Timestamp deadline;
+    private Date deadline;
 
     public ToPayRecordVO() {}
 
-    public ToPayRecordVO(int billId, Timestamp startDate, double money, double unpayMoney, double nextTimeShouldPay, double liquidatedMoney, double rate, int payType, Timestamp deadline) {
+    public ToPayRecordVO(int billId, Date startDate, double money, double unpayMoney, double nextTimeShouldPay, double liquidatedMoney, double rate, int payType, Date deadline) {
         this.billId = billId;
         this.startDate = startDate;
         this.money = money;
@@ -36,11 +37,11 @@ public class ToPayRecordVO {
         this.billId = billId;
     }
 
-    public Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
@@ -92,11 +93,11 @@ public class ToPayRecordVO {
         this.payType = payType;
     }
 
-    public Timestamp getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Timestamp deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 }
