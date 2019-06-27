@@ -350,12 +350,17 @@ public class TradeServiceImpl implements TradeService {
                 // 根据月数差判断是否需要更新（按季度还则需保证月份差为3的倍数）
                 if(0==timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())%trade.getPayType()){//需要更新
                     logger.info("用户 {} 需要更新",trade.getSerialNumber());
-                    // 计算违约金
-                    double liquidatedMoney = trade.getNextTimePay() * (1 + trade.getPayRate() * trade.getPayType() * 0.5);
-                    trade.setShouldRepayLiquidatedMoney(liquidatedMoney);
+
                     //  如果当前日期在deadline之前，则未变成死账
                     logger.info("判断是否为死账...{}",trade.getLimitMonths()<=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate()));
                     if(trade.getLimitMonths()>=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())){
+
+                        // 计算违约金
+                        double liquidatedMoney =
+                                trade.getLiquidatedMoney()
+                                        + trade.getNextTimePay() * (1 + trade.getPayRate() * trade.getPayType() * 0.5);
+                        trade.setShouldRepayLiquidatedMoney(liquidatedMoney);
+
                         //  计算下次应还
                         double nextTimePay = trade.getShouldRepayPrincipal()
                                 + trade.getShouldRepayInterest()
@@ -364,11 +369,12 @@ public class TradeServiceImpl implements TradeService {
                         trade.setNextTimePay(nextTimePay);
                     }else{  //否则算作死账
                         borrowerAccountService.viewBorrowerAccount(trade.getInBoundAccount());
+
                     }
                     logger.info("更新了Trade表:更新的结果为{}", trade);
+                    tradeService.updateTradeList(trade);
                     BorrowerAccount borrowerAccount = borrowerAccountService.decreaseCreditScore(trade.getInBoundAccount());
                     borrowerAccount.setCreditScore(borrowerAccount.getCreditScore()/2);
-
                 }
             }
         }

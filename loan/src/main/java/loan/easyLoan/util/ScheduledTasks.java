@@ -59,7 +59,11 @@ public class ScheduledTasks {
     public void updateInvalidIntendBorrow(){
 
         List<Integer> updateList = intendBorrowService.selectLoseEfficacy();
-        intendBorrowService.updateInvalidState(updateList);
+
+        if(!updateList.isEmpty()){
+            intendBorrowService.updateInvalidState(updateList);
+        }
+
     }
 
 
