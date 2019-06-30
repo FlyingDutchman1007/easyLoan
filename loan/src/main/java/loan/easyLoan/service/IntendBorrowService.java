@@ -17,7 +17,7 @@ public interface IntendBorrowService {
 
     List<Match> selectCounterParty(float payRate, int limitMonths,int payType);    //查询意向借入方并按照利率从高到低排序
 
-    boolean updateRaisedMoney(double lendMoney);    //借出方选择好对手方并确定借出之后更新已筹集的资金信息
+    boolean updateRaisedMoney(String idCard, double lendMoney);    //借出方选择好对手方并确定借出之后更新已筹集的资金信息
 
     IntendBorrow selectIntendAndRaisedMoney(int billId);//查询意向借入总额和已经筹集到的资金
 

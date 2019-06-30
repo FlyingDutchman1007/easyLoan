@@ -81,8 +81,8 @@ public class IntendBorrowServiceImpl implements IntendBorrowService {
 
 
     @Override
-    public boolean updateRaisedMoney(double lendMoney) {
-        int result = intendBorrowMapper.updateRaisedMoney(lendMoney);
+    public boolean updateRaisedMoney(String idCard, double lendMoney) {
+        int result = intendBorrowMapper.updateRaisedMoney(idCard, lendMoney);
         if (result == 1){
             return true;
         }else {

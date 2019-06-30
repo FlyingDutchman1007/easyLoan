@@ -55,4 +55,6 @@ public interface TradeService {
     boolean updateAccount(int billId, String money, String exactDate, String idcard) throws ParseException;
 
     boolean updateTradeEveryMonth()throws ParseException; //用于系统定时任务,每月更新Trade表中的未还款字段
+
+    double calcUnpaidMoney(Trade trade) throws ParseException; //计算账户还欠多少钱（总共，用于最后判断总账是否还清）
 }

@@ -68,6 +68,7 @@
   <update  id="updateRaisedMoney">
         update  intend_borrow
         set  raised_money=raised_money+#{lendMoney}
+        where id_card = #{idCard}
     </update>
 
   <!-- 债权关系确立的过程 -->

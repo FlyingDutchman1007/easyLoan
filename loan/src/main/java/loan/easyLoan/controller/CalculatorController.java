@@ -23,10 +23,11 @@ public class CalculatorController {
     public List<CalculateTable> rateCalculate(@RequestBody Map obj) {
         double lendMoney = Double.parseDouble((String) obj.get("lendMoney"));
         float payRate = Float.parseFloat((String) obj.get("payRate"));
+        float rate = payRate/100;
         int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
         int payType = Integer.parseInt((String) obj.get("payType"));
         int rateCalculateType = Integer.parseInt((String) obj.get("rateCalculateType"));//1-等额本息，2-等额本金，3-等本等息
-        List<CalculateTable> calculateTableList = rateCalculator.calculate(lendMoney, payRate, limitMonths, payType, rateCalculateType);
+        List<CalculateTable> calculateTableList = rateCalculator.calculate(lendMoney, rate, limitMonths, payType, rateCalculateType);
         if (calculateTableList.isEmpty()) {
             return null;
         } else {

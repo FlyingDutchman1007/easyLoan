@@ -43,9 +43,9 @@ public class LenderFinishedRecordController {
             lenderFinishedRecordVO.setBillId(trade.getBillId());
             lenderFinishedRecordVO.setStartDate(trade.getExactDate());
             lenderFinishedRecordVO.setMoney(trade.getMoney());
-            lenderFinishedRecordVO.setInterest(trade.getRepaidInterest());
+            lenderFinishedRecordVO.setInterest(trade.getShouldRepayInterest() * trade.getLimitMonths());
             lenderFinishedRecordVO.setLiquidatedMoney(trade.getLiquidatedMoney());
-            lenderFinishedRecordVO.setTotalMoney(trade.getMoney()+trade.getRepaidInterest()+trade.getLiquidatedMoney());
+            lenderFinishedRecordVO.setTotalMoney(trade.getRepaidPrincipal()+trade.getRepaidInterest()+trade.getLiquidatedMoney());
             lenderFinishedRecordVO.setRate(trade.getPayRate());
             lenderFinishedRecordVO.setLimitMonths(trade.getLimitMonths());
             lenderFinishedRecordVO.setPayUpDate(trade.getFinishedDate());

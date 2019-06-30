@@ -128,7 +128,7 @@ public class LenderController {
 
         if (balance >= lendMoney){
             intendLendService.insertIntendLend(billId,idCard,lendMoney,intendLendDate);
-            intendBorrowService.updateRaisedMoney(lendMoney);
+            intendBorrowService.updateRaisedMoney(intendBorrow.getIdCard(),lendMoney);
             lenderAccountService.updateLentMoney(lendMoney,lenderAccountService.findFundsAccount(idCard));
             if(intendBorrowService.selectIntendAndRaisedMoney(billId).getIntendMoney() == intendBorrowService.selectIntendAndRaisedMoney(billId).getRaisedMoney()){
                 intendLendService.updateState(billId);

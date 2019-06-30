@@ -19,16 +19,15 @@ public class RateCalculator {
         int period = limitMonths / payType;
         double periodRate = payRate * payType;
 
-        //本金
-        BigDecimal invest = new BigDecimal(lendMoney);
-        //每期本金
-        BigDecimal monthCapital;
-        //每期利息
-        BigDecimal monthInterest;
-        //剩余本金
-        BigDecimal capital = invest;
-
         if (rateCalculateType == 1) {
+            //本金
+            BigDecimal invest = new BigDecimal(lendMoney);
+            //每期本金
+            BigDecimal monthCapital;
+            //每期利息
+            BigDecimal monthInterest;
+            //剩余本金
+            BigDecimal capital = invest;
             // 每期本息金额  = (本金×期利率×(1＋期利率)＾还款期数)÷ ((1＋期利率)＾还款期数-1)
             BigDecimal monthIncome = invest.multiply(new BigDecimal(periodRate * Math.pow(1 +
                     periodRate, period))).divide(new BigDecimal(Math.pow(1 + periodRate, period) - 1), 2,
@@ -68,6 +67,14 @@ public class RateCalculator {
             }
             return list;
         } else if (rateCalculateType == 2) {
+            //本金
+            BigDecimal invest = new BigDecimal(lendMoney);
+            //每期本金
+            BigDecimal monthCapital;
+            //每期利息
+            BigDecimal monthInterest;
+            //剩余本金
+            BigDecimal capital = invest;
             for (int i = 1; i < period + 1; i++) {
                 CalculateTable calculateTable = new CalculateTable();
                 if (i == period) {
@@ -102,6 +109,14 @@ public class RateCalculator {
             }
             return list;
         } else {
+            //本金
+            BigDecimal invest = new BigDecimal(lendMoney);
+            //每期本金
+            BigDecimal monthCapital;
+            //每期利息
+            BigDecimal monthInterest;
+            //剩余本金
+            BigDecimal capital = invest;
             for (int i = 1; i < period + 1; i++) {
                 CalculateTable calculateTable = new CalculateTable();
                 // 每期应还本金 = 贷款本金/还款期数
@@ -110,7 +125,6 @@ public class RateCalculator {
                 monthInterest = (new BigDecimal(periodRate * limitMonths / period / period)).multiply(invest).setScale(2, BigDecimal.ROUND_HALF_UP);
                 // 每期本息金额 =  每期应还本金 + 每期利息
                 BigDecimal monthIncome = monthCapital.add(monthInterest);
-                capital = capital.subtract(monthCapital);
                 capital = capital.subtract(monthCapital);
 
                 calculateTable.setPeriod(i);

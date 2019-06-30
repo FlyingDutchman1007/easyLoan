@@ -43,6 +43,7 @@
     <result property="pay_rate" column="payRate" />
     <result property="pay_type" column="payType" />
     <result property="limit_months" column="limitMonths" />
+    <result property="repaid_principal" column="repaidPrincipal" />
     <result property="repaid_interest" column="repaidInterest" />
     <result property="liquidated_money" column="liquidatedMoney" />
     <result property="finished_date" column="finishedDate" />
@@ -85,7 +86,7 @@
   <select id="selectPendingReceivable" parameterType="String" resultMap="BaseResultMap">
   select *
   from trade
-  where (should_repay_principal>0 or should_repay_interest>0 or should_repay_liquidated_money>0) and out_bound_account=#{fundsAccount,jdbcType=VARCHAR}
+  where exact_date = finished_date and out_bound_account=#{fundsAccount,jdbcType=VARCHAR}
   </select>
 
   <!-- 债权关系确立 -->
@@ -124,15 +125,15 @@
   </select>
 
   <!-- 借入方查看已完成记录 -->
-  <select id="borrowViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
-  select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
+  <select id="borrowViewFinishedRecord" parameterType="String" resultMap="BaseResultMap">
+  select *
   from trade
   where in_bound_account=#{fundsAccount,jdbcType=VARCHAR} and (finished_date != exact_date)
   </select>
 
   <!-- 借出方查看已完成记录 -->
-  <select id="lendViewFinishedRecord" parameterType="String" resultMap="finishedRecord">
-  select bill_id,exact_date,money,repaid_interest,liquidated_money,pay_rate,pay_type,limit_months,finished_date
+  <select id="lendViewFinishedRecord" parameterType="String" resultMap="BaseResultMap">
+  select *
   from trade
   where out_bound_account=#{fundsAccount,jdbcType=VARCHAR} and (finished_date != exact_date)
   </select>

@@ -122,22 +122,21 @@ public class RepaymentRecordController {
                     *(tra.getShouldRepayPrincipal() +tra.getShouldRepayInterest())
                     +tra.getNextTimePay();
             //5.添加未支付金额
-            totalUnpayMoney += Math.abs(amountMoney);
+            totalUnpayMoney += amountMoney;
 
             //下期应还金额=本期本金+本期利率+本期违约金
             BigDecimal shouldpaymoney = new BigDecimal(Double.toString(tra.getNextTimePay()));
-            System.out.println(tra.getNextTimePay());
-            System.out.println(shouldpaymoney);
+
             //totalshouldpaymoney += shouldpaymoney;
             totalshouldpaymoney = totalshouldpaymoney.add(shouldpaymoney);
-            System.out.println(totalshouldpaymoney);
+
             //6.获取下期应还金额
 
             //7.获取违约金
             totalLiquidatedMoney = totalLiquidatedMoney.add(new BigDecimal(Double.toString(tra.getShouldRepayLiquidatedMoney())));
-            System.out.println(totalLiquidatedMoney);
+
             totalLiquidatedMoney = totalLiquidatedMoney.subtract(new BigDecimal(Double.toString(tra.getLiquidatedMoney())));
-            System.out.println(totalLiquidatedMoney);
+
             //totalLiquidatedMoney = totalLiquidatedMoney + tra.getShouldRepayLiquidatedMoney() - tra.getLiquidatedMoney();
 
             //8.获取初始本金
@@ -152,12 +151,11 @@ public class RepaymentRecordController {
             billid = tra.getBillId();
 
         }
-        System.out.println(totalshouldpaymoney);
-        System.out.println(totalshouldpaymoney.doubleValue());
+
         //System.out.println(repaymentRecordVlist.get(0).getDeadline());
         repaymentRecordVO.setUnpayMoney(totalUnpayMoney);
         repaymentRecordVO.setNextTimeShouldPay(totalshouldpaymoney.doubleValue());
-        System.out.println(totalshouldpaymoney);
+
         repaymentRecordVO.setLiquidatedMoney(totalLiquidatedMoney.doubleValue());
         repaymentRecordVO.setStartMoney(totalStartMoney);
 
@@ -169,7 +167,7 @@ public class RepaymentRecordController {
         for(IntendLend ilend :intendLendService.selectLender(billid)){
             intendMoney += ilend.getLendMoney();
         }
-        if (intendMoney == totalMoney)
+        if (intendMoney == totalMoney && intendMoney!=0)
             return repaymentRecordVlist;
         return null;
     }

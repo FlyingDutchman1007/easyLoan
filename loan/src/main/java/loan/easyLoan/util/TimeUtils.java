@@ -56,7 +56,7 @@ public class TimeUtils {
         return calendar.getTime();
     }
 
-    public static boolean ifBegin(Date date1, Date date2, int type, int period) {
+    public boolean ifBegin(Date date1, Date date2, int type, int period) {
         for(int i = 1; i * type < period; i++) {
             if(addMonth(date1, i * type).equals(date2)) {
                 return true;

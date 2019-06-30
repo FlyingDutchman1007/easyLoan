@@ -42,9 +42,9 @@ public class BorrowerFinishedRecordController {
             borrowerFinishedRecordVO.setBillId(trade.getBillId());
             borrowerFinishedRecordVO.setStartDate(trade.getExactDate());
             borrowerFinishedRecordVO.setMoney(trade.getMoney());
-            borrowerFinishedRecordVO.setInterest(trade.getRepaidInterest());
+            borrowerFinishedRecordVO.setInterest(trade.getShouldRepayInterest() * trade.getLimitMonths());
             borrowerFinishedRecordVO.setLiquidatedMoney(trade.getLiquidatedMoney());
-            borrowerFinishedRecordVO.setTotalMoney(trade.getMoney()+trade.getRepaidInterest()+trade.getLiquidatedMoney());
+            borrowerFinishedRecordVO.setTotalMoney(trade.getRepaidPrincipal()+trade.getRepaidInterest()+trade.getLiquidatedMoney());
             borrowerFinishedRecordVO.setRate(trade.getPayRate());
             borrowerFinishedRecordVO.setPayType(trade.getPayType());
             borrowerFinishedRecordVO.setLimitMonths(trade.getLimitMonths());

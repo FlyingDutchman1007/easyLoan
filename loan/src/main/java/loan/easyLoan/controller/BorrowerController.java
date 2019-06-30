@@ -52,7 +52,7 @@ public class BorrowerController {
 
         //如果没有已有的交易记录，说明可以提交借款申请
         if((intendBorrowService.selectPendingTransaction(idCard).isEmpty()
-                && tradeService.selectPendingRepayment(userRequiredInfo.getBankAccount()).isEmpty())==true){
+                && tradeService.selectPendingRepayment(userRequiredInfo.getBankAccount()).isEmpty())){
 
             // 获取一个新账单的所有数据
             double intendMoney = Double.parseDouble((String) obj.get("intendMoney"));
@@ -60,8 +60,7 @@ public class BorrowerController {
             float rate = Float.parseFloat((String)obj.get("rate"));
             float payRate = rate/100;
             int payType = Integer.parseInt((String) obj.get("payType"));
-            String limitMonth = (String) obj.get("limitMonths");
-            int limitMonths = Integer.parseInt(limitMonth.substring(0,1));
+            int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
 
             if(intendMoney <= borrowerAccountService.selectAvailableLimit(idCard)){
                 // 调用Service提供的方法

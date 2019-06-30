@@ -32,7 +32,7 @@ public class BorrowerUnfinishedFundController {
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String idCard = userRequiredInfo.getIdCard();//获取id号
 
-        if(intendBorrowService.selectPendingTransaction(idCard).isEmpty()==false){// 判断列表是否为空
+        if(!intendBorrowService.selectPendingTransaction(idCard).isEmpty()){// 判断列表是否为空
             return intendBorrowService.selectPendingTransaction(idCard); // 取出第一个
         }
         return null; //返回取到的结果

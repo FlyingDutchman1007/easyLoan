@@ -348,7 +348,11 @@ public class TradeServiceImpl implements TradeService {
             System.out.println(trade.getExactDate().equals(trade.getFinishedDate()) && (0!=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())));
             if(trade.getExactDate().equals(trade.getFinishedDate()) && (0!=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate()))){
                 // 根据月数差判断是否需要更新（按季度还则需保证月份差为3的倍数）
-                if(0==timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())%trade.getPayType()){//需要更新
+                //if(0==timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())%trade.getPayType()){//需要更新
+                logger.info("用户是否需要更新的判断结果："
+                        +(timeUtils.ifBegin(trade.getExactDate(),timeUtils.getCurrentTime(),trade.getPayType(),trade.getLimitMonths())));
+
+                if(timeUtils.ifBegin(timeUtils.toDay(trade.getExactDate()),timeUtils.toDay(timeUtils.getCurrentTime()),trade.getPayType(),trade.getLimitMonths())){//需要更新
                     logger.info("用户 {} 需要更新",trade.getSerialNumber());
 
                     //  如果当前日期在deadline之前，则未变成死账
@@ -356,9 +360,8 @@ public class TradeServiceImpl implements TradeService {
                     if(trade.getLimitMonths()>=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())){
 
                         // 计算违约金
-                        double liquidatedMoney =
-                                trade.getLiquidatedMoney()
-                                        + trade.getNextTimePay() * (1 + trade.getPayRate() * trade.getPayType() * 0.5);
+                        double liquidatedMoney = trade.getLiquidatedMoney()
+                                + trade.getNextTimePay() * (1 + trade.getPayRate() * trade.getPayType() * 0.5);
                         trade.setShouldRepayLiquidatedMoney(liquidatedMoney);
 
                         //  计算下次应还
@@ -380,6 +383,19 @@ public class TradeServiceImpl implements TradeService {
         }
         logger.info(tradeList.toString());
         return true;
+    }
+
+    @Override
+    public double calcUnpaidMoney(Trade tra) throws ParseException { //计算账户还欠多少钱（总共，用于最后判断总账是否还清）
+
+        double totalUnpayMoney = 0;
+        // 添加未支付金额
+        totalUnpayMoney = Math.max(0,
+                    (Math.floor((tra.getLimitMonths() - timeUtils.getMonthDiff(timeUtils.getCurrentTime(),tra.getExactDate())-1)/tra.getPayType())))
+                    *(tra.getShouldRepayPrincipal() +tra.getShouldRepayInterest())
+                    +tra.getNextTimePay();
+
+        return totalUnpayMoney;
     }
 
     //用来更新每条Trade中的数据并更新对应的还款流水、资金账户数据库 该方法在updateAccount()调用
@@ -453,9 +469,12 @@ public class TradeServiceImpl implements TradeService {
             //计算本次还款本金
             needPayPrincipal = rateMoney;
         }
+        logger.info("目前为还清金额为 "+tradeService.calcUnpaidMoney(tra));
         //还款完成更新日期
-        if(tra.getMoney() == tra.getRepaidPrincipal()) {
+        if(Math.abs(tradeService.calcUnpaidMoney(tra))<=0.1) {
+            logger.info("单号：{} 完成交易...", tra.getSerialNumber());
             tra.setFinishedDate(timeUtils.getCurrentTime());
+            logger.info("单号：{} 状态更新完成...", tra.getSerialNumber());
         }
         /**
          * 计算完成 更新数据库 执行失败进行回滚
