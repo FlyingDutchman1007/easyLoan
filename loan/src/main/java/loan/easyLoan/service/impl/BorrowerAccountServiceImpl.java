@@ -94,4 +94,15 @@ public class BorrowerAccountServiceImpl implements BorrowerAccountService {
     public BorrowerAccount decreaseCreditScore(String fundsAccount) {
         return borrowerAccountMapper.decreaseCreditScore(fundsAccount);
     }
+
+    @Override
+    public boolean updateCreditScore(BorrowerAccount borrowerAccount) { //更新借入方的信用额度（坏账，还完款之后使用）
+        double new_credit = borrowerAccount.getAvailableLimit();
+        int result =  borrowerAccountMapper.updateAvailableLimit(borrowerAccount.getIdCard(), new_credit);
+        if (result == 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

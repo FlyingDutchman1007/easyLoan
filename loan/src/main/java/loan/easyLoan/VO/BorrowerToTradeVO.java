@@ -16,11 +16,11 @@ public class BorrowerToTradeVO {
 
     public BorrowerToTradeVO() {}
 
-    public BorrowerToTradeVO(int billId, double intendMoney, Date startDate, double rate, int payType, int limitMonths, double raisedMoney) {
+    public BorrowerToTradeVO(int billId, double intendMoney, Date startDate, double payRate, int payType, int limitMonths, double raisedMoney) {
         this.billId = billId;
         this.intendMoney = intendMoney;
         this.startDate = startDate;
-        this.payRate = rate;
+        this.payRate = payRate;
         this.payType = payType;
         this.limitMonths = limitMonths;
         this.raisedMoney = raisedMoney;
@@ -88,7 +88,7 @@ public class BorrowerToTradeVO {
                 "billId=" + billId +
                 ", intendMoney=" + intendMoney +
                 ", startDate=" + startDate +
-                ", rate=" + payRate +
+                ", payRate=" + payRate +
                 ", payType=" + payType +
                 ", limitMonths=" + limitMonths +
                 ", raisedMoney=" + raisedMoney +

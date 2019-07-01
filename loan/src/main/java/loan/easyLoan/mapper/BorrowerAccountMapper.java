@@ -13,6 +13,8 @@ public interface BorrowerAccountMapper {
 
     int updateAvailableLimit(String idCard,double intendMoney);//借入方意向借入完成后更新额度
 
+    int setAvailableLimit(String idCard,double intendMoney); //更新借入方的可用额度
+
     int addNewBorrower(String fundsAccount, String idCard, int creditScore, double totalLimit, double availableLimit);  //新用户注册后分配资金账号
 
     String findFundsAccount(String idCard);  //根据身份证号找到用户的资金账号
@@ -31,5 +33,5 @@ public interface BorrowerAccountMapper {
 
     double getMoney(String fundsAccount);  //根据资金账户找到帐户余额
 
-    BorrowerAccount decreaseCreditScore(String fundsAccount); //减少用户信用额度
+    BorrowerAccount decreaseCreditScore(String fundsAccount); //减少用户信用额度(现已更改为根据fundsAccount查找BorrowAccount)
 }

@@ -29,5 +29,7 @@ public interface BorrowerAccountService {
 
     double getMoney(String fundsAccount);  //根据资金账户找到帐户余额
 
-    BorrowerAccount decreaseCreditScore(String fundsAccount);//减少账户信用额度
+    BorrowerAccount decreaseCreditScore(String fundsAccount);//减少账户信用额度(现已更改为根据fundsAccount查找BorrowAccount)
+
+    boolean updateCreditScore(BorrowerAccount borrowerAccount);
 }

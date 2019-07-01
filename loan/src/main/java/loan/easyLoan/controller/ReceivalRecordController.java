@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class ReceivalRecordController {
         UserRequiredInfo userRequiredInfo = (UserRequiredInfo) session.getAttribute(session.getId());
         String id = userRequiredInfo.getIdCard();
 
+        BigDecimal totalLiquidatedMoney = new BigDecimal("0");
+
         String fundsAccount = lenderAccountService.findFundsAccount(id);
         List<Trade> list = tradeService.selectPendingReceivable(fundsAccount);
         for (Trade trade : list) {
@@ -48,15 +51,19 @@ public class ReceivalRecordController {
             lenderToReceiveVO.setStartDate(trade.getExactDate());
             lenderToReceiveVO.setMoney(trade.getMoney());
             lenderToReceiveVO.setCollectedMoney(trade.getRepaidPrincipal());
-            lenderToReceiveVO.setInterest(trade.getShouldRepayInterest()*trade.getLimitMonths());
+            lenderToReceiveVO.setInterest(trade.getShouldRepayInterest()*trade.getLimitMonths()/trade.getPayType());
             lenderToReceiveVO.setCollectedInterest(trade.getRepaidInterest());
-            lenderToReceiveVO.setLiquidatedMoney(trade.getShouldRepayLiquidatedMoney());
+
+            totalLiquidatedMoney = totalLiquidatedMoney.add(new BigDecimal(Double.toString(trade.getShouldRepayLiquidatedMoney())));
+            totalLiquidatedMoney = totalLiquidatedMoney.subtract(new BigDecimal(Double.toString(trade.getLiquidatedMoney())));
+
+            lenderToReceiveVO.setLiquidatedMoney(totalLiquidatedMoney.doubleValue());
             lenderToReceiveVO.setCollectedLiquidatedMoney(trade.getLiquidatedMoney());
             try {
                 double rest_month = (Math.floor((trade.getLimitMonths() - timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())-1)/trade.getPayType()));
                 lenderToReceiveVO.setTotalMoney(trade.getNextTimePay()
                         + trade.getRepaidPrincipal()+trade.getRepaidInterest()
-                        + trade.getLiquidatedMoney()+rest_month*(trade.getShouldRepayInterest()+trade.getShouldRepayPrincipal())/trade.getPayType());
+                        + trade.getLiquidatedMoney()+rest_month*(trade.getShouldRepayPrincipal()+trade.getShouldRepayInterest()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

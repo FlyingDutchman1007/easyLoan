@@ -328,9 +328,10 @@ public class TradeServiceImpl implements TradeService {
 
         boolean judgeInMoneyFlow;
         /**
-         * 4.更新借入方账户余额
+         * 4.更新借入方账户余额，并更新信用额度
          */
         judgeInMoneyFlow = borrowerAccountService.updateWithdrawAccount(repaymentmoney, inAccount);
+
         //更新成功返回true
         if (judgeInMoneyFlow)
             return true;
@@ -345,7 +346,6 @@ public class TradeServiceImpl implements TradeService {
         for(Trade trade : tradeList){   //遍历tradeList,对每个Trade进行更新检查
             //首先判断是否已完成还款，若已完成则无需更新
             System.out.println("正在检验是否有超过1个月的欠款...");
-            System.out.println(trade.getExactDate().equals(trade.getFinishedDate()) && (0!=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())));
             if(trade.getExactDate().equals(trade.getFinishedDate()) && (0!=timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate()))){
                 // 根据月数差判断是否需要更新（按季度还则需保证月份差为3的倍数）
                 //if(0==timeUtils.getMonthDiff(timeUtils.getCurrentTime(),trade.getExactDate())%trade.getPayType()){//需要更新
@@ -473,7 +473,16 @@ public class TradeServiceImpl implements TradeService {
         //还款完成更新日期
         if(Math.abs(tradeService.calcUnpaidMoney(tra))<=0.1) {
             logger.info("单号：{} 完成交易...", tra.getSerialNumber());
+            //更新Borrower信用额度
+            BorrowerAccount borrowerAccount = borrowerAccountService.decreaseCreditScore(tra.getInBoundAccount()); //获取borrowerAccountID
+            double availableLimit = borrowerAccount.getAvailableLimit();
+            availableLimit += tra.getMoney();
+            borrowerAccount.setAvailableLimit(availableLimit); //计算应更新的金额并设置
+            boolean judgeUpdateAvailableLimit = borrowerAccountService.updateCreditScore(borrowerAccount); //判断是否更新成功
+
+            // 更新finishTime
             tra.setFinishedDate(timeUtils.getCurrentTime());
+
             logger.info("单号：{} 状态更新完成...", tra.getSerialNumber());
         }
         /**

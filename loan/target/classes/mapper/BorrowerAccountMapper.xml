@@ -37,7 +37,7 @@
   <!--更新借入方额度-->
   <update id="updateAvailableLimit">
     update borrower_account
-    set available_limit=available_limit-#{intendMoney,jdbcType=DOUBLE}
+    set available_limit= #{intendMoney,jdbcType=DOUBLE}
     where id_card=#{idCard,jdbcType=CHAR}
   </update>
 
@@ -105,6 +105,13 @@
         set account_balance=account_balance+#{intendMoney},borrowed_money=borrowed_money+#{intendMoney}
         where funds_account=#{fundsAccount,jdbcType=VARCHAR}
     </update>
+
+  <!--更新借入方额度-->
+  <update id="setAvailableLimit" parameterType="DOUBLE">
+    update borrower_account
+    set available_limit=#{availableLimit,jdbcType=DOUBLE}
+    where id_card=#{idCard,jdbcType=CHAR}
+  </update>
 
 
 

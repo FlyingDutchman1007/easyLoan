@@ -87,19 +87,20 @@ public class LenderController {
         double intendMoney = Double.parseDouble((String)obj.get("intendMoney"));
         int limitMonths = Integer.parseInt((String) obj.get("limitMonths"));
         float expectRate = Float.parseFloat((String)obj.get("expectRate"));
-        float rate = expectRate/100;
+        float payRate = expectRate/100;
         int payType = Integer.parseInt((String)obj.get("payType"));
 
-        List<Match> list =  intendBorrowService.selectCounterParty(rate,limitMonths,payType);
+        List<Match> list =  intendBorrowService.selectCounterParty(payRate,limitMonths,payType);
         List<BorrowerToTradeVO> list1 = new ArrayList<>();
 
         for (int i = 0;i<list.size();i++){
             Match match = list.get(i);
             BorrowerToTradeVO borrowerToTradeVO = new BorrowerToTradeVO();
+            borrowerToTradeVO.setRate(match.getPayRate());//单独设置borrowerToTradeVO的Rate
             BeanUtils.copyProperties(match, borrowerToTradeVO);
             list1.add(borrowerToTradeVO);
 
-            System.out.println(borrowerToTradeVO.toString());
+            System.out.println(borrowerToTradeVO.getRate());
         }
         return list1;
     }
